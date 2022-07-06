@@ -1,0 +1,7 @@
+.EmptyView {
+  color: #6e85b7;
+}
+
+.noHover {
+  pointer-events: none;
+}
