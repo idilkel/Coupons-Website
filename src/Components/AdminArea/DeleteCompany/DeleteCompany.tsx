@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import notify from "../../../Services/Notification";
+import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import "./DeleteCompany.css";
 
@@ -17,7 +17,7 @@ function DeleteCompany(): JSX.Element {
     web
       .deleteCompany(id)
       .then((res) => {
-        notify.success("Deleted successfully");
+        notify.success(SccMsg.DELETE_COMPANY);
         navigate("/admin/companies");
       })
       .catch((err) => {

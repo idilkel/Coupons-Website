@@ -8,6 +8,8 @@ import web from "../../../Services/WebApi";
 import CustomLink from "../../RoutingArea/CustomLink/CustomLink";
 import "./AdminCompanies.css";
 import { RiDeleteBinLine, RiEdit2Line, RiFileAddLine } from "react-icons/ri";
+import EmptyView from "../../SharedArea/EmptyView/EmptyView";
+import { LoginModel } from "../../../Models/LoginModel";
 
 function AdminCompanies(): JSX.Element {
   const [companies, setCompanies] = useState<CompanyModel[]>(
@@ -29,7 +31,14 @@ function AdminCompanies(): JSX.Element {
     navigate("/admin/companies/add");
   };
 
-  console.log("companies2" + store.getState().companiesReducer.companies);
+  //   console.log("companies2" + store.getState().companiesReducer.companies);
+  let userMail;
+  if (localStorage.getItem("user") !== null) {
+    userMail = JSON.parse(localStorage.getItem("user")).email;
+  } else {
+    userMail = null;
+  }
+  console.log("userMail: " + userMail);
 
   useEffect(() => {
     if (
@@ -45,11 +54,11 @@ function AdminCompanies(): JSX.Element {
           setCompanies(res.data);
           // Update App State (Global State)
           store.dispatch(companiesDownloadedAction(res.data));
-          console.log("list after dispatch: " + companies); //why empty after refresh
-          console.log(
-            "Companies list" + store.getState().companiesReducer.companies
-          );
-          console.log(store.getState().companiesReducer.companies);
+          //   console.log("list after dispatch: " + companies); //why empty after refresh
+          //   console.log(
+          //     "Companies list" + store.getState().companiesReducer.companies
+          //   );
+          //   console.log(store.getState().companiesReducer.companies);
         })
         .catch((err) => {
           notify.error(err.message);
@@ -70,7 +79,7 @@ function AdminCompanies(): JSX.Element {
           Add Company
         </button>
       </div>
-      {companies.length > 0 ? (
+      {companies.length > 0 && userMail === "admin@admin.com" ? (
         <div>
           <table className="flex-center-top">
             <tbody>
@@ -104,7 +113,9 @@ function AdminCompanies(): JSX.Element {
           </table>
         </div>
       ) : (
-        <h3>No companies left</h3>
+        <h3>
+          <EmptyView msg={"Only Admin can see the list. No Companies"} />
+        </h3>
       )}
     </div>
   );

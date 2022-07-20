@@ -1,11 +1,17 @@
+import { useNavigate } from "react-router-dom";
 import "./EmptyView.css";
 interface EmptyViewProps {
   msg: string;
 }
+
 function EmptyView(props: EmptyViewProps): JSX.Element {
+  const navigate = useNavigate();
   return (
     <div className="EmptyView flex-center-col">
       <h2>{props.msg}</h2>
+      <button className="button-success" onClick={() => navigate(-1)}>
+        Go back
+      </button>
       <iframe
         className="shadow noHover"
         src="https://giphy.com/embed/26hkhPJ5hmdD87HYA"

@@ -26,12 +26,13 @@ class Notify {
     position: { x: "left", y: "top" },
   });
 
-  public success(message: string) {
+  public success(message: SccMsg) {
     this.notification.success(message);
   }
 
   public error(message: string) {
-    this.notification.error(message);
+    // this.notification.error(message);
+    this.notification.error(this.extractMsg(message));
   }
 
   private extractMsg(err: any): string {

@@ -11,11 +11,17 @@ import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import CouponItem from "../CouponItem/CouponItem";
 import "./CompanyCoupons.css";
 import { BsPlusSquare } from "react-icons/bs";
+import { useNavigate } from "react-router-dom";
 
 function CompanyCoupons(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
     store.getState().couponsReducer.coupons
   );
+
+  const navigate = useNavigate();
+  const addCoupon = () => {
+    navigate("/companies/coupons/add");
+  };
 
   console.log("todoList" + store.getState().couponsReducer.coupons);
 
@@ -46,9 +52,12 @@ function CompanyCoupons(): JSX.Element {
   return (
     <div className="CouponList flex-center-col">
       <h1 className="flex-row-none-wrap-list">{email} Coupons</h1>
-      <CustomLink to="add">
+      {/* <CustomLink to="add">
         <BsPlusSquare size={35} />
-      </CustomLink>
+      </CustomLink> */}
+      <button className="button-green" onClick={addCoupon}>
+        Add a Coupon
+      </button>
       <div>
         <div className="flex-row-none-wrap-list">
           {coupons.length > 0 ? (

@@ -11,8 +11,13 @@ import web from "../../../Services/WebApi";
 import store from "../../../Redux/Store";
 import { loginAction } from "../../../Redux/AuthAppState";
 import { log } from "console";
+import { useEffect, useState } from "react";
 
-function Login(): JSX.Element {
+interface LoginProps {
+  time: Date;
+}
+
+function Login(props: LoginProps): JSX.Element {
   const navigate = useNavigate();
 
   //Step 6: Validation Schema
@@ -36,14 +41,18 @@ function Login(): JSX.Element {
     credentials.password = model.password;
     credentials.type = model.type;
 
+    // const [time, setTime] = useState(props.time);
+
     console.log("going to send to remote server..." + credentials);
 
     web
       .login(credentials)
       .then((res) => {
         console.log("token!!!" + res.data.token);
+        console.log("loginTime!!!" + res.data.loginTime);
         notify.success(SccMsg.LOGIN);
         store.dispatch(loginAction(res.data));
+        // setTime(res.data.loginTime);
         if (credentials.type === "COMPANY") {
           navigate("/companies/coupons");
         } else if (credentials.type === "CUSTOMER") {
@@ -56,6 +65,10 @@ function Login(): JSX.Element {
         notify.error(err.message);
       });
   };
+
+  useEffect(() => {
+    let timerId = setInterval(() => {}, 1000);
+  }, []);
 
   return (
     <div className="flex-center">

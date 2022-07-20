@@ -33,7 +33,7 @@ function Routing(): JSX.Element {
         <Route path="/coupons" element={<CouponList />} />
         <Route path="/companies/coupons" element={<CompanyCoupons />} />
         <Route path="/customers/coupons" element={<CustomerCoupons />} />
-        <Route path="/coupons/add" element={<AddCoupon />} />
+        <Route path="/companies/coupons/add" element={<AddCoupon />} />
         <Route path="/coupons/delete/:id" element={<DeleteCoupon />} />
         <Route path="/coupons/update/:id" element={<EditCoupon />} />
         <Route path="/admin/companies/add" element={<AddCompany />} />
@@ -45,7 +45,7 @@ function Routing(): JSX.Element {
           element={<DeleteCustomer />}
         />
         <Route path="/admin/customers/update/:id" element={<EditCustomer />} />
-        <Route path="/login" element={<Login />} />
+        <Route path="/login" element={<Login time={new Date()} />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/admin" element={<AdminHomepage />} />
         <Route path="/admin/companies" element={<AdminCompanies />} />

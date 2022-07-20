@@ -8,6 +8,7 @@ import web from "../../../Services/WebApi";
 import CustomLink from "../../RoutingArea/CustomLink/CustomLink";
 import "./AdminCustomers.css";
 import { RiDeleteBinLine, RiEdit2Line, RiFileAddLine } from "react-icons/ri";
+import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 
 function AdminCustomers(): JSX.Element {
   const [customers, setCustomers] = useState<CustomerModel[]>(
@@ -29,7 +30,7 @@ function AdminCustomers(): JSX.Element {
     navigate("/admin/customers/add");
   };
 
-  console.log("customers2" + store.getState().customersReducer.customers);
+  //   console.log("customers2" + store.getState().customersReducer.customers);
 
   useEffect(() => {
     if (
@@ -41,15 +42,15 @@ function AdminCustomers(): JSX.Element {
         .then((res) => {
           notify.success(SccMsg.ALL_COMPANIES);
           // Update Component State (Local state)
-          console.log("Hey: " + res.data);
+          //   console.log("Hey: " + res.data);
           setCustomers(res.data);
           // Update App State (Global State)
           store.dispatch(customersDownloadedAction(res.data));
-          console.log("list after dispatch: " + customers); //why empty after refresh
-          console.log(
-            "Companies list" + store.getState().customersReducer.customers
-          );
-          console.log(store.getState().customersReducer.customers);
+          //   console.log("list after dispatch: " + customers); //why empty after refresh
+          //   console.log(
+          //     "Companies list" + store.getState().customersReducer.customers
+          //   );
+          //   console.log(store.getState().customersReducer.customers);
         })
         .catch((err) => {
           notify.error(err.message);
@@ -106,7 +107,9 @@ function AdminCustomers(): JSX.Element {
           </table>
         </div>
       ) : (
-        <h3>No customers left</h3>
+        <h3>
+          <EmptyView msg={"Only Admin can see the list. No customers"} />
+        </h3>
       )}
     </div>
   );

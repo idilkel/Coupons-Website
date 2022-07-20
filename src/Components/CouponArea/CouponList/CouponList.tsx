@@ -11,8 +11,13 @@ import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import "./CouponList.css";
 import { BsPlusSquare } from "react-icons/bs";
 import CouponToPurchase from "../CouponToPurchase/CouponToPurchase";
+import { useNavigate } from "react-router-dom";
 
 function CouponList(): JSX.Element {
+  const navigate = useNavigate();
+  const customerCoupons = () => {
+    navigate("/customers/coupons");
+  };
   const [coupons, setCoupons] = useState<CouponModel[]>(
     store.getState().couponsReducer.coupons
   );
@@ -44,6 +49,14 @@ function CouponList(): JSX.Element {
   return (
     <div className="CouponList flex-center-col">
       <h1 className="flex-row-none-wrap-list">Our Coupons</h1>
+      <div>
+        <button className="button-success" onClick={customerCoupons}>
+          My Coupons
+        </button>
+        <button className="button-success" onClick={() => navigate(-1)}>
+          Go back
+        </button>
+      </div>
       {/* <CustomLink to="add">
         <BsPlusSquare size={35} />
       </CustomLink> */}

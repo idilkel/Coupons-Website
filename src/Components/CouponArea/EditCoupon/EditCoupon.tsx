@@ -6,7 +6,7 @@ import { useForm, useFormState } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
-import notify from "../../../Services/Notification";
+import notify, { SccMsg } from "../../../Services/Notification";
 import globals from "../../../Services/Globals";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -91,7 +91,7 @@ function EditCoupon(): JSX.Element {
     axios
       .put<any>(globals.urls.companies + "coupons/" + id, coupon)
       .then((res) => {
-        notify.success("The coupon has been updated");
+        notify.success(SccMsg.UPDATE_COUPON);
         navigate("/coupons");
       })
       .catch((err) => {

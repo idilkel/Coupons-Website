@@ -3,7 +3,7 @@ import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CouponModel } from "../../../Models/Coupon";
-import notify from "../../../Services/Notification";
+import notify, { SccMsg } from "../../../Services/Notification";
 import axios from "axios";
 import globals from "../../../Services/Globals";
 import { useNavigate } from "react-router-dom";
@@ -62,7 +62,7 @@ function AddCoupon(): JSX.Element {
     axios
       .post<any>(globals.urls.companies + "/coupons", coupon)
       .then((res) => {
-        notify.success("The coupon has been added successfully");
+        notify.success(SccMsg.ADD_COUPON);
         navigate("/coupons");
       })
       .catch((err) => {
@@ -72,15 +72,16 @@ function AddCoupon(): JSX.Element {
   };
 
   return (
-    <div className="flex-center">
+    <div className="flex-center flex-center-col">
+      <h1>Add a Coupon</h1>
+
       <div className="AddCoupon flex-center-col-wrap">
-        <h1>Add a Coupon</h1>
         {/* Step 9: Step 9 - OnSubmit - handle onSubmit method using your method */}
         <form onSubmit={handleSubmit(addCoupon)} className="flex-center-col">
           {/* Step 10: {...register("title")}     &    {errors.title?.message} */}
 
-          <label htmlFor="company">Company</label>
-          {/* <input
+          {/* <label htmlFor="company">Company</label>
+          <input
             {...register("company")}
             type="text"
             placeholder="company"
@@ -113,11 +114,11 @@ function AddCoupon(): JSX.Element {
             <option value="default" disabled hidden>
               Select a category
             </option>
-            <option value="restaurants">Restaurants</option>
-            <option value="travel">Travel</option>
-            <option value="entertainment">Entertainment</option>
-            <option value="fashion">Fashion</option>
-            <option value="electronics">Electronics</option>
+            <option value="RESTAURANTS">RESTAURANTS</option>
+            <option value="TRAVEL">TRAVEL</option>
+            <option value="ENTERTAINMENT">ENTERTAINMENT</option>
+            <option value="FASHION">FASHION</option>
+            <option value="ELECTRONICS">ELECTRONICS</option>
           </select>
           <span>{errors.category?.message}</span>
 
@@ -196,6 +197,9 @@ function AddCoupon(): JSX.Element {
           </button>
         </form>
       </div>
+      <button className="button-success" onClick={() => navigate(-1)}>
+        Go back
+      </button>
     </div>
   );
 }

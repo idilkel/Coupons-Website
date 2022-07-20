@@ -9,6 +9,7 @@ function Home(): JSX.Element {
   return (
     <div className="Home flex-center-col">
       <h1>Hot Coupons Homepage</h1>
+      <h3>Please login to enjoy our coupons</h3>
       <button className="button-success" onClick={admin}>
         Admin Homepage
       </button>

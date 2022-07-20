@@ -19,6 +19,9 @@ function AdminHomepage(): JSX.Element {
         <button className="button-success" onClick={customers}>
           Customers List
         </button>
+        <button className="button-success" onClick={() => navigate(-1)}>
+          Go back
+        </button>
       </div>
     </div>
   );
