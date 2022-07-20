@@ -1,8 +1,12 @@
 .Menu {
 }
 
-.Menu > a {
+/* .Menu > a {
   margin: 10px;
   font-size: larger;
   color: #6e85b7;
+} */
+
+.Menu > .icon {
+  margin-top: 20px;
 }

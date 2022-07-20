@@ -1,9 +1,14 @@
 import { useState } from "react";
 import "./Circle.css";
 
-function Circle(): JSX.Element {
-  const [num, setNum] = useState(7);
-  return <div className="Circle">{num}</div>;
+interface CircleProps {
+  num: number;
+}
+
+function Circle(props: CircleProps): JSX.Element {
+  const [num, setNum] = useState<number>(props.num);
+
+  return <div className="Circle">{props.num}</div>;
 }
 
 export default Circle;

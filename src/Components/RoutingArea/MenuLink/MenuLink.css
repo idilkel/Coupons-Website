@@ -1,0 +1,24 @@
+.MenuLink {
+  color: #6e85b7;
+  margin-bottom: 15px;
+  font-size: 30px;
+  text-decoration: none;
+}
+
+.MenuLink .active {
+  color: lightpink;
+  border-bottom: 3px solid lightpink;
+  font-weight: 700;
+  font-size: xx-large;
+  text-decoration: dashed;
+}
+
+.MenuLink:hover {
+  color: lightpink;
+  /* border-bottom: 3px solid pink; */
+  font-weight: 700;
+  font-size: 30px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: 0.1s;
+}

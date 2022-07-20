@@ -1,0 +1,12 @@
+.About {
+  color: #06283d;
+}
+
+.About h1 {
+  text-align: center;
+}
+
+.About p::first-letter {
+  color: blue;
+  font-size: 50px;
+}

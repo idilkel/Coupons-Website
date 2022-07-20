@@ -1,0 +1,14 @@
+.Page404 {
+}
+
+.noHover {
+  pointer-events: none;
+}
+
+.shadow {
+  box-shadow: 0 8px 16px 0 black;
+}
+
+.Page404 h2 {
+  margin: 10px;
+}

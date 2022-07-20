@@ -1,20 +1,23 @@
 class Globals {}
 
 class DevelopmentGlobals extends Globals {
+  // public urls = {
+  //   coupons: "http://localhost:8080/api/",
+  // };
   public urls = {
-    coupons: "http://localhost:8080/api",
+    administrator: "http://localhost:8080/api/admin",
+    companies: "http://localhost:8080/api/companies",
+    customers: "http://localhost:8080/api/customers",
+    login: "http://localhost:8080/api/login",
   };
-  //   public urls = [
-  //     { administrator: "http://localhost:8080/api/admin" },
-  //     { companies: "http://localhost:8080/api/companies" },
-  //     { customers: "http://localhost:8080/api/customers" },
-  //     { logins: "http://localhost:8080/api/login" },
-  //   ];
 }
 
 class ProductionGlobals extends Globals {
   public urls = {
-    coupons: "www.aws.com/website/coupons-system",
+    administrator: "www.aws.com/website/admin",
+    companies: "www.aws.com/website/companies",
+    customers: "www.aws.com/website/customers",
+    login: "www.aws.com/website/login",
   };
 }
 

@@ -4,20 +4,16 @@ interface EmptyViewProps {
 }
 function EmptyView(props: EmptyViewProps): JSX.Element {
   return (
-    <div className="EmptyView flex-center-col noHover">
+    <div className="EmptyView flex-center-col">
       <h2>{props.msg}</h2>
       <iframe
-        src="https://giphy.com/embed/RgnTr6sxtYsWQiSzhx"
+        className="shadow noHover"
+        src="https://giphy.com/embed/26hkhPJ5hmdD87HYA"
         width="480"
         height="480"
         frameBorder="0"
         allowFullScreen
       ></iframe>
-      <p>
-        <a href="https://giphy.com/gifs/loop-warrenwoodhouse-looped-RgnTr6sxtYsWQiSzhx">
-          via GIPHY
-        </a>
-      </p>
     </div>
   );
 }

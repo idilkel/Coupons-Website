@@ -8,20 +8,25 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import axios from "axios";
 import notify from "../../../Services/Notification";
 import globals from "../../../Services/Globals";
+import { useNavigate, useParams } from "react-router-dom";
 
 function EditCoupon(): JSX.Element {
+  const navigate = useNavigate();
+  const params = useParams();
+  const couponId = +(params.id || 0);
+
   //State with preliminary start point
-  const [id, setId] = useState<number>(17);
+  const [id, setId] = useState<number>(couponId);
   const [origin, setOrigin] = useState<CouponModel>({
     // can't update company - business-logic
-    category: "TRAVEL",
-    title: "bbb",
-    description: "ccc",
-    price: 9.9,
-    amount: 100,
+    category: "",
+    title: "",
+    description: "",
+    price: 0,
+    amount: 0,
     startDate: new Date(),
     endDate: new Date(),
-    image: "wwww",
+    image: "",
   });
 
   //Step 6: Validation Schema
@@ -84,18 +89,20 @@ function EditCoupon(): JSX.Element {
   //Step 8: On-submit:  Send to remote as put request
   const updateCoupon = async (coupon: CouponModel) => {
     axios
-      .put<any>(globals.urls.coupons + "/companies/coupons/" + id, coupon)
+      .put<any>(globals.urls.companies + "coupons/" + id, coupon)
       .then((res) => {
         notify.success("The coupon has been updated");
+        navigate("/coupons");
       })
       .catch((err) => {
         notify.error(err.message);
+        navigate("/coupons");
       });
   };
   return (
     <div className="flex-center">
       <div className="EditCoupon flex-center-col-wrap">
-        <h1>Update Task</h1>
+        <h1>Coupon Update</h1>
         {/* Step 9: Step 9 - OnSubmit - handle onSubmit method using your method */}
         <form onSubmit={handleSubmit(updateCoupon)} className="flex-center-col">
           {/* Step 10: {...register("caption")}     &    {errors.caption?.message} */}
@@ -115,7 +122,15 @@ function EditCoupon(): JSX.Element {
           placeholder="category"
           id="category"
         /> */}
-          <select {...register("category")} id="category" name="category">
+          <select
+            {...register("category")}
+            id="category"
+            name="category"
+            // placeholder="Select a category"
+          >
+            <option value="default" disabled hidden>
+              Select a category
+            </option>
             <option value="restaurants">Restaurants</option>
             <option value="travel">Travel</option>
             <option value="entertainment">Entertainment</option>
@@ -188,7 +203,9 @@ function EditCoupon(): JSX.Element {
           />
           <span>{errors.image?.message}</span>
 
-          <button disabled={!isDirty}>Update</button>
+          <button className="button-success" disabled={!isDirty}>
+            Update
+          </button>
         </form>
       </div>
     </div>

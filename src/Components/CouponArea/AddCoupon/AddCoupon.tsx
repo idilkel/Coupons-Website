@@ -6,11 +6,15 @@ import { CouponModel } from "../../../Models/Coupon";
 import notify from "../../../Services/Notification";
 import axios from "axios";
 import globals from "../../../Services/Globals";
+import { useNavigate } from "react-router-dom";
 
 function AddCoupon(): JSX.Element {
+  const navigate = useNavigate();
+
   //Step 6: Validation Schema
   const schema = yup.object().shape({
-    company: yup.string().required("Company is required"),
+    // company: yup.string().required("Company is required"),
+    company: yup.number().required("Company is required"),
     category: yup.string().required("Category is required"),
     title: yup.string().required("Title is required"),
     description: yup.string().required("Description is required"),
@@ -32,17 +36,18 @@ function AddCoupon(): JSX.Element {
       .default(() => new Date()),
     amount: yup.number().required("Amount is required"),
     price: yup.number().required("Price is required"),
-    image: yup
-      .mixed()
-      .test("required", "You need to provide a file", (value) => {
-        return value && value.length;
-      })
-      .test("fileSize", "The file is too large", (value, context) => {
-        return value && value[0] && value[0].size <= 200000;
-      })
-      .test("type", "We only support png", function (value) {
-        return value && value[0] && value[0].type === "image/png";
-      }),
+    image: yup.string().required("Image is required"),
+    // image: yup
+    //   .mixed()
+    //   .test("required", "You need to provide a file", (value) => {
+    //     return value && value.length;
+    //   })
+    //   .test("fileSize", "The file is too large", (value, context) => {
+    //     return value && value[0] && value[0].size <= 200000;
+    //   })
+    //   .test("type", "We only support png", function (value) {
+    //     return value && value[0] && value[0].type === "image/png";
+    //   }),
   });
 
   //Step 7: React-hook-form
@@ -55,12 +60,14 @@ function AddCoupon(): JSX.Element {
   //Step 8: On-submit:  Send to remote as post request
   const addCoupon = async (coupon: CouponModel) => {
     axios
-      .post<any>(globals.urls.coupons + "/companies/coupons", coupon)
+      .post<any>(globals.urls.companies + "/coupons", coupon)
       .then((res) => {
-        notify.success("A coupon was added successfully");
+        notify.success("The coupon has been added successfully");
+        navigate("/coupons");
       })
       .catch((err) => {
         notify.error(err.message);
+        navigate("/coupons");
       });
   };
 
@@ -73,13 +80,22 @@ function AddCoupon(): JSX.Element {
           {/* Step 10: {...register("title")}     &    {errors.title?.message} */}
 
           <label htmlFor="company">Company</label>
-          <input
+          {/* <input
             {...register("company")}
             type="text"
             placeholder="company"
             id="company"
           />
-          <span>{errors.company?.message}</span>
+          <span>{errors.company?.message}</span> */}
+
+          <label htmlFor="companyId">Company</label>
+          <input
+            {...register("companyId")}
+            type="number"
+            placeholder="companyId"
+            id="companyId"
+          />
+          <span>{errors.companyId?.message}</span>
 
           <label htmlFor="category">Category</label>
           {/* <input
@@ -88,7 +104,15 @@ function AddCoupon(): JSX.Element {
           placeholder="category"
           id="category"
         /> */}
-          <select {...register("category")} id="category" name="category">
+          <select
+            {...register("category")}
+            id="category"
+            name="category"
+            // placeholder="Select a category"
+          >
+            <option value="default" disabled hidden>
+              Select a category
+            </option>
             <option value="restaurants">Restaurants</option>
             <option value="travel">Travel</option>
             <option value="entertainment">Entertainment</option>
@@ -153,15 +177,23 @@ function AddCoupon(): JSX.Element {
           <span>{errors.endDate?.message}</span>
 
           <label htmlFor="image">Image</label>
-          <input
+          {/* <input
             {...register("image")}
             type="file"
+            placeholder="image"
+            id="image"
+          /> */}
+          <input
+            {...register("image")}
+            type="text"
             placeholder="image"
             id="image"
           />
           <span>{errors.image?.message}</span>
 
-          <button disabled={!isValid}>Add</button>
+          <button className="button-success" disabled={!isValid}>
+            Add
+          </button>
         </form>
       </div>
     </div>
