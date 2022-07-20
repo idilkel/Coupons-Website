@@ -1,11 +1,11 @@
 import { Route, Routes } from "react-router-dom";
 import App from "../../../App";
-import AddCompany from "../../CouponArea/AddCompany/AddCompany";
+import AddCompany from "../../AdminArea/AddCompany/AddCompany";
 import AddCoupon from "../../CouponArea/AddCoupon/AddCoupon";
 import CouponList from "../../CouponArea/CouponList/CouponList";
-import DeleteCompany from "../../CouponArea/DeleteCompany/DeleteCompany";
+import DeleteCompany from "../../AdminArea/DeleteCompany/DeleteCompany";
 import DeleteCoupon from "../../CouponArea/DeleteCoupon/DeleteCoupon";
-import EditCompany from "../../CouponArea/EditCompany/EditCompany";
+import EditCompany from "../../AdminArea/EditCompany/EditCompany";
 import EditCoupon from "../../CouponArea/EditCoupon/EditCoupon";
 import Login from "../../AuthArea/Login/Login";
 import About from "../../PagesArea/About/About";
@@ -18,6 +18,9 @@ import CompanyCoupons from "../../CouponArea/CompanyCoupons/CompanyCoupons";
 import AdminHomepage from "../../AdminArea/AdminHomepage/AdminHomepage";
 import AdminCompanies from "../../AdminArea/AdminCompanies/AdminCompanies";
 import AdminCustomers from "../../AdminArea/AdminCustomers/AdminCustomers";
+import AddCustomer from "../../AdminArea/AddCustomer/AddCustomer";
+import DeleteCustomer from "../../AdminArea/DeleteCustomer/DeleteCustomer";
+import EditCustomer from "../../AdminArea/EditCustomer/EditCustomer";
 
 function Routing(): JSX.Element {
   return (
@@ -36,6 +39,12 @@ function Routing(): JSX.Element {
         <Route path="/admin/companies/add" element={<AddCompany />} />
         <Route path="/admin/companies/delete/:id" element={<DeleteCompany />} />
         <Route path="/admin/companies/update/:id" element={<EditCompany />} />
+        <Route path="/admin/customers/add" element={<AddCustomer />} />
+        <Route
+          path="/admin/customers/delete/:id"
+          element={<DeleteCustomer />}
+        />
+        <Route path="/admin/customers/update/:id" element={<EditCustomer />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/admin" element={<AdminHomepage />} />

@@ -133,6 +133,7 @@ p {
   color: white;
   border: 2px solid #60625f;
   margin: 5px;
+  border-radius: 10px;
 }
 
 .button:hover {
@@ -141,6 +142,7 @@ p {
   border: 2px solid #60625f;
   margin: 5px;
   cursor: pointer;
+  border-radius: 10px;
 }
 
 .button-success {
@@ -152,6 +154,7 @@ p {
   cursor: none;
   border: 2px solid #60625f;
   margin: 5px;
+  border-radius: 10px;
 }
 
 .button-success:hover {
@@ -160,6 +163,7 @@ p {
   border: 2px solid #6db33f;
   margin: 5px;
   cursor: pointer;
+  border-radius: 10px;
 }
 
 .button-success:disabled {
@@ -171,6 +175,7 @@ p {
   cursor: not-allowed;
   border: 2px solid #60625f;
   margin: 5px;
+  border-radius: 10px;
 }
 
 .button-danger {
@@ -181,6 +186,7 @@ p {
   color: white;
   border: 2px solid #f44336;
   margin: 5px;
+  border-radius: 10px;
 }
 
 .button-danger:hover {
@@ -190,6 +196,40 @@ p {
   border: 2px solid #f44336;
   margin: 5px;
   cursor: pointer;
+  border-radius: 10px;
+}
+
+.button-green {
+  height: 40px;
+  width: 100px;
+  transition-duration: 0.4s;
+  background-color: green;
+  color: white;
+  cursor: none;
+  border: 2px solid green;
+  margin: 5px;
+  border-radius: 10px;
+}
+
+.button-green:hover {
+  background-color: white;
+  color: #6db33f;
+  border: 2px solid #6db33f;
+  margin: 5px;
+  cursor: pointer;
+  border-radius: 10px;
+}
+
+.button-green:disabled {
+  height: 30px;
+  width: 100px;
+  transition-duration: 0.4s;
+  background-color: green;
+  color: white;
+  cursor: not-allowed;
+  border: 2px solid green;
+  margin: 5px;
+  border-radius: 10px;
 }
 
 .box {
@@ -230,31 +270,31 @@ form .button-app {
 
 input[type="text"],
 input[type="date"],
-input[type="datetime-local"],
+input[type="date"],
 input[type="number"],
 input[type="email"],
 input[type="password"] {
   width: 100%;
-  padding: 6px 10px;
-  margin: 4px 0;
+  /* padding: 6px 10px;
+  margin: 4px 0; */
   box-sizing: border-box;
   border: none;
 }
 
-input[type="number"]:disabled {
+/* input[type="number"]:disabled {
   font-weight: 700;
 
   background-color: #88888880;
-}
+} */
 
-label {
+/* label {
   margin-left: 2px;
   font-weight: 500;
   display: inline-block;
   display: inline-block;
   text-align: start;
   color: black;
-}
+} */
 
 td,
 th {
@@ -271,11 +311,13 @@ table {
 }
 
 tr:nth-child(even) {
-  background-color: #ffeead;
+  background-color: #f2f2f2;
+  color: black;
 }
 
 tr:nth-child(odd) {
-  background-color: #ffcb5cd0;
+  background-color: lightgrey;
+  color: black;
 }
 
 tr:hover {
@@ -286,7 +328,7 @@ th {
   padding-top: 12px;
   padding-bottom: 12px;
   background-color: #96ceb4;
-  color: white;
+  color: black;
 }
 
 hr {
@@ -295,7 +337,7 @@ hr {
   height: 2px;
 }
 
-.flex-center {
+/* .flex-center {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -307,4 +349,4 @@ hr {
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
-}
+} */

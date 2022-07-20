@@ -3,11 +3,14 @@ import { useForm, useFormState } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate, useParams } from "react-router-dom";
-import { CompanyWoCouponsModel } from "../../../Models/Company";
+import { CompanyModel, CompanyWoCouponsModel } from "../../../Models/Company";
 import { useState } from "react";
 import axios from "axios";
 import globals from "../../../Services/Globals";
-import notify from "../../../Services/Notification";
+import notify, { SccMsg } from "../../../Services/Notification";
+import web from "../../../Services/WebApi";
+import store from "../../../Redux/Store";
+import { companyUpdatedAction } from "../../../Redux/CompaniesAppState";
 
 function EditCompany(): JSX.Element {
   const navigate = useNavigate();
@@ -16,11 +19,16 @@ function EditCompany(): JSX.Element {
 
   //State with preliminary start point
   const [id, setId] = useState<number>(companyId);
-  const [origin, setOrigin] = useState<CompanyWoCouponsModel>({
+  const [company, setCompany] = useState<CompanyModel>(
+    store
+      .getState()
+      .companiesReducer.companies.filter((c) => c.id === companyId)[0]
+  );
+  const [origin, setOrigin] = useState<CompanyModel>({
     // can't update company - business-logic
-    name: "",
-    email: "",
-    password: "",
+    name: company.name,
+    email: company.email,
+    password: company.password,
   });
 
   //Step 6: Validation Schema
@@ -52,15 +60,17 @@ function EditCompany(): JSX.Element {
 
   //Step 8: On-submit:  Send to remote as put request
   const updateCompany = async (company: CompanyWoCouponsModel) => {
-    axios
-      .put<any>(globals.urls.administrator + "company/" + id, company)
+    web
+      .updateCompany(id, company)
       .then((res) => {
-        notify.success("The company has been updated");
-        navigate("/companies");
+        notify.success(SccMsg.UPDATE_COMPANY);
+        navigate("/admin/companies");
+        // Update App State (Global State)
+        store.dispatch(companyUpdatedAction(res.data));
       })
       .catch((err) => {
         notify.error(err.message);
-        navigate("/companies");
+        navigate("/admin/companies");
       });
   };
 

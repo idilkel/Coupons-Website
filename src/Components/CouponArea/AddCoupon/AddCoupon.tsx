@@ -161,7 +161,7 @@ function AddCoupon(): JSX.Element {
           <label htmlFor="startDate">Start date</label>
           <input
             {...register("startDate")}
-            type="datetime-local"
+            type="date"
             placeholder="startDate"
             id="startDate"
           />

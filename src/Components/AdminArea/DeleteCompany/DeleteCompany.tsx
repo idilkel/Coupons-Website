@@ -6,8 +6,8 @@ import "./DeleteCompany.css";
 
 function DeleteCompany(): JSX.Element {
   const params = useParams();
-  const taskId = +(params.id || 0);
-  const [id, setId] = useState<number>(taskId);
+  const companyId = +(params.id || 0);
+  const [id, setId] = useState<number>(companyId);
   const navigate = useNavigate();
 
   const no = () => {

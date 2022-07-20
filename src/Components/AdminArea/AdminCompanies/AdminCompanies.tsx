@@ -66,7 +66,7 @@ function AdminCompanies(): JSX.Element {
         <button className="button-success" onClick={customers}>
           Customers List
         </button>
-        <button className="button-success" onClick={addCompany}>
+        <button className="button-green" onClick={addCompany}>
           Add Company
         </button>
       </div>
@@ -84,20 +84,20 @@ function AdminCompanies(): JSX.Element {
               </tr>
               {companies.map((company, index) => (
                 <tr data-index={index}>
-                  <th>{company.id}</th>
-                  <th>{company.name}</th>
-                  <th>{company.email}</th>
-                  <th>{company.password}</th>
-                  <th>
-                    <CustomLink to={`/admin//companies/update/${company.id}`}>
+                  <td>{company.id}</td>
+                  <td>{company.name}</td>
+                  <td>{company.email}</td>
+                  <td>{company.password}</td>
+                  <td>
+                    <CustomLink to={`/admin/companies/update/${company.id}`}>
                       <RiEdit2Line size={30} />
                     </CustomLink>
-                  </th>
-                  <th>
+                  </td>
+                  <td>
                     <CustomLink to={`/admin/companies/delete/${company.id}`}>
                       <RiDeleteBinLine size={30} />
                     </CustomLink>
-                  </th>
+                  </td>
                 </tr>
               ))}
             </tbody>
