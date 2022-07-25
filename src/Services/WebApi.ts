@@ -87,6 +87,18 @@ class WebApi {
   //   );
   // }
 
+  public async getAllCouponsByCategory(category: string): Promise<any> {
+    return await tokenAxios.get<CouponModel[]>(
+      this.adminUrl + "/coupons/category?category=" + category
+    );
+  }
+
+  public async getAllCouponsByMaxPrice(maxPrice: number): Promise<any> {
+    return await tokenAxios.get<CouponModel[]>(
+      this.adminUrl + "/coupons/price/max?value=" + maxPrice
+    );
+  }
+
   //Company Controllers:
   public async addCoupon(coupon: CouponModel): Promise<any> {
     return await tokenAxios.post<CouponModel>(

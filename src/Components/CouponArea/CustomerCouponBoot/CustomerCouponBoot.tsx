@@ -39,6 +39,7 @@ function CustomerCouponBoot(props: CustomerCouponBootProps): JSX.Element {
             Coupons Left: {props.coupon.amount}
           </Card.Text>
           <Card.Text>
+            Exp:&nbsp;
             {moment(props.coupon.endDate).format("DD/MM/YYYY")}
           </Card.Text>
         </Card.Body>

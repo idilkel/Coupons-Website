@@ -3,7 +3,7 @@ import { useForm, useFormState } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useNavigate, useParams } from "react-router-dom";
-import { CompanyModel, CompanyWoCouponsModel } from "../../../Models/Company";
+import { CompanyModel } from "../../../Models/Company";
 import { useState } from "react";
 import axios from "axios";
 import globals from "../../../Services/Globals";
@@ -11,6 +11,7 @@ import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import store from "../../../Redux/Store";
 import { companyUpdatedAction } from "../../../Redux/CompaniesAppState";
+import { CouponModel } from "../../../Models/Coupon";
 
 function EditCompany(): JSX.Element {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function EditCompany(): JSX.Element {
 
   //State with preliminary start point
   const [id, setId] = useState<number>(companyId);
+  console.log("The id to update is: " + id);
   const [company, setCompany] = useState<CompanyModel>(
     store
       .getState()
@@ -29,6 +31,7 @@ function EditCompany(): JSX.Element {
     name: company.name,
     email: company.email,
     password: company.password,
+    // coupons: company.coupons,
   });
 
   //Step 6: Validation Schema
@@ -51,7 +54,7 @@ function EditCompany(): JSX.Element {
     handleSubmit,
     control,
     formState: { errors, isDirty, isValid },
-  } = useForm<CompanyWoCouponsModel>({
+  } = useForm<CompanyModel>({
     defaultValues: defaultValuesObj,
     mode: "all",
     resolver: yupResolver(schema),
@@ -63,7 +66,7 @@ function EditCompany(): JSX.Element {
   });
 
   //Step 8: On-submit:  Send to remote as put request
-  const updateCompany = async (company: CompanyWoCouponsModel) => {
+  const updateCompany = async (company: CompanyModel) => {
     web
       .updateCompany(id, company)
       .then((res) => {
@@ -71,9 +74,11 @@ function EditCompany(): JSX.Element {
         navigate("/admin/companies");
         // Update App State (Global State)
         store.dispatch(companyUpdatedAction(res.data));
+        console.log("YES@@@" + res.data.name);
       })
       .catch((err) => {
         notify.error(err.message);
+        console.log("NO@@@");
         navigate("/admin/companies");
       });
   };

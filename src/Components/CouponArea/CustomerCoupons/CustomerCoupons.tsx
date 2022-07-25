@@ -97,8 +97,7 @@ function CustomerCoupons(): JSX.Element {
   };
 
   //On-submit Category Selection:  Send to remote as post request
-  // let selectCategory = document.getElementById("selectCategory").value;
-  const selected = async (coupon: CouponModel) => {
+  const selected = async () => {
     if (
       cat === "RESTAURANTS" ||
       cat === "TRAVEL" ||
@@ -110,15 +109,7 @@ function CustomerCoupons(): JSX.Element {
         .getAllCustomerCouponsByCategory(cat) //todo
         .then((res) => {
           notify.success(SccMsg.COUPONS_CATEGORY);
-          // Update Component State (Local state)
-          setCoupons(res.data);
-          // Update App State (Global State)
-          store.dispatch(couponsDownloadedAction(res.data));
-          console.log("list after dispatch: " + coupons);
-          console.log(
-            "CouponList by Category" + store.getState().couponsReducer.coupons
-          );
-          console.log(store.getState().couponsReducer.coupons);
+          navigate("/customers/coupons/category/" + cat);
         })
         .catch((err) => {
           notify.error(err.message);
@@ -126,45 +117,51 @@ function CustomerCoupons(): JSX.Element {
     }
   };
 
+  //Did change?
+  useEffect(() => {
+    selected();
+  }, [cat]);
+
   return (
     <div className="CustomerCoupons flex-center-col">
       <h1 className="flex-row-none-wrap-list">{email} Coupons</h1>
       {/* Step 9: Step 9 - OnSubmit - handle onSubmit method using your method */}
-
-      <div className="flex-around">
-        <label htmlFor="min">0</label>
-        <input
-          type="range"
-          className="form-range range-length"
-          id="customRange1"
-          min="0"
-          max="500"
-          step="0.1"
-        ></input>
-        <label htmlFor="max">500</label>
-      </div>
-      <form
-        onSubmit={handleSubmit(couponByMaxPrice)}
-        className="flex-center-col"
-      >
-        <label htmlFor="maxPrice">Maximum Price</label>
-        <input
-          {...register("maxPrice")}
-          type="number"
-          placeholder="maxPrice"
-          id="maxPrice"
-        />
-        {/* <span>{errors.maxPrice?.message}</span> */}
-      </form>
-      <div>
-        <Form.Select value={cat} onChange={(e) => setCat(e.target.value)}>
-          <option>Select a category</option>
-          <option value="RESTAURANTS">RESTAURANTS</option>
-          <option value="TRAVEL">TRAVEL</option>
-          <option value="ENTERTAINMENT">ENTERTAINMENT</option>
-          <option value="FASHION">FASHION</option>
-          <option value="ELECTRONICS">ELECTRONICS</option>
-        </Form.Select>
+      <div className="single-line-only">
+        <div className="flex-around">
+          <label htmlFor="min">0</label>
+          <input
+            type="range"
+            className="form-range range-length"
+            id="customRange1"
+            min="0"
+            max="500"
+            step="0.1"
+          ></input>
+          <label htmlFor="max">500</label>
+        </div>
+        <form
+          onSubmit={handleSubmit(couponByMaxPrice)}
+          className="flex-center-col"
+        >
+          <label htmlFor="maxPrice">Maximum Price</label>
+          <input
+            {...register("maxPrice")}
+            type="number"
+            placeholder="maxPrice"
+            id="maxPrice"
+          />
+          {/* <span>{errors.maxPrice?.message}</span> */}
+        </form>
+        <div>
+          <Form.Select value={cat} onChange={(e) => setCat(e.target.value)}>
+            <option>Select a category</option>
+            <option value="TRAVEL">TRAVEL</option>
+            <option value="RESTAURANTS">RESTAURANTS</option>
+            <option value="ENTERTAINMENT">ENTERTAINMENT</option>
+            <option value="FASHION">FASHION</option>
+            <option value="ELECTRONICS">ELECTRONICS</option>
+          </Form.Select>
+        </div>
       </div>
       <div>
         <div className="flex-row-none-wrap-list">

@@ -6,8 +6,8 @@ import "./DeleteCoupon.css";
 
 function DeleteCoupon(): JSX.Element {
   const params = useParams();
-  const taskId = +(params.id || 0);
-  const [id, setId] = useState<number>(taskId);
+  const couponId = +(params.id || 0);
+  const [id, setId] = useState<number>(couponId);
   const navigate = useNavigate();
 
   const no = () => {

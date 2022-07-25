@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { CompanyWoCouponsModel } from "../../../Models/Company";
 import { CouponModel } from "../../../Models/Coupon";
 import "./EditCoupon.css";
 import { useForm, useFormState } from "react-hook-form";

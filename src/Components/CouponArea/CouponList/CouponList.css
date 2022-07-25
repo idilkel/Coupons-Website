@@ -1,3 +1,12 @@
 .CouponList {
   color: #6e85b7;
 }
+
+.CouponList .range-length {
+  width: 250px;
+}
+
+.CouponList form {
+  width: 250px;
+  background-color: #f9f9c5;
+}

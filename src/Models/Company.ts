@@ -22,40 +22,40 @@ export class CompanyModel {
   }
 }
 
-export class CompanyPayLoadModel {
-  public name?: string;
-  public email?: string;
-  public password?: string;
-  public coupons?: CouponModel[];
+// export class CompanyPayLoadModel {
+//   public name?: string;
+//   public email?: string;
+//   public password?: string;
+//   public coupons?: CouponModel[];
 
-  public constructor(
-    name?: string,
-    email?: string,
-    password?: string,
-    coupons?: CouponModel[]
-  ) {
-    this.name = name;
-    this.email = email;
-    this.password = password;
-    this.coupons = coupons;
-  }
-}
+//   public constructor(
+//     name?: string,
+//     email?: string,
+//     password?: string,
+//     coupons?: CouponModel[]
+//   ) {
+//     this.name = name;
+//     this.email = email;
+//     this.password = password;
+//     this.coupons = coupons;
+//   }
+// }
 
-export class CompanyWoCouponsModel {
-  public name?: string;
-  public email?: string;
-  public password?: string;
-  public coupons?: any[];
+// export class CompanyWoCouponsModel {
+//   public name?: string;
+//   public email?: string;
+//   public password?: string;
+//   public coupons?: any[];
 
-  public constructor(
-    name?: string,
-    email?: string,
-    password?: string,
-    coupons?: any[]
-  ) {
-    this.name = name;
-    this.email = email;
-    this.password = password;
-    this.coupons = coupons;
-  }
-}
+//   public constructor(
+//     name?: string,
+//     email?: string,
+//     password?: string,
+//     coupons?: any[]
+//   ) {
+//     this.name = name;
+//     this.email = email;
+//     this.password = password;
+//     this.coupons = coupons;
+//   }
+// }
