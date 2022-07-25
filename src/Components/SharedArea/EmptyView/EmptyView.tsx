@@ -8,7 +8,7 @@ function EmptyView(props: EmptyViewProps): JSX.Element {
   const navigate = useNavigate();
   return (
     <div className="EmptyView flex-center-col">
-      <h2>{props.msg}</h2>
+      <h2>{props.msg}. Are you in the right user type?</h2>
       <button className="button-success" onClick={() => navigate(-1)}>
         Go back
       </button>

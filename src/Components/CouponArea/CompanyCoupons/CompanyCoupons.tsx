@@ -12,6 +12,8 @@ import CouponItem from "../CouponItem/CouponItem";
 import "./CompanyCoupons.css";
 import { BsPlusSquare } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
+import CompanyBootCoupon from "../CompanyBootCoupon/CompanyBootCoupon";
+import Button from "react-bootstrap/Button";
 
 function CompanyCoupons(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
@@ -26,6 +28,14 @@ function CompanyCoupons(): JSX.Element {
   console.log("todoList" + store.getState().couponsReducer.coupons);
 
   const [email, setEmail] = useState(store.getState().authReducer.user?.email);
+
+  let userType;
+  if (localStorage.getItem("user") !== null) {
+    userType = JSON.parse(localStorage.getItem("user")).type;
+  } else {
+    userType = null;
+  }
+  // console.log("userType!!!: " + userType);
 
   useEffect(() => {
     if (
@@ -52,20 +62,19 @@ function CompanyCoupons(): JSX.Element {
   return (
     <div className="CouponList flex-center-col">
       <h1 className="flex-row-none-wrap-list">{email} Coupons</h1>
-      {/* <CustomLink to="add">
-        <BsPlusSquare size={35} />
-      </CustomLink> */}
-      <button className="button-green" onClick={addCoupon}>
+      {/* <button className="button-green" onClick={addCoupon}>
         Add a Coupon
-      </button>
-      <div>
-        <div className="flex-row-none-wrap-list">
-          {coupons.length > 0 ? (
-            coupons.map((c) => <CouponItem key={c.id} coupon={c} />)
-          ) : (
-            <EmptyView msg={"No coupons today"} />
-          )}
-        </div>
+      </button> */}
+      <Button variant="success" onClick={addCoupon}>
+        Add a Coupon
+      </Button>{" "}
+      <div className="flex-row-none-wrap-list">
+        {coupons.length > 0 && userType === "COMPANY" ? (
+          // coupons.map((c) => <CouponItem key={c.id} coupon={c} />)
+          coupons.map((c) => <CompanyBootCoupon key={c.id} coupon={c} />)
+        ) : (
+          <EmptyView msg={"No coupons today"} />
+        )}
       </div>
     </div>
   );

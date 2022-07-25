@@ -4,17 +4,31 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CouponModel } from "../../../Models/Coupon";
 import notify, { SccMsg } from "../../../Services/Notification";
-import axios from "axios";
-import globals from "../../../Services/Globals";
 import { useNavigate } from "react-router-dom";
+import web from "../../../Services/WebApi";
+import { useState } from "react";
+import Form from "react-bootstrap/Form";
+import "bootstrap/dist/css/bootstrap.min.css";
+import store from "../../../Redux/Store";
+import { couponAddedAction } from "../../../Redux/CouponsAppState";
+import Button from "react-bootstrap/Button";
 
 function AddCoupon(): JSX.Element {
   const navigate = useNavigate();
+  const [cat, setCat]: any = useState("");
+  console.log("Selected!!!: " + cat);
+  const [coupons, setCoupons] = useState<CouponModel[]>(
+    store.getState().couponsReducer.coupons
+  );
+
+  const goBack = () => {
+    navigate(-1);
+  };
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
     // company: yup.string().required("Company is required"),
-    company: yup.number().required("Company is required"),
+    // company: yup.number().required("Company is required"),
     category: yup.string().required("Category is required"),
     title: yup.string().required("Title is required"),
     description: yup.string().required("Description is required"),
@@ -59,27 +73,27 @@ function AddCoupon(): JSX.Element {
 
   //Step 8: On-submit:  Send to remote as post request
   const addCoupon = async (coupon: CouponModel) => {
-    axios
-      .post<any>(globals.urls.companies + "/coupons", coupon)
+    web
+      .addCoupon(coupon)
       .then((res) => {
         notify.success(SccMsg.ADD_COUPON);
-        navigate("/coupons");
+        // Update App State (Global State)
+        store.dispatch(couponAddedAction(res.data));
+        navigate("/companies/coupons");
       })
       .catch((err) => {
         notify.error(err.message);
-        navigate("/coupons");
+        navigate("/companies/coupons");
       });
   };
 
   return (
     <div className="flex-center flex-center-col">
       <h1>Add a Coupon</h1>
-
       <div className="AddCoupon flex-center-col-wrap">
         {/* Step 9: Step 9 - OnSubmit - handle onSubmit method using your method */}
         <form onSubmit={handleSubmit(addCoupon)} className="flex-center-col">
           {/* Step 10: {...register("title")}     &    {errors.title?.message} */}
-
           {/* <label htmlFor="company">Company</label>
           <input
             {...register("company")}
@@ -88,7 +102,6 @@ function AddCoupon(): JSX.Element {
             id="company"
           />
           <span>{errors.company?.message}</span> */}
-
           <label htmlFor="companyId">Company</label>
           <input
             {...register("companyId")}
@@ -97,7 +110,6 @@ function AddCoupon(): JSX.Element {
             id="companyId"
           />
           <span>{errors.companyId?.message}</span>
-
           <label htmlFor="category">Category</label>
           {/* <input
           {...register("category")}
@@ -105,11 +117,14 @@ function AddCoupon(): JSX.Element {
           placeholder="category"
           id="category"
         /> */}
-          <select
+          {/* <select
             {...register("category")}
+            // type="text"
             id="category"
             name="category"
-            // placeholder="Select a category"
+            onChange={(e) =>
+              setCat("category", e.target.value, { shouldValidate: true })
+            }
           >
             <option value="default" disabled hidden>
               Select a category
@@ -119,9 +134,23 @@ function AddCoupon(): JSX.Element {
             <option value="ENTERTAINMENT">ENTERTAINMENT</option>
             <option value="FASHION">FASHION</option>
             <option value="ELECTRONICS">ELECTRONICS</option>
-          </select>
+          </select> */}
+          <div>
+            <Form.Select
+              {...register("category")}
+              id="category"
+              value={cat}
+              onChange={(e) => setCat(e.target.value)}
+            >
+              <option>Select a category</option>
+              <option value="RESTAURANTS">RESTAURANTS</option>
+              <option value="TRAVEL">TRAVEL</option>
+              <option value="ENTERTAINMENT">ENTERTAINMENT</option>
+              <option value="FASHION">FASHION</option>
+              <option value="ELECTRONICS">ELECTRONICS</option>
+            </Form.Select>
+          </div>
           <span>{errors.category?.message}</span>
-
           <label htmlFor="title">Title</label>
           <input
             {...register("title")}
@@ -130,7 +159,6 @@ function AddCoupon(): JSX.Element {
             id="title"
           />
           <span>{errors.title?.message}</span>
-
           <label htmlFor="description">Description</label>
           <input
             {...register("description")}
@@ -139,7 +167,6 @@ function AddCoupon(): JSX.Element {
             id="description"
           />
           <span>{errors.description?.message}</span>
-
           <label htmlFor="price">Price</label>
           <input
             {...register("price")}
@@ -149,7 +176,6 @@ function AddCoupon(): JSX.Element {
             id="price"
           />
           <span>{errors.price?.message}</span>
-
           <label htmlFor="amount">Amount</label>
           <input
             {...register("amount")}
@@ -158,7 +184,6 @@ function AddCoupon(): JSX.Element {
             id="amount"
           />
           <span>{errors.amount?.message}</span>
-
           <label htmlFor="startDate">Start date</label>
           <input
             {...register("startDate")}
@@ -167,16 +192,14 @@ function AddCoupon(): JSX.Element {
             id="startDate"
           />
           <span>{errors.startDate?.message}</span>
-
           <label htmlFor="endDate">End date</label>
           <input
             {...register("endDate")}
-            type="datetime-local"
+            type="date"
             placeholder="endDate"
             id="endDate"
           />
           <span>{errors.endDate?.message}</span>
-
           <label htmlFor="image">Image</label>
           {/* <input
             {...register("image")}
@@ -191,15 +214,17 @@ function AddCoupon(): JSX.Element {
             id="image"
           />
           <span>{errors.image?.message}</span>
-
           <button className="button-success" disabled={!isValid}>
             Add
           </button>
+          {/* <Button className="mt-2" variant="success" disabled={!isValid}>
+            Add
+          </Button>{" "} */}
         </form>
       </div>
-      <button className="button-success" onClick={() => navigate(-1)}>
-        Go back
-      </button>
+      <Button className="mt-2" variant="secondary" onClick={goBack}>
+        Go Back
+      </Button>{" "}
     </div>
   );
 }

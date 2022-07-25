@@ -81,6 +81,12 @@ class WebApi {
     return await tokenAxios.get<CouponModel[]>(this.adminUrl + "/coupons");
   }
 
+  // public async getAllCoupons(): Promise<any> {
+  //   return await tokenAxios.get<CouponModel[]>(
+  //     this.adminUrl + "/coupons/payloads"
+  //   );
+  // }
+
   //Company Controllers:
   public async addCoupon(coupon: CouponModel): Promise<any> {
     return await tokenAxios.post<CouponModel>(
@@ -104,21 +110,31 @@ class WebApi {
     return await tokenAxios.get<CouponModel[]>(this.compUrl + "/coupons");
   }
 
+  // public async getAllCompanyCoupons(): Promise<any> {
+  //   return await tokenAxios.get<CouponModel[]>(
+  //     this.compUrl + "/coupons/payloadtest"
+  //   );
+  // }
+
+  // public async getNameFromId(): Promise<any> {
+  //   return await tokenAxios.get<string>(this.compUrl + "/idToName");
+  // }
+
   public async getSingleCoupon(id: number): Promise<any> {
     return await tokenAxios.get<CouponModel>(this.compUrl + "/coupons/" + id);
   }
 
-  // public async getAllCompanyCouponsByCategory(category: string): Promise<any> {
-  //   return await tokenAxios.get<CouponModel[]>(
-  //     this.compUrl + "/coupons/category?category="
-  //   );
-  // }
+  public async getAllCompanyCouponsByCategory(category: string): Promise<any> {
+    return await tokenAxios.get<CouponModel[]>(
+      this.compUrl + "/coupons/category?category=" + category
+    );
+  }
 
-  // public async getAllCompanyCouponsByMaxPrice(value: number): Promise<any> {
-  //   return await tokenAxios.get<CouponModel[]>(
-  //     this.compUrl + "/coupons/price/max?value="
-  //   );
-  // }
+  public async getAllCompanyCouponsByMaxPrice(value: number): Promise<any> {
+    return await tokenAxios.get<CouponModel[]>(
+      this.compUrl + "/coupons/price/max?value=" + value
+    );
+  }
 
   public async getCompanyDetails(): Promise<any> {
     return await tokenAxios.get<CompanyModel>(this.compUrl + "/details");
@@ -136,17 +152,17 @@ class WebApi {
     return await tokenAxios.get<CouponModel[]>(this.custUrl + "/coupons");
   }
 
-  // public async getAllCustomerCouponsByCategory(category: string): Promise<any> {
-  //   return await tokenAxios.get<CouponModel[]>(
-  //     this.custUrl + "/coupons/category?category="
-  //   );
-  // }
+  public async getAllCustomerCouponsByCategory(category: string): Promise<any> {
+    return await tokenAxios.get<CouponModel[]>(
+      this.custUrl + "/coupons/category?category=" + category
+    );
+  }
 
-  // public async getAllCustomerCouponsByMaxPrice(maxPrice: number): Promise<any> {
-  //   return await tokenAxios.get<CouponModel[]>(
-  //     this.custUrl + "/coupons/price/max?value="
-  //   );
-  // }
+  public async getAllCustomerCouponsByMaxPrice(value: number): Promise<any> {
+    return await tokenAxios.get<CouponModel[]>(
+      this.custUrl + "/coupons/price/max?value=" + value
+    );
+  }
 
   public async getCustomerDetails(): Promise<any> {
     return await tokenAxios.get<CustomerModel>(this.custUrl + "/details");

@@ -18,6 +18,7 @@ function CustomerCouponItem(props: CouponItemProps): JSX.Element {
   //   .companiesReducer.companies.filter((c) => c.id === companyId)[0].name;
 
   const [email, setEmail] = useState(store.getState().authReducer.user?.email);
+
   return (
     <div className="CustomerCouponItem">
       <div className="card">
@@ -31,7 +32,15 @@ function CustomerCouponItem(props: CouponItemProps): JSX.Element {
           {props.coupon.title}
         </span>
         <span className="single-line-only">{props.coupon.description}</span>
-        {/* <span className="single-line-only">{props.coupon.companyId}</span> */}
+        <span
+          className={
+            props.coupon.amount === 0
+              ? "single-line-only warning"
+              : "single-line-only"
+          }
+        >
+          Coupons Left: {props.coupon.amount}
+        </span>
 
         <div className="flex-around">
           <span className="date">

@@ -10,6 +10,8 @@ import "./AdminCompanies.css";
 import { RiDeleteBinLine, RiEdit2Line, RiFileAddLine } from "react-icons/ri";
 import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import { LoginModel } from "../../../Models/LoginModel";
+import Button from "react-bootstrap/Button";
+import Table from "react-bootstrap/Table";
 
 function AdminCompanies(): JSX.Element {
   const [companies, setCompanies] = useState<CompanyModel[]>(
@@ -38,7 +40,7 @@ function AdminCompanies(): JSX.Element {
   } else {
     userMail = null;
   }
-  console.log("userMail: " + userMail);
+  // console.log("userMail: " + userMail);
 
   useEffect(() => {
     if (
@@ -50,7 +52,7 @@ function AdminCompanies(): JSX.Element {
         .then((res) => {
           notify.success(SccMsg.ALL_COMPANIES);
           // Update Component State (Local state)
-          console.log("Hey: " + res.data);
+          // console.log("Hey: " + res.data);
           setCompanies(res.data);
           // Update App State (Global State)
           store.dispatch(companiesDownloadedAction(res.data));
@@ -68,21 +70,21 @@ function AdminCompanies(): JSX.Element {
   return (
     <div className="AdminCompanies flex-center-col">
       <h2>Companies List</h2>
-      <div>
-        <button className="button-success" onClick={admin}>
+      <div className="margin">
+        <Button variant="secondary" className="margin" onClick={admin}>
           Admin Homepage
-        </button>
-        <button className="button-success" onClick={customers}>
+        </Button>{" "}
+        <Button variant="secondary" className="margin" onClick={customers}>
           Customers List
-        </button>
-        <button className="button-green" onClick={addCompany}>
+        </Button>{" "}
+        <Button variant="success" className="margin" onClick={addCompany}>
           Add Company
-        </button>
+        </Button>{" "}
       </div>
       {companies.length > 0 && userMail === "admin@admin.com" ? (
         <div>
-          <table className="flex-center-top">
-            <tbody>
+          <Table striped bordered hover>
+            <thead>
               <tr>
                 <th>id</th>
                 <th>Name</th>
@@ -91,6 +93,8 @@ function AdminCompanies(): JSX.Element {
                 <th>Update</th>
                 <th>Delete</th>
               </tr>
+            </thead>
+            <tbody>
               {companies.map((company, index) => (
                 <tr data-index={index}>
                   <td>{company.id}</td>
@@ -99,18 +103,18 @@ function AdminCompanies(): JSX.Element {
                   <td>{company.password}</td>
                   <td>
                     <CustomLink to={`/admin/companies/update/${company.id}`}>
-                      <RiEdit2Line size={30} />
+                      <RiEdit2Line size={20} />
                     </CustomLink>
                   </td>
                   <td>
                     <CustomLink to={`/admin/companies/delete/${company.id}`}>
-                      <RiDeleteBinLine size={30} />
+                      <RiDeleteBinLine size={20} />
                     </CustomLink>
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         </div>
       ) : (
         <h3>

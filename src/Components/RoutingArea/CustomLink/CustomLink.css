@@ -1,8 +1,9 @@
 .CustomLink {
   color: #6e85b7;
-  margin-bottom: 15px;
+  /* margin-bottom: 15px; */
   font-size: 30px;
   text-decoration: none;
+  padding: 0;
 }
 
 .CustomLink .active {

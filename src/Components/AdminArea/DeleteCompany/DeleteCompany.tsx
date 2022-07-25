@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import "./DeleteCompany.css";
+import Button from "react-bootstrap/Button";
 
 function DeleteCompany(): JSX.Element {
   const params = useParams();
@@ -28,16 +29,22 @@ function DeleteCompany(): JSX.Element {
 
   return (
     <div className="flex-center-col">
-      <div className="DeleteCoupon flex-center-col-wrap">
+      <div className="DeleteCompany flex-center-col-wrap">
         <h1>Delete a Company</h1>
         <h3>Are you sure you want to delete Company#{id}?</h3>
         <div>
-          <button className="button-danger" onClick={yes}>
+          {/* <button className="button-danger" onClick={yes}>
             Yes
           </button>
           <button className="button" onClick={no}>
             No
-          </button>
+          </button> */}
+          <Button variant="danger" className="margin" onClick={yes}>
+            Yes
+          </Button>{" "}
+          <Button variant="success" className="margin" onClick={no}>
+            No
+          </Button>{" "}
         </div>
       </div>
     </div>

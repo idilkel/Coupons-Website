@@ -1,0 +1,20 @@
+.CouponToPurchaseBoot {
+  margin: 5px;
+}
+
+.CouponToPurchaseBoot p {
+  font-size: medium;
+  margin: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.CouponToPurchaseBoot img {
+  width: 90%;
+  height: 150px;
+  margin: 5px;
+  box-shadow: 0 8px 16px 0 black;
+  margin-bottom: 15px;
+}

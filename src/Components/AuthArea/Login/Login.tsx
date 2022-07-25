@@ -12,6 +12,7 @@ import store from "../../../Redux/Store";
 import { loginAction } from "../../../Redux/AuthAppState";
 import { log } from "console";
 import { useEffect, useState } from "react";
+import Button from "react-bootstrap/Button";
 
 interface LoginProps {
   time: Date;
@@ -85,7 +86,6 @@ function Login(props: LoginProps): JSX.Element {
             id="email"
           />
           <span>{errors.email?.message}</span>
-
           <label htmlFor="password">Password</label>
           <input
             {...register("password")}
@@ -106,6 +106,9 @@ function Login(props: LoginProps): JSX.Element {
           <button className="button-success" disabled={!isValid}>
             Login
           </button>
+          {/* <Button className="mt-2" variant="secondary" disabled={!isValid}>
+            Login
+          </Button>{" "} */}
         </form>
       </div>
     </div>

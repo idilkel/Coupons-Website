@@ -6,18 +6,36 @@ import CustomLink from "../../RoutingArea/CustomLink/CustomLink";
 import store from "../../../Redux/Store";
 import { CompanyModel } from "../../../Models/Company";
 import { useState } from "react";
+import web from "../../../Services/WebApi";
+import notify, { SccMsg } from "../../../Services/Notification";
+import { useNavigate } from "react-router-dom";
 
 interface CouponItemProps {
   coupon: CouponModel;
 }
 
 function CouponItem(props: CouponItemProps): JSX.Element {
-  // const companyId = props.coupon.companyId;
+  const companyId = props.coupon.companyId;
   // const company = store
   //   .getState()
   //   .companiesReducer.companies.filter((c) => c.id === companyId)[0].name;
 
-  const [email, setEmail] = useState(store.getState().authReducer.user?.email);
+  // const [email, setEmail] = useState(store.getState().authReducer.user?.email);
+  const navigate = useNavigate();
+
+  // const convertIdToName = async () => {
+  //   web
+  //     .getNameFromId()
+  //     .then((res) => {
+  //       notify.success(SccMsg.GOT_NAME);
+  //       console.log("The company ID is!!!!!" + res.value);
+  //     })
+  //     .catch((err) => {
+  //       notify.error(err.message);
+  //     });
+  // };
+  // const name = convertIdToName();
+  // console.log("Hello name!!!:" + { name });
   return (
     <div className="CouponItem">
       <div className="card">
@@ -27,11 +45,21 @@ function CouponItem(props: CouponItemProps): JSX.Element {
         />
         <h2>{props.coupon.category}</h2>
         <h3>{props.coupon.companyId}</h3>
+        {/* <h3>{name}</h3> */}
         <span className="single-line-only paddedBold">
           {props.coupon.title}
         </span>
         <span className="single-line-only">{props.coupon.description}</span>
-        {/* <span className="single-line-only">{props.coupon.companyId}</span> */}
+
+        <span
+          className={
+            props.coupon.amount === 0
+              ? "single-line-only warning"
+              : "single-line-only"
+          }
+        >
+          Coupons Left: {props.coupon.amount}
+        </span>
 
         <div className="flex-around">
           <span className="date">

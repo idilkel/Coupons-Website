@@ -126,7 +126,7 @@ p {
 }
 
 .button {
-  height: 40px;
+  height: 55px;
   width: 100px;
   transition-duration: 0.4s;
   background-color: #60625f;
@@ -134,6 +134,7 @@ p {
   border: 2px solid #60625f;
   margin: 5px;
   border-radius: 10px;
+  font-size: medium;
 }
 
 .button:hover {
@@ -146,7 +147,7 @@ p {
 }
 
 .button-success {
-  height: 40px;
+  height: 55px;
   width: 100px;
   transition-duration: 0.4s;
   background-color: #60625f;
@@ -155,6 +156,7 @@ p {
   border: 2px solid #60625f;
   margin: 5px;
   border-radius: 10px;
+  font-size: medium;
 }
 
 .button-success:hover {
@@ -167,7 +169,7 @@ p {
 }
 
 .button-success:disabled {
-  height: 30px;
+  height: 55px;
   width: 100px;
   transition-duration: 0.4s;
   background-color: #60625f;
@@ -179,7 +181,7 @@ p {
 }
 
 .button-danger {
-  height: 40px;
+  height: 55px;
   width: 100px;
   transition-duration: 0.4s;
   background-color: #f44336;
@@ -187,6 +189,7 @@ p {
   border: 2px solid #f44336;
   margin: 5px;
   border-radius: 10px;
+  font-size: medium;
 }
 
 .button-danger:hover {
@@ -200,7 +203,7 @@ p {
 }
 
 .button-green {
-  height: 40px;
+  height: 55px;
   width: 100px;
   transition-duration: 0.4s;
   background-color: green;
@@ -209,6 +212,7 @@ p {
   border: 2px solid green;
   margin: 5px;
   border-radius: 10px;
+  font-size: medium;
 }
 
 .button-green:hover {
@@ -221,7 +225,7 @@ p {
 }
 
 .button-green:disabled {
-  height: 30px;
+  height: 55px;
   width: 100px;
   transition-duration: 0.4s;
   background-color: green;
@@ -350,3 +354,7 @@ hr {
   align-items: center;
   justify-content: flex-start;
 } */
+
+.warning {
+  color: #f44336;
+}

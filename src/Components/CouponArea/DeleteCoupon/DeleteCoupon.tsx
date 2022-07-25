@@ -11,18 +11,18 @@ function DeleteCoupon(): JSX.Element {
   const navigate = useNavigate();
 
   const no = () => {
-    navigate("/admin/customers");
+    navigate("/companies/coupons");
   };
   const yes = () => {
     web
       .deleteCoupon(id)
       .then((res) => {
         notify.success(SccMsg.DELETE_COUPON);
-        navigate("/admin/customers");
+        navigate("/companies/coupons");
       })
       .catch((err) => {
         notify.error(err.message);
-        navigate("/admin/customers");
+        navigate("/companies/coupons");
       });
   };
 

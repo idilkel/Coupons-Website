@@ -10,9 +10,13 @@ import store from "../../../Redux/Store";
 import { companyAddedAction } from "../../../Redux/CompaniesAppState";
 import { customerAddedAction } from "../../../Redux/CustomersAppState";
 import { CustomerModel } from "../../../Models/Customer";
+import Button from "react-bootstrap/Button";
 
 function AddCustomer(): JSX.Element {
   const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  };
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
@@ -58,7 +62,7 @@ function AddCustomer(): JSX.Element {
           <input
             {...register("firstName")}
             type="text"
-            placeholder="firstName"
+            placeholder="First Name"
             id="firstName"
           />
           <span>{errors.firstName?.message}</span>
@@ -67,7 +71,7 @@ function AddCustomer(): JSX.Element {
           <input
             {...register("lastName")}
             type="text"
-            placeholder="lastName"
+            placeholder="Last name"
             id="lastName"
           />
           <span>{errors.lastName?.message}</span>
@@ -76,7 +80,7 @@ function AddCustomer(): JSX.Element {
           <input
             {...register("email")}
             type="email"
-            placeholder="email"
+            placeholder="Email"
             id="email"
           />
           <span>{errors.email?.message}</span>
@@ -85,13 +89,26 @@ function AddCustomer(): JSX.Element {
           <input
             {...register("password")}
             type="password"
-            placeholder="password"
+            placeholder="Password"
             id="password"
           />
           <span>{errors.password?.message}</span>
-          <button className="button-success" disabled={!isValid}>
+          {/* <button className="button-success" disabled={!isValid}>
             Add
-          </button>
+          </button> */}
+          <div>
+            <Button
+              variant="secondary"
+              type="submit"
+              disabled={!isValid}
+              className="margin"
+            >
+              Add
+            </Button>
+            <Button variant="secondary" className="margin" onClick={goBack}>
+              Go back
+            </Button>{" "}
+          </div>
         </form>
       </div>
     </div>

@@ -8,9 +8,13 @@ import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import store from "../../../Redux/Store";
 import { companyAddedAction } from "../../../Redux/CompaniesAppState";
+import Button from "react-bootstrap/Button";
 
 function AddCompany(): JSX.Element {
   const navigate = useNavigate();
+  const goBack = () => {
+    navigate(-1);
+  };
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
@@ -56,31 +60,42 @@ function AddCompany(): JSX.Element {
           <input
             {...register("name")}
             type="text"
-            placeholder="name"
+            placeholder="Name"
             id="name"
           />
           <span>{errors.name?.message}</span>
-
           <label htmlFor="email">Email</label>
           <input
             {...register("email")}
             type="email"
-            placeholder="email"
+            placeholder="Email"
             id="email"
           />
           <span>{errors.email?.message}</span>
-
           <label htmlFor="password">Password</label>
           <input
             {...register("password")}
             type="password"
-            placeholder="password"
+            placeholder="Password"
             id="password"
           />
           <span>{errors.password?.message}</span>
-          <button className="button-success" disabled={!isValid}>
+          {/* <button className="button-success" disabled={!isValid}>
             Add
-          </button>
+          </button> */}
+          <div>
+            <Button
+              variant="secondary"
+              type="submit"
+              disabled={!isValid}
+              className="margin"
+            >
+              Add
+            </Button>
+            <Button variant="secondary" className="margin" onClick={goBack}>
+              Go back
+            </Button>{" "}
+          </div>
         </form>
       </div>
     </div>

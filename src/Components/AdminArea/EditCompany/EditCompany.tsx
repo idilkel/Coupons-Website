@@ -35,7 +35,11 @@ function EditCompany(): JSX.Element {
   const schema = yup.object().shape({
     name: yup.string().required("Company name is required"),
     email: yup.string().required("Email is required"),
-    password: yup.string().required("Company password is required"),
+    password: yup
+      .string()
+      .min(4, "At least 4 characters required")
+      .max(12, "At most 12 characters required")
+      .required("Company password is required"),
   });
 
   //Step 7: React-hook-form

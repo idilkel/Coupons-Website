@@ -1,3 +1,7 @@
 .CustomerCoupons {
   color: #6e85b7;
 }
+
+.CustomerCoupons .range-length {
+  width: 250px;
+}

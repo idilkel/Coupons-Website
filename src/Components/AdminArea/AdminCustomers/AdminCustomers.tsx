@@ -9,6 +9,8 @@ import CustomLink from "../../RoutingArea/CustomLink/CustomLink";
 import "./AdminCustomers.css";
 import { RiDeleteBinLine, RiEdit2Line, RiFileAddLine } from "react-icons/ri";
 import EmptyView from "../../SharedArea/EmptyView/EmptyView";
+import Button from "react-bootstrap/Button";
+import Table from "react-bootstrap/Table";
 
 function AdminCustomers(): JSX.Element {
   const [customers, setCustomers] = useState<CustomerModel[]>(
@@ -31,6 +33,12 @@ function AdminCustomers(): JSX.Element {
   };
 
   //   console.log("customers2" + store.getState().customersReducer.customers);
+  let userMail;
+  if (localStorage.getItem("user") !== null) {
+    userMail = JSON.parse(localStorage.getItem("user")).email;
+  } else {
+    userMail = null;
+  }
 
   useEffect(() => {
     if (
@@ -60,21 +68,21 @@ function AdminCustomers(): JSX.Element {
   return (
     <div className="AdminCustomers flex-center-col">
       <h2>Customers List</h2>
-      <div>
-        <button className="button-success" onClick={admin}>
+      <div className="margin">
+        <Button variant="secondary" className="margin" onClick={admin}>
           Admin Homepage
-        </button>
-        <button className="button-success" onClick={companies}>
+        </Button>{" "}
+        <Button variant="secondary" className="margin" onClick={companies}>
           Companies List
-        </button>
-        <button className="button-green" onClick={addCustomer}>
+        </Button>{" "}
+        <Button variant="success" className="margin" onClick={addCustomer}>
           Add Customer
-        </button>
+        </Button>{" "}
       </div>
-      {customers.length > 0 ? (
+      {customers.length > 0 && userMail === "admin@admin.com" ? (
         <div>
-          <table className="flex-center-top">
-            <tbody>
+          <Table striped bordered hover>
+            <thead>
               <tr>
                 <th>id</th>
                 <th>First Name</th>
@@ -84,6 +92,9 @@ function AdminCustomers(): JSX.Element {
                 <th>Update</th>
                 <th>Delete</th>
               </tr>
+            </thead>
+
+            <tbody>
               {customers.map((customer, index) => (
                 <tr data-index={index}>
                   <td>{customer.id}</td>
@@ -93,18 +104,18 @@ function AdminCustomers(): JSX.Element {
                   <td>{customer.password}</td>
                   <td>
                     <CustomLink to={`/admin/customers/update/${customer.id}`}>
-                      <RiEdit2Line size={30} />
+                      <RiEdit2Line size={20} />
                     </CustomLink>
                   </td>
                   <td>
                     <CustomLink to={`/admin/customers/delete/${customer.id}`}>
-                      <RiDeleteBinLine size={30} />
+                      <RiDeleteBinLine size={20} />
                     </CustomLink>
                   </td>
                 </tr>
               ))}
             </tbody>
-          </table>
+          </Table>
         </div>
       ) : (
         <h3>

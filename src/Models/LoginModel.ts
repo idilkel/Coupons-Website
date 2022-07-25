@@ -25,12 +25,17 @@ export class UserModel {
   public token?: string;
   public email?: string;
   public loginTime?: Date;
-  // public type?: string;
+  public type?: string;
 
-  public constructor(token?: string, email?: string, loginTime?: Date) {
+  public constructor(
+    token?: string,
+    email?: string,
+    loginTime?: Date,
+    type?: string
+  ) {
     this.token = token;
     this.email = email;
     this.loginTime = new Date();
-    // this.type = type;
+    this.type = type;
   }
 }

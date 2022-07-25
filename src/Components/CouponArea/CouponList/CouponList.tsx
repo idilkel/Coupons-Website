@@ -12,11 +12,16 @@ import "./CouponList.css";
 import { BsPlusSquare } from "react-icons/bs";
 import CouponToPurchase from "../CouponToPurchase/CouponToPurchase";
 import { useNavigate } from "react-router-dom";
+import CouponToPurchaseBoot from "../CouponToPurchaseBoot/CouponToPurchaseBoot";
+import Button from "react-bootstrap/Button";
 
 function CouponList(): JSX.Element {
   const navigate = useNavigate();
   const customerCoupons = () => {
     navigate("/customers/coupons");
+  };
+  const goBack = () => {
+    navigate(-1);
   };
   const [coupons, setCoupons] = useState<CouponModel[]>(
     store.getState().couponsReducer.coupons
@@ -46,24 +51,38 @@ function CouponList(): JSX.Element {
         });
     }
   }, []);
+
+  const options = [
+    { value: "", text: "--Choose an option--" },
+    { value: "RESTAURANTS", text: "RESTAURANTS" },
+    { value: "ENTERTAINMENT", text: "ENTERTAINMENT" },
+    { value: "FASHION", text: "FASHION" },
+    { value: "ELECTRONICS", text: "ELECTRONICS" },
+  ];
+
   return (
     <div className="CouponList flex-center-col">
       <h1 className="flex-row-none-wrap-list">Our Coupons</h1>
       <div>
-        <button className="button-success" onClick={customerCoupons}>
+        {/* <button className="button-success" onClick={customerCoupons}>
           My Coupons
         </button>
         <button className="button-success" onClick={() => navigate(-1)}>
           Go back
-        </button>
+        </button> */}
+        <Button variant="secondary" onClick={customerCoupons}>
+          My Coupons
+        </Button>{" "}
+        <Button variant="secondary" onClick={goBack}>
+          Go back
+        </Button>{" "}
       </div>
-      {/* <CustomLink to="add">
-        <BsPlusSquare size={35} />
-      </CustomLink> */}
+
       <div>
         <div className="flex-row-none-wrap-list">
           {coupons.length > 0 ? (
-            coupons.map((c) => <CouponToPurchase key={c.id} coupon={c} />)
+            // coupons.map((c) => <CouponToPurchase key={c.id} coupon={c} />)
+            coupons.map((c) => <CouponToPurchaseBoot key={c.id} coupon={c} />)
           ) : (
             <EmptyView msg={"No coupons today"} />
           )}

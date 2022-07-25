@@ -15,7 +15,7 @@ interface CouponItemProps {
 }
 
 function CouponToPurchase(props: CouponItemProps): JSX.Element {
-  const [email, setEmail] = useState(store.getState().authReducer.user?.email);
+  // const [email, setEmail] = useState(store.getState().authReducer.user?.email);
   const navigate = useNavigate();
 
   //State with preliminary start point
@@ -43,13 +43,21 @@ function CouponToPurchase(props: CouponItemProps): JSX.Element {
           src="https://loremflickr.com/150/150/coupon"
           alt={props.coupon.title}
         />
-        <h2>{props.coupon.category}</h2>
+        <h5>{props.coupon.category}</h5>
         <h3>{props.coupon.companyId}</h3>
         <span className="single-line-only paddedBold">
           {props.coupon.title}
         </span>
         <span className="single-line-only">{props.coupon.description}</span>
-        {/* <span className="single-line-only">{props.coupon.companyId}</span> */}
+        <span
+          className={
+            props.coupon.amount === 0
+              ? "single-line-only warning"
+              : "single-line-only"
+          }
+        >
+          Coupons Left: {props.coupon.amount}
+        </span>
 
         <div className="flex-around">
           <span className="date">
@@ -60,15 +68,6 @@ function CouponToPurchase(props: CouponItemProps): JSX.Element {
             {moment(props.coupon.endDate).format("DD/MM/YYYY")}
           </span>
         </div>
-        {/* <button>
-          <RiFileAddLine />
-        </button>
-        <button>
-          <RiEdit2Line />
-        </button>
-        <button>
-          <RiDeleteBinLine />
-        </button> */}
 
         <div className="flex-around">
           {/* <CustomLink to={`/coupons/update/${props.coupon.id}`}>

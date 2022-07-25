@@ -12,12 +12,15 @@ export enum SccMsg {
   UPDATE_CUSTOMER = "updated customer successfully",
   ADD_CUSTOMER = "added customer successfully",
   ALL_COUPONS = "got all coupons successfully",
+  COUPONS_CATEGORY = "got all coupons by category successfully",
+  COUPONS_MAX_PRICE = "got all coupons by maximum price successfully",
   SINGLE_COUPON = "got single coupon successfully",
   DELETE_COUPON = "deleted coupon successfully",
   UPDATE_COUPON = "updated coupon successfully",
   ADD_COUPON = "added coupon successfully",
   LOGIN = "login request sent successfully",
   PURCHASED = "coupon purchased successfully",
+  GOT_NAME = "got company name successfully",
 }
 
 class Notify {
