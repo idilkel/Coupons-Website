@@ -7,7 +7,7 @@ import { CompanyModel } from "../../../Models/Company";
 import { useState } from "react";
 import axios from "axios";
 import globals from "../../../Services/Globals";
-import notify, { SccMsg } from "../../../Services/Notification";
+import notify, { ErrMsg, SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import store from "../../../Redux/Store";
 import { companyUpdatedAction } from "../../../Redux/CompaniesAppState";
@@ -67,6 +67,7 @@ function EditCompany(): JSX.Element {
 
   //Step 8: On-submit:  Send to remote as put request
   const updateCompany = async (company: CompanyModel) => {
+    company.id = id;
     web
       .updateCompany(id, company)
       .then((res) => {
@@ -77,7 +78,7 @@ function EditCompany(): JSX.Element {
         console.log("YES@@@" + res.data.name);
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(ErrMsg.FAIL_EDIT_COMPANIES);
         console.log("NO@@@");
         navigate("/admin/companies");
       });

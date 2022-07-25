@@ -44,7 +44,7 @@ function CouponToPurchase(props: CouponItemProps): JSX.Element {
           alt={props.coupon.title}
         />
         <h5>{props.coupon.category}</h5>
-        <h3>{props.coupon.companyId}</h3>
+        <h3>{props.coupon.company.name}</h3>
         <span className="single-line-only paddedBold">
           {props.coupon.title}
         </span>

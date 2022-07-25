@@ -45,7 +45,7 @@ function AdminCompanies(): JSX.Element {
   useEffect(() => {
     if (
       store.getState().companiesReducer.companies.length === 0 ||
-      store.subscribe
+      store.subscribe //why?
     ) {
       web
         .getAllCompanies()

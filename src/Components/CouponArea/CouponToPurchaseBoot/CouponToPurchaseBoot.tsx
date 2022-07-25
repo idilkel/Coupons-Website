@@ -40,7 +40,7 @@ function CouponToPurchaseBoot(props: CouponToPurchaseBootProps): JSX.Element {
           {props.coupon.category}
         </Card.Header>
         <Card.Header className="flex-center">
-          {props.coupon.companyId}
+          {props.coupon.company.name}
         </Card.Header>
         <Card.Body>
           <Card.Img

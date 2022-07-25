@@ -6,12 +6,13 @@ import { CouponModel } from "../../../Models/Coupon";
 import notify, { SccMsg } from "../../../Services/Notification";
 import { useNavigate } from "react-router-dom";
 import web from "../../../Services/WebApi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import store from "../../../Redux/Store";
 import { couponAddedAction } from "../../../Redux/CouponsAppState";
 import Button from "react-bootstrap/Button";
+import { CompanyModel } from "../../../Models/Company";
 
 function AddCoupon(): JSX.Element {
   const navigate = useNavigate();
@@ -21,6 +22,13 @@ function AddCoupon(): JSX.Element {
     store.getState().couponsReducer.coupons
   );
 
+  const [company, setCompany] = useState<CompanyModel>(
+    store
+      .getState()
+      .companiesReducer.companies.filter(
+        (c) => c.email === store.getState().authReducer.user.email
+      )[0]
+  );
   const goBack = () => {
     navigate(-1);
   };
@@ -73,6 +81,7 @@ function AddCoupon(): JSX.Element {
 
   //Step 8: On-submit:  Send to remote as post request
   const addCoupon = async (coupon: CouponModel) => {
+    coupon.company = company;
     web
       .addCoupon(coupon)
       .then((res) => {
@@ -87,6 +96,12 @@ function AddCoupon(): JSX.Element {
       });
   };
 
+  useEffect(() => {
+    if (store.getState().companiesReducer.companies.length === 0) {
+      //get all companies and save to redux
+    }
+  }, []);
+
   return (
     <div className="flex-center flex-center-col">
       <h1>Add a Coupon</h1>
@@ -95,61 +110,62 @@ function AddCoupon(): JSX.Element {
         <form onSubmit={handleSubmit(addCoupon)} className="flex-center-col">
           {/* Step 10: {...register("title")}     &    {errors.title?.message} */}
           {/* <label htmlFor="company">Company</label>
-          <input
-            {...register("company")}
-            type="text"
-            placeholder="company"
-            id="company"
-          />
-          <span>{errors.company?.message}</span> */}
-          <label htmlFor="companyId">Company</label>
-          <input
-            {...register("companyId")}
-            type="number"
-            placeholder="companyId"
-            id="companyId"
-          />
-          <span>{errors.companyId?.message}</span>
-          <label htmlFor="category">Category</label>
-          {/* <input
-          {...register("category")}
+        <input
+          {...register("company")}
           type="text"
-          placeholder="category"
-          id="category"
-        /> */}
+          placeholder="company"
+          id="company"
+        />
+        <span>{errors.company?.message}</span> */}
+          {/* <label htmlFor="companyId">Company</label>
+        <input
+          {...register("companyId")}
+          type="number"
+          placeholder="companyId"
+          id="companyId"
+        />
+        <span>{errors.companyId?.message}</span> */}
+
+          {/* <input
+        {...register("category")}
+        type="text"
+        placeholder="category"
+        id="category"
+      /> */}
           {/* <select
+          {...register("category")}
+          // type="text"
+          id="category"
+          name="category"
+          onChange={(e) =>
+            setCat("category", e.target.value, { shouldValidate: true })
+          }
+        >
+          <option value="default" disabled hidden>
+            Select a category
+          </option>
+          <option value="RESTAURANTS">RESTAURANTS</option>
+          <option value="TRAVEL">TRAVEL</option>
+          <option value="ENTERTAINMENT">ENTERTAINMENT</option>
+          <option value="FASHION">FASHION</option>
+          <option value="ELECTRONICS">ELECTRONICS</option>
+        </select> */}
+          {/* <div> */}
+          <label htmlFor="category">Category</label>
+          <Form.Select
             {...register("category")}
-            // type="text"
             id="category"
-            name="category"
-            onChange={(e) =>
-              setCat("category", e.target.value, { shouldValidate: true })
-            }
+            value={cat}
+            onChange={(e) => setCat(e.target.value)}
           >
-            <option value="default" disabled hidden>
-              Select a category
-            </option>
+            <option>Select a category</option>
             <option value="RESTAURANTS">RESTAURANTS</option>
             <option value="TRAVEL">TRAVEL</option>
             <option value="ENTERTAINMENT">ENTERTAINMENT</option>
             <option value="FASHION">FASHION</option>
             <option value="ELECTRONICS">ELECTRONICS</option>
-          </select> */}
-          <div>
-            <Form.Select
-              {...register("category")}
-              id="category"
-              value={cat}
-              onChange={(e) => setCat(e.target.value)}
-            >
-              <option>Select a category</option>
-              <option value="RESTAURANTS">RESTAURANTS</option>
-              <option value="TRAVEL">TRAVEL</option>
-              <option value="ENTERTAINMENT">ENTERTAINMENT</option>
-              <option value="FASHION">FASHION</option>
-              <option value="ELECTRONICS">ELECTRONICS</option>
-            </Form.Select>
-          </div>
+          </Form.Select>
+          {/* </div> */}
           <span>{errors.category?.message}</span>
           <label htmlFor="title">Title</label>
           <input
@@ -202,11 +218,11 @@ function AddCoupon(): JSX.Element {
           <span>{errors.endDate?.message}</span>
           <label htmlFor="image">Image</label>
           {/* <input
-            {...register("image")}
-            type="file"
-            placeholder="image"
-            id="image"
-          /> */}
+          {...register("image")}
+          type="file"
+          placeholder="image"
+          id="image"
+        /> */}
           <input
             {...register("image")}
             type="text"
@@ -218,8 +234,8 @@ function AddCoupon(): JSX.Element {
             Add
           </button>
           {/* <Button className="mt-2" variant="success" disabled={!isValid}>
-            Add
-          </Button>{" "} */}
+          Add
+        </Button>{" "} */}
         </form>
       </div>
       <Button className="mt-2" variant="secondary" onClick={goBack}>

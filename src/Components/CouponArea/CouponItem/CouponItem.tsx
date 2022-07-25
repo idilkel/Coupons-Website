@@ -15,7 +15,7 @@ interface CouponItemProps {
 }
 
 function CouponItem(props: CouponItemProps): JSX.Element {
-  const companyId = props.coupon.companyId;
+  const companyId = props.coupon.company.name;
   // const company = store
   //   .getState()
   //   .companiesReducer.companies.filter((c) => c.id === companyId)[0].name;
@@ -44,7 +44,7 @@ function CouponItem(props: CouponItemProps): JSX.Element {
           alt={props.coupon.title}
         />
         <h2>{props.coupon.category}</h2>
-        <h3>{props.coupon.companyId}</h3>
+        <h3>{props.coupon.company.name}</h3>
         {/* <h3>{name}</h3> */}
         <span className="single-line-only paddedBold">
           {props.coupon.title}

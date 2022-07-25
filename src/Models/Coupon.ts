@@ -1,9 +1,10 @@
 import { Url } from "url";
+import { CompanyModel } from "./Company";
 
 export class CouponModel {
   public id?: number;
-  // public company?: CompanyWoCouponsModel;
-  public companyId?: number;
+  public company?: CompanyModel;
+  // public companyId?: number;
   public category?: string;
   public title?: string;
   public description?: string;
@@ -15,8 +16,8 @@ export class CouponModel {
 
   public constructor(
     id?: number,
-    // company?: CompanyWoCouponsModel,
-    companyId?: number,
+    company?: CompanyModel,
+    // companyId?: number,
     category?: string,
     title?: string,
     description?: string,
@@ -27,8 +28,8 @@ export class CouponModel {
     image?: string
   ) {
     this.id = id;
-    // this.company = company;
-    this.companyId = companyId;
+    this.company = company;
+    // this.companyId = companyId;
     this.category = category;
     this.title = title;
     this.description = description;

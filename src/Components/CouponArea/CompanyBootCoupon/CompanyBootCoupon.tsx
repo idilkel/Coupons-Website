@@ -11,7 +11,7 @@ interface CouponItemProps {
 }
 
 function CompanyBootCoupon(props: CouponItemProps): JSX.Element {
-  const companyId = props.coupon.companyId;
+  const companyId = props.coupon.company.name;
   const navigate = useNavigate();
   return (
     <div className="CompanyBootCoupon">
@@ -24,7 +24,7 @@ function CompanyBootCoupon(props: CouponItemProps): JSX.Element {
           {props.coupon.category}
         </Card.Header>
         <Card.Header className="flex-center">
-          {props.coupon.companyId}
+          {props.coupon.company.name}
         </Card.Header>
         <Card.Body>
           <Card.Img

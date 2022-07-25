@@ -23,6 +23,10 @@ export enum SccMsg {
   GOT_NAME = "got company name successfully",
 }
 
+export enum ErrMsg {
+  FAIL_EDIT_COMPANIES = "failed to edit company",
+}
+
 class Notify {
   private notification = new Notyf({
     duration: 4000,
