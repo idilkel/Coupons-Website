@@ -15,22 +15,9 @@ function Menu(): JSX.Element {
             <AiOutlineHome size={50} />
           </div>
         </MenuLink>
-        {/* <MenuLink to="/home">
-          <AiOutlineHome size={50} />
-        </MenuLink> */}
       </span>
       <MenuLink to="/coupons">Coupons</MenuLink>
       <MenuLink to="/about">About</MenuLink>
-      {/* <Link to="/home">
-        <AiOutlineHome size={50} />
-      </Link>
-      <Link to="/coupons">Coupons</Link>
-      <Link to="/about">About</Link> */}
-      {/* <a href="#">
-        <AiOutlineHome />
-      </a>
-      <a href="#">Coupons</a>
-      <a href="#">About</a> */}
     </div>
   );
 }

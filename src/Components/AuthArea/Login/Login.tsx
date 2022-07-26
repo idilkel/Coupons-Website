@@ -13,6 +13,7 @@ import { loginAction } from "../../../Redux/AuthAppState";
 import { log } from "console";
 import { useEffect, useState } from "react";
 import Button from "react-bootstrap/Button";
+import { couponsClear } from "../../../Redux/CouponsAppState";
 
 interface LoginProps {
   time: Date;
@@ -54,6 +55,10 @@ function Login(props: LoginProps): JSX.Element {
         notify.success(SccMsg.LOGIN);
         store.dispatch(loginAction(res.data));
         // setTime(res.data.loginTime);
+        // if (res.data.token === null) {
+        //   localStorage.removeItem("user");
+        //   store.dispatch(couponsClear());
+        // }
         if (credentials.type === "COMPANY") {
           navigate("/companies/coupons");
         } else if (credentials.type === "CUSTOMER") {
@@ -64,6 +69,7 @@ function Login(props: LoginProps): JSX.Element {
       })
       .catch((err) => {
         notify.error(err.message);
+        navigate("/login");
       });
   };
 
@@ -103,12 +109,17 @@ function Login(props: LoginProps): JSX.Element {
             <option value="ADMINISTRATOR">ADMINISTRATOR</option>
           </select>
           <span>{errors.type?.message}</span>
-          <button className="button-success" disabled={!isValid}>
+          {/* <button className="button-success" disabled={!isValid}>
             Login
-          </button>
-          {/* <Button className="mt-2" variant="secondary" disabled={!isValid}>
+          </button> */}
+          <Button
+            className="mt-2"
+            type="submit"
+            variant="secondary"
+            disabled={!isValid}
+          >
             Login
-          </Button>{" "} */}
+          </Button>{" "}
         </form>
       </div>
     </div>

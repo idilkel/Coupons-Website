@@ -305,6 +305,7 @@ th {
   border: 1px solid #ddd;
   /* padding: 2px; */
   text-align: center;
+  line-height: 12px;
 }
 
 table {

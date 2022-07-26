@@ -4,33 +4,45 @@ import "./EditCoupon.css";
 import { useForm, useFormState } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
-import axios from "axios";
 import notify, { SccMsg } from "../../../Services/Notification";
-import globals from "../../../Services/Globals";
 import { useNavigate, useParams } from "react-router-dom";
+import store from "../../../Redux/Store";
+import Button from "react-bootstrap/Button";
+import Form from "react-bootstrap/Form";
+import { couponUpdatedAction } from "../../../Redux/CouponsAppState";
+import web from "../../../Services/WebApi";
 
 function EditCoupon(): JSX.Element {
   const navigate = useNavigate();
+
   const params = useParams();
   const couponId = +(params.id || 0);
 
   //State with preliminary start point
   const [id, setId] = useState<number>(couponId);
+  const [coupon, setCoupon] = useState<CouponModel>(
+    store.getState().couponsReducer.coupons.filter((c) => c.id === couponId)[0]
+  );
+  const [cat, setCat]: any = useState(coupon.category);
+  const [comp, setComp]: any = useState(coupon.company);
   const [origin, setOrigin] = useState<CouponModel>({
     // can't update company - business-logic
-    category: "",
-    title: "",
-    description: "",
-    price: 0,
-    amount: 0,
-    startDate: new Date(),
-    endDate: new Date(),
-    image: "",
+    category: coupon.category,
+    title: coupon.title,
+    description: coupon.description,
+    price: coupon.price,
+    amount: coupon.amount,
+    startDate: coupon.startDate,
+    endDate: coupon.endDate,
+    image: coupon.image,
   });
+  // const goBack = () => {
+  //   navigate(-1);
+  // };
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
-    company: yup.string().required("Company is required"),
+    // company: yup.string().required("Company is required"),
     category: yup.string().required("Category is required"),
     title: yup.string().required("Title is required"),
     description: yup.string().required("Description is required"),
@@ -52,17 +64,7 @@ function EditCoupon(): JSX.Element {
       .default(() => new Date()),
     amount: yup.number().required("Amount is required"),
     price: yup.number().required("Price is required"),
-    image: yup
-      .mixed()
-      .test("required", "You need to provide a file", (value) => {
-        return value && value.length;
-      })
-      .test("fileSize", "The file is too large", (value, context) => {
-        return value && value[0] && value[0].size <= 200000;
-      })
-      .test("type", "We only support png", function (value) {
-        return value && value[0] && value[0].type === "image/png";
-      }),
+    image: yup.string().required("Image is required"),
   });
 
   //Step 7: React-hook-form
@@ -87,57 +89,45 @@ function EditCoupon(): JSX.Element {
 
   //Step 8: On-submit:  Send to remote as put request
   const updateCoupon = async (coupon: CouponModel) => {
-    axios
-      .put<any>(globals.urls.companies + "coupons/" + id, coupon)
+    coupon.id = id;
+    coupon.company = comp;
+    web
+      .updateCoupon(id, coupon)
       .then((res) => {
         notify.success(SccMsg.UPDATE_COUPON);
-        navigate("/coupons");
+        navigate("/companies/coupons");
+        // Update App State (Global State)
+        store.dispatch(couponUpdatedAction(res.data));
       })
       .catch((err) => {
         notify.error(err.message);
-        navigate("/coupons");
+        navigate("/companies/coupons");
       });
   };
   return (
-    <div className="flex-center">
+    <div className="flex-center-col">
       <div className="EditCoupon flex-center-col-wrap">
         <h1>Coupon Update</h1>
         {/* Step 9: Step 9 - OnSubmit - handle onSubmit method using your method */}
         <form onSubmit={handleSubmit(updateCoupon)} className="flex-center-col">
           {/* Step 10: {...register("caption")}     &    {errors.caption?.message} */}
-          {/* <label htmlFor="company">Company</label>
-        <input
-          {...register("company")}
-          type="text"
-          placeholder="company"
-          id="company"
-        />
-        <span>{errors.company?.message}</span> */}
 
           <label htmlFor="category">Category</label>
-          {/* <input
-          {...register("category")}
-          type="text"
-          placeholder="category"
-          id="category"
-        /> */}
-          <select
+          <Form.Select
             {...register("category")}
             id="category"
-            name="category"
-            // placeholder="Select a category"
+            value={cat}
+            onChange={(e) => setCat(e.target.value)}
           >
-            <option value="default" disabled hidden>
-              Select a category
-            </option>
-            <option value="restaurants">Restaurants</option>
-            <option value="travel">Travel</option>
-            <option value="entertainment">Entertainment</option>
-            <option value="fashion">Fashion</option>
-            <option value="electronics">Electronics</option>
-          </select>
+            <option>Select a category</option>
+            <option value="RESTAURANTS">RESTAURANTS</option>
+            <option value="TRAVEL">TRAVEL</option>
+            <option value="ENTERTAINMENT">ENTERTAINMENT</option>
+            <option value="FASHION">FASHION</option>
+            <option value="ELECTRONICS">ELECTRONICS</option>
+          </Form.Select>
+          {/* </div> */}
           <span>{errors.category?.message}</span>
-
           <label htmlFor="title">Title</label>
           <input
             {...register("title")}
@@ -146,7 +136,6 @@ function EditCoupon(): JSX.Element {
             id="title"
           />
           <span>{errors.title?.message}</span>
-
           <label htmlFor="description">Description</label>
           <input
             {...register("description")}
@@ -155,7 +144,6 @@ function EditCoupon(): JSX.Element {
             id="description"
           />
           <span>{errors.description?.message}</span>
-
           <label htmlFor="price">Price</label>
           <input
             {...register("price")}
@@ -165,7 +153,6 @@ function EditCoupon(): JSX.Element {
             id="price"
           />
           <span>{errors.price?.message}</span>
-
           <label htmlFor="amount">Amount</label>
           <input
             {...register("amount")}
@@ -174,39 +161,48 @@ function EditCoupon(): JSX.Element {
             id="amount"
           />
           <span>{errors.amount?.message}</span>
-
           <label htmlFor="startDate">Start date</label>
           <input
             {...register("startDate")}
-            type="datetime-local"
+            type="date"
             placeholder="startDate"
             id="startDate"
           />
           <span>{errors.startDate?.message}</span>
-
           <label htmlFor="endDate">End date</label>
           <input
             {...register("endDate")}
-            type="datetime-local"
+            type="date"
             placeholder="endDate"
             id="endDate"
           />
           <span>{errors.endDate?.message}</span>
-
           <label htmlFor="image">Image</label>
+
           <input
             {...register("image")}
-            type="file"
+            type="text"
             placeholder="image"
             id="image"
           />
           <span>{errors.image?.message}</span>
 
-          <button className="button-success" disabled={!isDirty}>
+          {/* <button className="button-success" disabled={!isDirty}>
             Update
-          </button>
+          </button> */}
+          <Button
+            variant="secondary"
+            type="submit"
+            disabled={!isDirty}
+            className="mt-3"
+          >
+            Update
+          </Button>
         </form>
       </div>
+      {/* <Button className="mt-2" variant="secondary" onClick={goBack}>
+        Go Back
+      </Button>{" "} */}
     </div>
   );
 }

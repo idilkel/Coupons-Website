@@ -12,9 +12,9 @@ import Button from "react-bootstrap/Button";
 
 function AddCustomer(): JSX.Element {
   const navigate = useNavigate();
-  const goBack = () => {
-    navigate(-1);
-  };
+  // const goBack = () => {
+  //   navigate(-1);
+  // };
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
@@ -99,13 +99,13 @@ function AddCustomer(): JSX.Element {
               variant="secondary"
               type="submit"
               disabled={!isValid}
-              className="margin"
+              className="mt-3"
             >
               Add
             </Button>
-            <Button variant="secondary" className="margin" onClick={goBack}>
+            {/* <Button variant="secondary" className="margin" onClick={goBack}>
               Go back
-            </Button>{" "}
+            </Button>{" "} */}
           </div>
         </form>
       </div>

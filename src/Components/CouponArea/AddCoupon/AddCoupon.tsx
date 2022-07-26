@@ -13,6 +13,7 @@ import store from "../../../Redux/Store";
 import { couponAddedAction } from "../../../Redux/CouponsAppState";
 import Button from "react-bootstrap/Button";
 import { CompanyModel } from "../../../Models/Company";
+import { companiesDownloadedAction } from "../../../Redux/CompaniesAppState";
 
 function AddCoupon(): JSX.Element {
   const navigate = useNavigate();
@@ -22,6 +23,26 @@ function AddCoupon(): JSX.Element {
     store.getState().couponsReducer.coupons
   );
 
+  //In-order to assure that the companies store is full
+  const [companies, setCompanies] = useState<CompanyModel[]>(
+    store.getState().companiesReducer.companies
+  );
+
+  useEffect(() => {
+    if (store.getState().companiesReducer.companies.length === 0) {
+      web
+        .getAllCompanies()
+        .then((res) => {
+          setCompanies(res.data);
+          // Update App State (Global State)
+          store.dispatch(companiesDownloadedAction(res.data));
+        })
+        .catch((err) => {
+          notify.error(err.message);
+        });
+    }
+  }, []);
+
   const [company, setCompany] = useState<CompanyModel>(
     store
       .getState()
@@ -29,9 +50,6 @@ function AddCoupon(): JSX.Element {
         (c) => c.email === store.getState().authReducer.user.email
       )[0]
   );
-  const goBack = () => {
-    navigate(-1);
-  };
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
@@ -59,17 +77,6 @@ function AddCoupon(): JSX.Element {
     amount: yup.number().required("Amount is required"),
     price: yup.number().required("Price is required"),
     image: yup.string().required("Image is required"),
-    // image: yup
-    //   .mixed()
-    //   .test("required", "You need to provide a file", (value) => {
-    //     return value && value.length;
-    //   })
-    //   .test("fileSize", "The file is too large", (value, context) => {
-    //     return value && value[0] && value[0].size <= 200000;
-    //   })
-    //   .test("type", "We only support png", function (value) {
-    //     return value && value[0] && value[0].type === "image/png";
-    //   }),
   });
 
   //Step 7: React-hook-form
@@ -82,6 +89,7 @@ function AddCoupon(): JSX.Element {
   //Step 8: On-submit:  Send to remote as post request
   const addCoupon = async (coupon: CouponModel) => {
     coupon.company = company;
+    console.log("Coupon: " + coupon);
     web
       .addCoupon(coupon)
       .then((res) => {
@@ -109,48 +117,6 @@ function AddCoupon(): JSX.Element {
         {/* Step 9: Step 9 - OnSubmit - handle onSubmit method using your method */}
         <form onSubmit={handleSubmit(addCoupon)} className="flex-center-col">
           {/* Step 10: {...register("title")}     &    {errors.title?.message} */}
-          {/* <label htmlFor="company">Company</label>
-        <input
-          {...register("company")}
-          type="text"
-          placeholder="company"
-          id="company"
-        />
-        <span>{errors.company?.message}</span> */}
-          {/* <label htmlFor="companyId">Company</label>
-        <input
-          {...register("companyId")}
-          type="number"
-          placeholder="companyId"
-          id="companyId"
-        />
-        <span>{errors.companyId?.message}</span> */}
-
-          {/* <input
-        {...register("category")}
-        type="text"
-        placeholder="category"
-        id="category"
-      /> */}
-          {/* <select
-          {...register("category")}
-          // type="text"
-          id="category"
-          name="category"
-          onChange={(e) =>
-            setCat("category", e.target.value, { shouldValidate: true })
-          }
-        >
-          <option value="default" disabled hidden>
-            Select a category
-          </option>
-          <option value="RESTAURANTS">RESTAURANTS</option>
-          <option value="TRAVEL">TRAVEL</option>
-          <option value="ENTERTAINMENT">ENTERTAINMENT</option>
-          <option value="FASHION">FASHION</option>
-          <option value="ELECTRONICS">ELECTRONICS</option>
-        </select> */}
-          {/* <div> */}
           <label htmlFor="category">Category</label>
           <Form.Select
             {...register("category")}
@@ -165,7 +131,6 @@ function AddCoupon(): JSX.Element {
             <option value="FASHION">FASHION</option>
             <option value="ELECTRONICS">ELECTRONICS</option>
           </Form.Select>
-          {/* </div> */}
           <span>{errors.category?.message}</span>
           <label htmlFor="title">Title</label>
           <input
@@ -217,12 +182,6 @@ function AddCoupon(): JSX.Element {
           />
           <span>{errors.endDate?.message}</span>
           <label htmlFor="image">Image</label>
-          {/* <input
-          {...register("image")}
-          type="file"
-          placeholder="image"
-          id="image"
-        /> */}
           <input
             {...register("image")}
             type="text"
@@ -230,17 +189,16 @@ function AddCoupon(): JSX.Element {
             id="image"
           />
           <span>{errors.image?.message}</span>
-          <button className="button-success" disabled={!isValid}>
+          <Button
+            type="submit"
+            className="mt-3"
+            variant="success"
+            disabled={!isValid}
+          >
             Add
-          </button>
-          {/* <Button className="mt-2" variant="success" disabled={!isValid}>
-          Add
-        </Button>{" "} */}
+          </Button>{" "}
         </form>
       </div>
-      <Button className="mt-2" variant="secondary" onClick={goBack}>
-        Go Back
-      </Button>{" "}
     </div>
   );
 }

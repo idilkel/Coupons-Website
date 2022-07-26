@@ -48,7 +48,7 @@ function AdminCustomers(): JSX.Element {
       web
         .getAllCustomers()
         .then((res) => {
-          notify.success(SccMsg.ALL_COMPANIES);
+          // notify.success(SccMsg.ALL_COMPANIES);//Line removed since it gives two alerts on update
           // Update Component State (Local state)
           //   console.log("Hey: " + res.data);
           setCustomers(res.data);

@@ -101,6 +101,9 @@ class WebApi {
 
   //Company Controllers:
   public async addCoupon(coupon: CouponModel): Promise<any> {
+    console.log("Trying to add a coupon^^^");
+    const url = this.compUrl + "/coupons";
+    console.log("@@@" + url);
     return await tokenAxios.post<CouponModel>(
       this.compUrl + "/coupons",
       coupon

@@ -41,7 +41,7 @@ export function couponDeletedAction(id: number): CouponAction {
 }
 
 export function couponsClear(): CouponAction {
-  return { type: CouponsActionType.CouponDeleted };
+  return { type: CouponsActionType.CouponsClear };
 }
 
 // export function couponPurchasedAction(coupon: CouponModel): CouponAction {

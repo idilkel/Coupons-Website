@@ -43,14 +43,11 @@ function AdminCompanies(): JSX.Element {
   // console.log("userMail: " + userMail);
 
   useEffect(() => {
-    if (
-      store.getState().companiesReducer.companies.length === 0 ||
-      store.subscribe //why?
-    ) {
+    if (store.getState().companiesReducer.companies.length === 0) {
       web
         .getAllCompanies()
         .then((res) => {
-          notify.success(SccMsg.ALL_COMPANIES);
+          // notify.success(SccMsg.ALL_COMPANIES);//Line removed since it gives two alerts on update
           // Update Component State (Local state)
           // console.log("Hey: " + res.data);
           setCompanies(res.data);

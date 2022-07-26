@@ -25,6 +25,7 @@ export enum SccMsg {
 
 export enum ErrMsg {
   FAIL_EDIT_COMPANIES = "failed to edit company",
+  WRONG_LOGIN_DETAILS = "Wrong login details. Please try again",
 }
 
 class Notify {
@@ -34,31 +35,45 @@ class Notify {
   });
 
   public success(message: SccMsg) {
+    console.log("Err type1");
     this.notification.success(message);
   }
 
   public error(message: string) {
     // this.notification.error(message);
+    console.log("Err type2");
+    console.log(message);
     this.notification.error(this.extractMsg(message));
   }
 
   private extractMsg(err: any): string {
-    if (typeof err === "string") {
-      return err;
-    }
-
-    if (typeof err?.response?.data === "string") {
-      //Backend exact error
-      return err.response.data;
-    }
-
     if (Array.isArray(err?.response?.data)) {
+      console.log("Err type3");
       // Backend exact error list
       return err?.response?.data[0];
     }
 
+    if (typeof err === "string") {
+      console.log("Err type4");
+      console.log(err);
+      return err;
+    }
+
+    if (typeof err?.response?.data?.value === "string") {
+      console.log("Err type5");
+      //Backend exact error
+      return err.response.data.value;
+    }
+
+    if (typeof err?.response?.data === "string") {
+      console.log("Err type6");
+      //Backend exact error
+      return err.response.data;
+    }
+
     // Must be last
     if (typeof err?.message === "string") {
+      console.log("Err type7");
       return err.message;
     }
 

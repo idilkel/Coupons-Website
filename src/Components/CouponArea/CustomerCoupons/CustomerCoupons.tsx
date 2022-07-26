@@ -44,7 +44,7 @@ function CustomerCoupons(): JSX.Element {
     resolver: yupResolver(schema),
   });
 
-  console.log("CouponsList" + store.getState().couponsReducer.coupons);
+  // console.log("CouponsList" + store.getState().couponsReducer.coupons);
 
   const [email, setEmail] = useState(store.getState().authReducer.user?.email);
 
@@ -57,14 +57,11 @@ function CustomerCoupons(): JSX.Element {
   // console.log("userType!!!: " + userType);
 
   useEffect(() => {
-    if (
-      store.getState().couponsReducer.coupons.length === 0 ||
-      store.subscribe
-    ) {
+    if (store.getState().couponsReducer.coupons.length === 0) {
       web
         .getAllCustomerCoupons()
         .then((res) => {
-          notify.success(SccMsg.ALL_COUPONS);
+          // notify.success(SccMsg.ALL_COUPONS); //two notifications on change
           // Update Component State (Local state)
           setCoupons(res.data);
           // Update App State (Global State)

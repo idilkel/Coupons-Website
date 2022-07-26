@@ -9,9 +9,15 @@ import notify, { SccMsg } from "../../../Services/Notification";
 import store from "../../../Redux/Store";
 import { customerUpdatedAction } from "../../../Redux/CustomersAppState";
 import { useState } from "react";
+import Button from "react-bootstrap/Button";
 
 function EditCustomer(): JSX.Element {
   const navigate = useNavigate();
+
+  // const goBack = () => {
+  //   navigate(-1);
+  // };
+
   const params = useParams();
   const customerId = +(params.id || 0);
 
@@ -64,6 +70,7 @@ function EditCustomer(): JSX.Element {
 
   //Step 8: On-submit:  Send to remote as put request
   const updateCustomer = async (customer: CustomerModel) => {
+    customer.id = id;
     web
       .updateCustomer(id, customer)
       .then((res) => {
@@ -79,9 +86,9 @@ function EditCustomer(): JSX.Element {
   };
 
   return (
-    <div className="flex-center">
+    <div className="flex-center-col">
       <div className="EditCustomer">
-        <h1>Company Update</h1>;
+        <h1>Customer Update</h1>
         {/* Step 9: Step 9 - OnSubmit - handle onSubmit method using your method */}
         <form
           onSubmit={handleSubmit(updateCustomer)}
@@ -95,7 +102,6 @@ function EditCustomer(): JSX.Element {
             id="firstName"
           />
           <span>{errors.firstName?.message}</span>
-
           <label htmlFor="lastName">Customer Last Name</label>
           <input
             {...register("lastName")}
@@ -104,7 +110,6 @@ function EditCustomer(): JSX.Element {
             id="lastName"
           />
           <span>{errors.lastName?.message}</span>
-
           <label htmlFor="email">Email</label>
           <input
             {...register("email")}
@@ -113,7 +118,6 @@ function EditCustomer(): JSX.Element {
             id="email"
           />
           <span>{errors.email?.message}</span>
-
           <label htmlFor="password">Password</label>
           <input
             {...register("password")}
@@ -122,12 +126,19 @@ function EditCustomer(): JSX.Element {
             id="password"
           />
           <span>{errors.password?.message}</span>
-          <button className="button-success" disabled={!isDirty}>
+          <Button
+            variant="secondary"
+            type="submit"
+            className="mt-3"
+            disabled={!isDirty}
+          >
             Update
-          </button>
+          </Button>{" "}
         </form>
-        ;
       </div>
+      {/* <Button variant="secondary" onClick={goBack} className="mt-2">
+        Go Back
+      </Button>{" "} */}
     </div>
   );
 }

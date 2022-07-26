@@ -12,9 +12,15 @@ import web from "../../../Services/WebApi";
 import store from "../../../Redux/Store";
 import { companyUpdatedAction } from "../../../Redux/CompaniesAppState";
 import { CouponModel } from "../../../Models/Coupon";
+import Button from "react-bootstrap/Button";
 
 function EditCompany(): JSX.Element {
   const navigate = useNavigate();
+
+  // const goBack = () => {
+  //   navigate(-1);
+  // };
+
   const params = useParams();
   const companyId = +(params.id || 0);
 
@@ -75,17 +81,16 @@ function EditCompany(): JSX.Element {
         navigate("/admin/companies");
         // Update App State (Global State)
         store.dispatch(companyUpdatedAction(res.data));
-        console.log("YES@@@" + res.data.name);
+        // console.log("YES@@@" + res.data.name);
       })
       .catch((err) => {
-        notify.error(ErrMsg.FAIL_EDIT_COMPANIES);
-        console.log("NO@@@");
+        notify.error(err.message);
         navigate("/admin/companies");
       });
   };
 
   return (
-    <div className="flex-center">
+    <div className="flex-center-col">
       <div className="EditCompany">
         <h1>Company Update</h1>
         {/* Step 9: Step 9 - OnSubmit - handle onSubmit method using your method */}
@@ -99,9 +104,9 @@ function EditCompany(): JSX.Element {
             type="text"
             placeholder="name"
             id="name"
+            disabled={true}
           />
           <span>{errors.name?.message}</span>
-
           <label htmlFor="email">Email</label>
           <input
             {...register("email")}
@@ -110,7 +115,6 @@ function EditCompany(): JSX.Element {
             id="email"
           />
           <span>{errors.email?.message}</span>
-
           <label htmlFor="password">Password</label>
           <input
             {...register("password")}
@@ -119,11 +123,19 @@ function EditCompany(): JSX.Element {
             id="password"
           />
           <span>{errors.password?.message}</span>
-          <button className="button-success" disabled={!isDirty}>
+          <Button
+            variant="secondary"
+            type="submit"
+            className="mt-3"
+            disabled={!isDirty}
+          >
             Update
-          </button>
+          </Button>{" "}
         </form>
       </div>
+      {/* <Button variant="secondary" onClick={goBack} className="mt-2">
+        Go Back
+      </Button>{" "} */}
     </div>
   );
 }

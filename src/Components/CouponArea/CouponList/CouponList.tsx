@@ -76,10 +76,7 @@ function CouponList(): JSX.Element {
   };
 
   useEffect(() => {
-    if (
-      store.getState().couponsReducer.coupons.length === 0 ||
-      store.subscribe
-    ) {
+    if (store.getState().couponsReducer.coupons.length === 0) {
       web
         .getAllCoupons()
         .then((res) => {

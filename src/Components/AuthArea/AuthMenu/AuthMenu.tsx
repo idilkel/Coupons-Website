@@ -1,11 +1,18 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import store from "../../../Redux/Store";
 import CustomLink from "../../RoutingArea/CustomLink/CustomLink";
 import MenuLink from "../../RoutingArea/MenuLink/MenuLink";
 import "./AuthMenu.css";
+import Button from "react-bootstrap/Button";
 
 function AuthMenu(): JSX.Element {
+  const navigate = useNavigate();
+
+  const goBack = () => {
+    navigate(-1);
+  };
+
   const [isLoggedIn, setIsLoggedIn] = useState(
     store.getState().authReducer.user?.token?.length > 0
   );
@@ -25,11 +32,17 @@ function AuthMenu(): JSX.Element {
         <>
           Hello {email}
           <MenuLink to="logout">Logout</MenuLink>
+          <Button variant="secondary" className="margin" onClick={goBack}>
+            Back
+          </Button>{" "}
         </>
       ) : (
         <>
           Hello Guest
           <MenuLink to="login">Login</MenuLink>
+          <Button variant="secondary" className="margin" onClick={goBack}>
+            Back
+          </Button>{" "}
         </>
       )}
     </div>

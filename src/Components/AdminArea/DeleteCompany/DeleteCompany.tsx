@@ -33,12 +33,6 @@ function DeleteCompany(): JSX.Element {
         <h1>Delete a Company</h1>
         <h3>Are you sure you want to delete Company#{id}?</h3>
         <div>
-          {/* <button className="button-danger" onClick={yes}>
-            Yes
-          </button>
-          <button className="button" onClick={no}>
-            No
-          </button> */}
           <Button variant="danger" className="margin" onClick={yes}>
             Yes
           </Button>{" "}

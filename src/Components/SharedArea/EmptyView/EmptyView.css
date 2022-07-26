@@ -9,3 +9,7 @@
 .shadow {
   box-shadow: 0 8px 16px 0 black;
 }
+
+.EmptyView iframe {
+  border-radius: 5%;
+}
