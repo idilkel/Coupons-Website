@@ -19,6 +19,7 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Form from "react-bootstrap/Form";
 import { CompanyModel } from "../../../Models/Company";
+import { companiesDownloadedAction } from "../../../Redux/CompaniesAppState";
 
 function CompanyCoupons(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
@@ -64,6 +65,36 @@ function CompanyCoupons(): JSX.Element {
   }
   // console.log("userType!!!: " + userType);
 
+  //In-order to assure that the companies store is full
+  const [companies, setCompanies] = useState<CompanyModel[]>(
+    store.getState().companiesReducer.companies
+  );
+
+  console.log(
+    "Is the company store full? " + store.getState().companiesReducer.companies
+  );
+
+  useEffect(() => {
+    if (store.getState().companiesReducer.companies.length === 0) {
+      web
+        // .getAllCompanies()
+        .getCompanyAsList()
+        .then((res) => {
+          setCompanies(res.data);
+          // Update App State (Global State)
+          console.log("Do we have companies? " + res.data);
+          store.dispatch(companiesDownloadedAction(res.data));
+        })
+        .catch((err) => {
+          notify.error(err.message);
+        });
+    }
+  }, []);
+
+  console.log(
+    "companiesReducerState&&&" + store.getState().companiesReducer.companies
+  );
+
   useEffect(() => {
     if (store.getState().couponsReducer.coupons.length === 0) {
       web
@@ -74,30 +105,15 @@ function CompanyCoupons(): JSX.Element {
           setCoupons(res.data);
           // Update App State (Global State)
           store.dispatch(couponsDownloadedAction(res.data));
-          console.log("list after dispatch: " + coupons); //why empty after refresh
-          console.log("todoList" + store.getState().couponsReducer.coupons);
-          console.log(store.getState().couponsReducer.coupons);
+          // console.log("list after dispatch: " + coupons); //why empty after refresh
+          // console.log("todoList" + store.getState().couponsReducer.coupons);
+          // console.log(store.getState().couponsReducer.coupons);
         })
         .catch((err) => {
           notify.error(err.message);
         });
     }
   }, []);
-
-  //Step 8: On-submit:  Send to remote as post request
-  const couponByMaxPrice = async (maxPrice: number) => {
-    web
-      .getAllCustomerCouponsByMaxPrice(maxPrice)
-      .then((res) => {
-        notify.success(SccMsg.COUPONS_MAX_PRICE);
-
-        // Update App State (Global State)
-        store.dispatch(couponsDownloadedAction(res.data));
-      })
-      .catch((err) => {
-        notify.error(err.message);
-      });
-  };
 
   //On-submit Category Selection:  Send to remote as post request
   const selected = async () => {
@@ -121,19 +137,9 @@ function CompanyCoupons(): JSX.Element {
     }
   };
 
-  const getMaxPrice = async (price: number) => {
-    if (price >= 0) {
-      web
-        .getAllCompanyCouponsByMaxPrice(price) //todo
-        .then((res) => {
-          notify.success(SccMsg.COUPONS_MAX_PRICE);
-          navigate("/companies/coupons/maxPrice/" + price);
-          store.dispatch(couponsDownloadedAction(res.data));
-        })
-        .catch((err) => {
-          notify.error(err.message);
-        });
-    }
+  //Step 8: On-submit:
+  const getMaxPrice = () => {
+    navigate("/companies/coupons/maxPrice/" + price);
   };
 
   //Did change?
@@ -149,10 +155,29 @@ function CompanyCoupons(): JSX.Element {
     <div className="CompanyCoupons flex-center-col">
       <h1 className="flex-row-none-wrap-list">{email} Coupons</h1>
       <div className="single-line-only">
-        <Button variant="success" onClick={addCoupon} className="m-2">
+        <Button variant="success" onClick={addCoupon} className="m-4 ">
           Add a Coupon
         </Button>{" "}
-        <div>
+        <form onSubmit={handleSubmit(getMaxPrice)} className="flex-center-col">
+          <label htmlFor="maxPrice">Maximum Price</label>
+          <input
+            {...register("maxPrice")}
+            type="number"
+            placeholder="max"
+            id="maxPrice"
+            onChange={(e) => setPrice(e.target.value)}
+          />
+          {/* <span>{errors.maxPrice?.message}</span> */}
+          <Button
+            variant="secondary"
+            type="submit"
+            disabled={!isValid}
+            className="mt-1 btn-sm"
+          >
+            Submit
+          </Button>
+        </form>
+        <div className="margin-top">
           <Form.Select
             className="m-2"
             value={cat}
@@ -167,25 +192,6 @@ function CompanyCoupons(): JSX.Element {
           </Form.Select>
         </div>
       </div>
-      <form onSubmit={handleSubmit(getMaxPrice)} className="flex-center-col">
-        <label htmlFor="maxPrice">Maximum Price</label>
-        <input
-          {...register("maxPrice")}
-          type="number"
-          placeholder="maxPrice"
-          id="maxPrice"
-        />
-        {/* <span>{errors.maxPrice?.message}</span> */}
-        <Button
-          variant="secondary"
-          type="submit"
-          disabled={!isValid}
-          className="mt-3"
-        >
-          Submit
-        </Button>
-      </form>
-
       <div className="flex-row-none-wrap-list">
         {coupons.length > 0 && userType === "COMPANY" ? (
           // coupons.map((c) => <CouponItem key={c.id} coupon={c} />)

@@ -20,16 +20,14 @@ import Button from "react-bootstrap/Button";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { CompanyModel } from "../../../Models/Company";
+import { companiesDownloadedAction } from "../../../Redux/CompaniesAppState";
 
 function CouponList(): JSX.Element {
   const navigate = useNavigate();
   const customerCoupons = () => {
     navigate("/customers/coupons");
   };
-  // const allCoupons = () => {
-  //   store.dispatch(couponsClear());
-  //   navigate("/coupons");
-  // };
 
   const goTravel = () => {
     navigate("/coupons/category/TRAVEL");
@@ -55,11 +53,14 @@ function CouponList(): JSX.Element {
     store.getState().couponsReducer.coupons
   );
 
+  const [price, setPrice]: any = useState("");
+  console.log("Price!!!: " + price);
+
   // console.log("todoList" + store.getState().couponsReducer.coupons);
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
-    maxPrice: yup.number(),
+    maxPrice: yup.number().min(0),
   });
 
   //Step 7: React-hook-form
@@ -72,11 +73,9 @@ function CouponList(): JSX.Element {
     resolver: yupResolver(schema),
   });
 
-  //Step 8: On-submit:  Send to remote as post request
-  const goToMaxPrice = (maxPrice: number) => {
-    console.log("MyMaxPrice1: " + maxPrice);
-    console.log("MyMaxPrice2: " + +maxPrice.valueOf);
-    navigate("/customers/coupons/MaxPrice/" + +maxPrice.valueOf);
+  //Step 8: On-submit:
+  const getMaxPrice = () => {
+    navigate("/coupons/maxPrice/" + price);
   };
 
   useEffect(() => {
@@ -98,15 +97,6 @@ function CouponList(): JSX.Element {
         });
     }
   }, []);
-
-  // const options = [
-  //   { value: "", text: "--Choose an option--" },
-  //   { value: "TRAVEL", text: "TRAVEL" },
-  //   { value: "RESTAURANTS", text: "RESTAURANTS" },
-  //   { value: "ENTERTAINMENT", text: "ENTERTAINMENT" },
-  //   { value: "FASHION", text: "FASHION" },
-  //   { value: "ELECTRONICS", text: "ELECTRONICS" },
-  // ];
 
   return (
     <div className="CouponList flex-center-col">
@@ -141,26 +131,26 @@ function CouponList(): JSX.Element {
         <Button variant="secondary" onClick={goElectronics} className="m-2">
           ELECTRONICS
         </Button>{" "}
-        <span className="range-length">
+        <span>
           <form
-            onSubmit={handleSubmit(goToMaxPrice)}
+            onSubmit={handleSubmit(getMaxPrice)}
             className="flex-center-col"
           >
             {/* Step 10: {...register("title")}     &    {errors.title?.message} */}
-            <label htmlFor="price">Max Price</label>
+            <label htmlFor="maxPrice">Max Price</label>
             <input
-              {...register("price")}
+              {...register("maxPrice")}
               type="number"
-              placeholder="price"
-              id="price"
-              className="range-length"
+              placeholder="max"
+              id="maxPrice"
+              onChange={(e) => setPrice(e.target.value)}
             />
-            {/* <span>{errors.price?.message}</span> */}
+            {/* <span>{errors.maxPrice?.message}</span> */}
             <Button
               variant="secondary"
               type="submit"
               disabled={!isValid}
-              className="margin"
+              className="mt-1 btn-sm"
             >
               Submit
             </Button>

@@ -23,9 +23,9 @@ function AddCoupon(): JSX.Element {
     store.getState().couponsReducer.coupons
   );
 
-  console.log(
-    "couponsReducerState&&&" + store.getState().couponsReducer.coupons
-  );
+  // console.log(
+  //   "couponsReducerState&&&" + store.getState().couponsReducer.coupons
+  // );
 
   //In-order to assure that the companies store is full
   const [companies, setCompanies] = useState<CompanyModel[]>(
@@ -51,6 +51,10 @@ function AddCoupon(): JSX.Element {
         });
     }
   }, []);
+
+  console.log(
+    "companiesReducerState&&&" + store.getState().companiesReducer.companies
+  );
 
   const [company, setCompany] = useState<CompanyModel>(
     store

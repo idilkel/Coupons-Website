@@ -5,3 +5,18 @@
 .CustomerCoupons .range-length {
   width: 250px;
 }
+
+.CustomerCoupons input {
+  width: 50px;
+}
+
+.CustomerCoupons .margin-top {
+  margin-top: 30px;
+  margin-left: 10px;
+}
+
+.CustomerCoupons form {
+  background-color: antiquewhite;
+  border: dashed burlywood;
+  padding: 3px;
+}

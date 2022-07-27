@@ -71,33 +71,18 @@ function CustomerCoupons(): JSX.Element {
           setCoupons(res.data);
           // Update App State (Global State)
           store.dispatch(customerCouponsDownloadedAction(res.data));
-          console.log("list after dispatch: " + coupons);
-          console.log(
-            "All Customer Coupons" +
-              store.getState().customerCouponsReducer.coupons
-          );
-          console.log(store.getState().customerCouponsReducer.coupons);
+          // console.log("list after dispatch: " + coupons);
+          // console.log(
+          //   "All Customer Coupons" +
+          //     store.getState().customerCouponsReducer.coupons
+          // );
+          // console.log(store.getState().customerCouponsReducer.coupons);
         })
         .catch((err) => {
           notify.error(err.message);
         });
     }
   }, []);
-
-  //Step 8: On-submit:  Send to remote as post request
-  const couponByMaxPrice = async (maxPrice: number) => {
-    web
-      .getAllCustomerCouponsByMaxPrice(maxPrice)
-      .then((res) => {
-        notify.success(SccMsg.COUPONS_MAX_PRICE);
-
-        // Update App State (Global State)
-        store.dispatch(customerCouponsDownloadedAction(res.data));
-      })
-      .catch((err) => {
-        notify.error(err.message);
-      });
-  };
 
   //On-submit Category Selection:  Send to remote as post request
   const selected = async () => {
@@ -121,19 +106,9 @@ function CustomerCoupons(): JSX.Element {
     }
   };
 
-  const getMaxPrice = async (price: number) => {
-    if (price >= 0) {
-      web
-        .getAllCustomerCouponsByMaxPrice(price) //todo
-        .then((res) => {
-          notify.success(SccMsg.COUPONS_MAX_PRICE);
-          navigate("/customers/coupons/maxPrice/" + price);
-          store.dispatch(customerCouponsDownloadedAction(res.data));
-        })
-        .catch((err) => {
-          notify.error(err.message);
-        });
-    }
+  //Step 8: On-submit:
+  const getMaxPrice = () => {
+    navigate("/customers/coupons/maxPrice/" + price);
   };
 
   //Did change?
@@ -142,7 +117,9 @@ function CustomerCoupons(): JSX.Element {
   }, [cat]);
 
   // useEffect(() => {
-  //   getMaxPrice();
+  //   if (price > 0) {
+  //     navigate("/customers/coupons/maxPrice/" + price);
+  //   }
   // }, [price]);
 
   return (
@@ -159,6 +136,7 @@ function CustomerCoupons(): JSX.Element {
             min="0"
             max="500"
             step="0.1"
+            onChange={(e) => setPrice(e.target.value)}
           ></input>
           <label htmlFor="max">500</label>
         </div> */}
@@ -167,20 +145,22 @@ function CustomerCoupons(): JSX.Element {
           <input
             {...register("maxPrice")}
             type="number"
-            placeholder="maxPrice"
+            placeholder="max"
             id="maxPrice"
+            onChange={(e) => setPrice(e.target.value)}
           />
           {/* <span>{errors.maxPrice?.message}</span> */}
+
           <Button
             variant="secondary"
             type="submit"
             disabled={!isValid}
-            className="mt-3"
+            className="mt-1 btn-sm"
           >
             Submit
           </Button>
         </form>
-        <div>
+        <div className="margin-top">
           <Form.Select value={cat} onChange={(e) => setCat(e.target.value)}>
             <option>Select a category</option>
             <option value="TRAVEL">TRAVEL</option>

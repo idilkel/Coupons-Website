@@ -19,8 +19,8 @@ function CouponsMaxPriceBoot(): JSX.Element {
   const customerCoupons = () => {
     navigate("/customers/coupons");
   };
-  const goBack = () => {
-    navigate(-1);
+  const companyCoupons = () => {
+    navigate("/companies/coupons");
   };
   const [coupons, setCoupons] = useState<CouponModel[]>(
     store.getState().couponsReducer.coupons
@@ -63,10 +63,10 @@ function CouponsMaxPriceBoot(): JSX.Element {
               Go back
             </button> */}
         <Button variant="secondary" onClick={customerCoupons}>
-          My Coupons
+          Customer Coupons
         </Button>{" "}
-        <Button variant="secondary" onClick={goBack}>
-          Go back
+        <Button variant="secondary" onClick={companyCoupons}>
+          Company Coupons
         </Button>{" "}
       </div>
 

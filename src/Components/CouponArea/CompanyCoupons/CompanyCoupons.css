@@ -1,3 +1,27 @@
 .CompanyCoupons {
   color: #6e85b7;
 }
+
+.CompanyCoupons .range-length {
+  width: 250px;
+}
+
+.CompanyCoupons input {
+  width: 50px;
+}
+
+.CompanyCoupons .margin-top {
+  margin-top: 20px;
+}
+
+.CompanyCoupons form {
+  background-color: antiquewhite;
+  border: dashed burlywood;
+  padding: 3px;
+  margin-left: 10px;
+  margin-right: 20px;
+}
+
+.CompanyCoupons .btn {
+  max-height: 40px;
+}

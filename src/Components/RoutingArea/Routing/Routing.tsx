@@ -61,6 +61,10 @@ function Routing(): JSX.Element {
           element={<CouponsCategoryBoot />}
         />
         <Route
+          path="/coupons/maxPrice/:price"
+          element={<CouponsMaxPriceBoot />}
+        />
+        <Route
           path="/customers/coupons/category/:cat"
           element={<CustomerCouponsCategoryBoot />}
         />
