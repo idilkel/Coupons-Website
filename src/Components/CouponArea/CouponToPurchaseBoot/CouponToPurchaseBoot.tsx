@@ -6,6 +6,8 @@ import { CouponModel } from "../../../Models/Coupon";
 import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import Button from "react-bootstrap/Button";
+import store from "../../../Redux/Store";
+import { customerCouponPurchasedAction } from "../../../Redux/CustomerCouponsAppState";
 
 interface CouponToPurchaseBootProps {
   coupon: CouponModel;
@@ -19,6 +21,7 @@ function CouponToPurchaseBoot(props: CouponToPurchaseBootProps): JSX.Element {
       .purchaseCoupon(coupon)
       .then((res) => {
         notify.success(SccMsg.PURCHASED);
+        store.dispatch(customerCouponPurchasedAction(coupon));
         navigate("/customers/coupons");
         //Update App State (Global State)
         // store.dispatch(CouponPurchased(res.data));
@@ -53,6 +56,10 @@ function CouponToPurchaseBoot(props: CouponToPurchaseBootProps): JSX.Element {
           </Card.Text>
           <Card.Text className="single-line-only">
             {props.coupon.description}
+          </Card.Text>
+          <Card.Text>
+            Price:&nbsp;
+            {props.coupon.price}&nbsp;ILS
           </Card.Text>
           <Card.Text
             className={props.coupon.amount === 0 ? "text-danger" : "text-dark"}

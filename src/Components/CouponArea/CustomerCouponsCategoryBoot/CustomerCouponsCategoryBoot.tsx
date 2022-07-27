@@ -12,27 +12,31 @@ import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import CustomerCouponBoot from "../CustomerCouponBoot/CustomerCouponBoot";
 import "./CustomerCouponsCategoryBoot.css";
 import { Button } from "react-bootstrap";
+import {
+  customerCouponsClear,
+  customerCouponsDownloadedAction,
+} from "../../../Redux/CustomerCouponsAppState";
 
 function CustomerCouponsCategoryBoot(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
-    store.getState().couponsReducer.coupons
+    store.getState().customerCouponsReducer.coupons
   );
   const navigate = useNavigate();
   const params = useParams();
   const catName = params.cat || null;
   const [catId, setCatId] = useState<string>(catName);
-  const customerCoupons = () => {
-    navigate("/customers/coupons");
-  };
-  const goBack = () => {
-    navigate(-1);
-  };
 
-  //   console.log("CouponsList" + store.getState().couponsReducer.coupons);
+  console.log("CouponsList" + store.getState().customerCouponsReducer.coupons);
+  console.log("catID$$$" + catId);
 
   const [email, setEmail] = useState(store.getState().authReducer.user?.email);
 
   const [cat, setCat]: any = useState("");
+
+  const customerCoupons = () => {
+    store.dispatch(customerCouponsClear());
+    navigate("/customers/coupons");
+  };
 
   let userType;
   if (localStorage.getItem("user") !== null) {
@@ -43,46 +47,38 @@ function CustomerCouponsCategoryBoot(): JSX.Element {
   // console.log("userType!!!: " + userType);
 
   useEffect(() => {
-    if (
-      store.getState().couponsReducer.coupons.length === 0 ||
-      store.subscribe
-    ) {
-      web
-        .getAllCustomerCouponsByCategory(catId)
-        .then((res) => {
-          notify.success(SccMsg.ALL_COUPONS);
-          // Update Component State (Local state)
-          setCoupons(res.data);
-          // Update App State (Global State)
-          store.dispatch(couponsDownloadedAction(res.data));
-          console.log("list after dispatch: " + coupons);
-          console.log(
-            "All Customer Coupons" + store.getState().couponsReducer.coupons
-          );
-          console.log(store.getState().couponsReducer.coupons);
-        })
-        .catch((err) => {
-          notify.error(err.message);
-        });
-    }
+    // if (store.getState().customerCouponsReducer.coupons.length === 0) {
+    web
+      .getAllCustomerCouponsByCategory(catId)
+      .then((res) => {
+        // notify.success(SccMsg.ALL_COUPONS);//deleted to avoid two notifications
+        // Update Component State (Local state)
+        setCoupons(res.data);
+        // Update App State (Global State)
+        store.dispatch(customerCouponsDownloadedAction(res.data)); //it is better that the store has coupons from all categories
+        console.log("list after dispatch: " + coupons);
+        console.log(
+          "All Customer Coupons" +
+            store.getState().customerCouponsReducer.coupons
+        );
+        console.log(store.getState().customerCouponsReducer.coupons);
+      })
+      .catch((err) => {
+        notify.error(err.message);
+      });
+    // }
   }, []);
 
   return (
     <div className="CustomerCoupons flex-center-col">
       <h1 className="flex-row-none-wrap-list">{email} Coupons</h1>
       <div>
-        {/* <button className="button-success" onClick={customerCoupons}>
-            My Coupons
-          </button>
-          <button className="button-success" onClick={() => navigate(-1)}>
-            Go back
-          </button> */}
         <Button variant="secondary" onClick={customerCoupons}>
           My Coupons
         </Button>{" "}
-        <Button variant="secondary" onClick={goBack}>
+        {/* <Button variant="secondary" onClick={goBack}>
           Go back
-        </Button>{" "}
+        </Button>{" "} */}
       </div>
       <div className="flex-row-none-wrap-list">
         {coupons.length > 0 && userType === "CUSTOMER" ? (

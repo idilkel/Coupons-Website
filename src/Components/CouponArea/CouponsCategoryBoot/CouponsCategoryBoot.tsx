@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { CouponModel } from "../../../Models/Coupon";
-import { couponsDownloadedAction } from "../../../Redux/CouponsAppState";
+import {
+  couponsClear,
+  couponsDownloadedAction,
+} from "../../../Redux/CouponsAppState";
 import store from "../../../Redux/Store";
 import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
@@ -19,8 +22,9 @@ function CouponsCategoryBoot(): JSX.Element {
   const customerCoupons = () => {
     navigate("/customers/coupons");
   };
-  const goBack = () => {
-    navigate(-1);
+  const allCoupons = () => {
+    store.dispatch(couponsClear());
+    navigate("/coupons");
   };
   const [coupons, setCoupons] = useState<CouponModel[]>(
     store.getState().couponsReducer.coupons
@@ -37,7 +41,7 @@ function CouponsCategoryBoot(): JSX.Element {
       web
         .getAllCouponsByCategory(catId)
         .then((res) => {
-          notify.success(SccMsg.ALL_COUPONS);
+          //   notify.success(SccMsg.ALL_COUPONS);//two notifications on going back from something else
           // Update Component State (Local state)
           setCoupons(res.data);
           // Update App State (Global State)
@@ -65,8 +69,8 @@ function CouponsCategoryBoot(): JSX.Element {
         <Button variant="secondary" onClick={customerCoupons}>
           My Coupons
         </Button>{" "}
-        <Button variant="secondary" onClick={goBack}>
-          Go back
+        <Button variant="secondary" onClick={allCoupons}>
+          All Coupons
         </Button>{" "}
       </div>
 

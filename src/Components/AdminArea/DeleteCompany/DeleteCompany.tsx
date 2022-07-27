@@ -4,6 +4,8 @@ import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import "./DeleteCompany.css";
 import Button from "react-bootstrap/Button";
+import store from "../../../Redux/Store";
+import { companyDeletedAction } from "../../../Redux/CompaniesAppState";
 
 function DeleteCompany(): JSX.Element {
   const params = useParams();
@@ -19,6 +21,7 @@ function DeleteCompany(): JSX.Element {
       .deleteCompany(id)
       .then((res) => {
         notify.success(SccMsg.DELETE_COMPANY);
+        store.dispatch(companyDeletedAction(id));
         navigate("/admin/companies");
       })
       .catch((err) => {

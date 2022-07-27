@@ -4,6 +4,8 @@ import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import "./DeleteCustomer.css";
 import Button from "react-bootstrap/Button";
+import store from "../../../Redux/Store";
+import { customerDeletedAction } from "../../../Redux/CustomersAppState";
 
 function DeleteCustomer(): JSX.Element {
   const params = useParams();
@@ -19,6 +21,7 @@ function DeleteCustomer(): JSX.Element {
       .deleteCustomer(id)
       .then((res) => {
         notify.success(SccMsg.DELETE_CUSTOMER);
+        store.dispatch(customerDeletedAction(id));
         navigate("/admin/customers");
       })
       .catch((err) => {

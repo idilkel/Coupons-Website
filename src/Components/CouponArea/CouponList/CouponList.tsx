@@ -1,7 +1,10 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { CouponModel } from "../../../Models/Coupon";
-import { couponsDownloadedAction } from "../../../Redux/CouponsAppState";
+import {
+  couponsClear,
+  couponsDownloadedAction,
+} from "../../../Redux/CouponsAppState";
 import store from "../../../Redux/Store";
 import globals from "../../../Services/Globals";
 import notify, { SccMsg } from "../../../Services/Notification";
@@ -23,9 +26,10 @@ function CouponList(): JSX.Element {
   const customerCoupons = () => {
     navigate("/customers/coupons");
   };
-  const goBack = () => {
-    navigate(-1);
-  };
+  // const allCoupons = () => {
+  //   store.dispatch(couponsClear());
+  //   navigate("/coupons");
+  // };
 
   const goTravel = () => {
     navigate("/coupons/category/TRAVEL");
@@ -80,7 +84,7 @@ function CouponList(): JSX.Element {
       web
         .getAllCoupons()
         .then((res) => {
-          notify.success(SccMsg.ALL_COUPONS);
+          // notify.success(SccMsg.ALL_COUPONS);// deleted to avoid two notifications on purchase
           // Update Component State (Local state)
           setCoupons(res.data);
           // Update App State (Global State)
@@ -117,9 +121,9 @@ function CouponList(): JSX.Element {
         <Button variant="secondary" onClick={customerCoupons}>
           My Coupons
         </Button>{" "}
-        <Button variant="secondary" onClick={goBack}>
-          Go back
-        </Button>{" "}
+        {/* <Button variant="secondary" onClick={allCoupons}>
+          All Coupons
+        </Button>{" "} */}
       </div>
       <div className="single-line-only">
         <Button variant="secondary" onClick={goTravel} className="m-2">

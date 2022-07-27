@@ -38,6 +38,10 @@ function CompanyBootCoupon(props: CouponItemProps): JSX.Element {
           <Card.Text className="single-line-only">
             {props.coupon.description}
           </Card.Text>
+          <Card.Text>
+            Price:&nbsp;
+            {props.coupon.price}&nbsp;ILS
+          </Card.Text>
           <Card.Text
             className={props.coupon.amount === 0 ? "text-danger" : "text-dark"}
           >

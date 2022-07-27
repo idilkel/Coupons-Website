@@ -20,10 +20,11 @@ import { CustomerModel } from "../../../Models/Customer";
 import CustomerCouponBoot from "../CustomerCouponBoot/CustomerCouponBoot";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
+import { customerCouponsDownloadedAction } from "../../../Redux/CustomerCouponsAppState";
 
 function CustomerCoupons(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
-    store.getState().couponsReducer.coupons
+    store.getState().customerCouponsReducer.coupons
   );
   const navigate = useNavigate();
   const [cat, setCat]: any = useState("");
@@ -44,7 +45,7 @@ function CustomerCoupons(): JSX.Element {
     resolver: yupResolver(schema),
   });
 
-  // console.log("CouponsList" + store.getState().couponsReducer.coupons);
+  // console.log("CouponsList" + store.getState().customerCouponsReducer.coupons);
 
   const [email, setEmail] = useState(store.getState().authReducer.user?.email);
 
@@ -57,7 +58,7 @@ function CustomerCoupons(): JSX.Element {
   // console.log("userType!!!: " + userType);
 
   useEffect(() => {
-    if (store.getState().couponsReducer.coupons.length === 0) {
+    if (store.getState().customerCouponsReducer.coupons.length === 0) {
       web
         .getAllCustomerCoupons()
         .then((res) => {
@@ -65,12 +66,13 @@ function CustomerCoupons(): JSX.Element {
           // Update Component State (Local state)
           setCoupons(res.data);
           // Update App State (Global State)
-          store.dispatch(couponsDownloadedAction(res.data));
+          store.dispatch(customerCouponsDownloadedAction(res.data));
           console.log("list after dispatch: " + coupons);
           console.log(
-            "All Customer Coupons" + store.getState().couponsReducer.coupons
+            "All Customer Coupons" +
+              store.getState().customerCouponsReducer.coupons
           );
-          console.log(store.getState().couponsReducer.coupons);
+          console.log(store.getState().customerCouponsReducer.coupons);
         })
         .catch((err) => {
           notify.error(err.message);
@@ -86,7 +88,7 @@ function CustomerCoupons(): JSX.Element {
         notify.success(SccMsg.COUPONS_MAX_PRICE);
 
         // Update App State (Global State)
-        store.dispatch(couponsDownloadedAction(res.data));
+        store.dispatch(customerCouponsDownloadedAction(res.data));
       })
       .catch((err) => {
         notify.error(err.message);
@@ -107,6 +109,7 @@ function CustomerCoupons(): JSX.Element {
         .then((res) => {
           notify.success(SccMsg.COUPONS_CATEGORY);
           navigate("/customers/coupons/category/" + cat);
+          store.dispatch(customerCouponsDownloadedAction(res.data));
         })
         .catch((err) => {
           notify.error(err.message);

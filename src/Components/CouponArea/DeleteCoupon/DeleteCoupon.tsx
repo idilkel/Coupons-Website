@@ -1,5 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { couponDeletedAction } from "../../../Redux/CouponsAppState";
+import store from "../../../Redux/Store";
 import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import "./DeleteCoupon.css";
@@ -18,6 +20,7 @@ function DeleteCoupon(): JSX.Element {
       .deleteCoupon(id)
       .then((res) => {
         notify.success(SccMsg.DELETE_COUPON);
+        store.dispatch(couponDeletedAction(id));
         navigate("/companies/coupons");
       })
       .catch((err) => {

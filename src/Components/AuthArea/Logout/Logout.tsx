@@ -7,6 +7,7 @@ import "./Logout.css";
 import Button from "react-bootstrap/Button";
 import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
+import { customerCouponsClear } from "../../../Redux/CustomerCouponsAppState";
 
 function Logout(): JSX.Element {
   const navigate = useNavigate();
@@ -18,6 +19,7 @@ function Logout(): JSX.Element {
   const yes = () => {
     store.dispatch(logoutAction());
     store.dispatch(couponsClear());
+    store.dispatch(customerCouponsClear());
     navigate("/login");
   };
 
