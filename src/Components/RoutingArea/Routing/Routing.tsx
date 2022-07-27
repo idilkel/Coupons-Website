@@ -26,6 +26,7 @@ import CouponsMaxPriceBoot from "../../CouponArea/CouponsMaxPriceBoot/CouponsMax
 import CustomerCouponsCategoryBoot from "../../CouponArea/CustomerCouponsCategoryBoot/CustomerCouponsCategoryBoot";
 import CustomerCouponsMaxPriceBoot from "../../CouponArea/CustomerCouponsMaxPriceBoot/CustomerCouponsMaxPriceBoot";
 import CompanyCouponsCategoryBoot from "../../CouponArea/CompanyCouponsCategoryBoot/CompanyCouponsCategoryBoot";
+import CompanyCouponsMaxPriceBoot from "../../CouponArea/CompanyCouponsMaxPriceBoot/CompanyCouponsMaxPriceBoot";
 
 function Routing(): JSX.Element {
   return (
@@ -73,7 +74,7 @@ function Routing(): JSX.Element {
         />
         <Route
           path="/companies/coupons/maxPrice/:price"
-          element={<CustomerCouponsMaxPriceBoot />}
+          element={<CompanyCouponsMaxPriceBoot />}
         />
         <Route path="*" element={<Page404 />} />
       </Routes>
