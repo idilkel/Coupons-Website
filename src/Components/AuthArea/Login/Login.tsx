@@ -59,12 +59,16 @@ function Login(props: LoginProps): JSX.Element {
         //   localStorage.removeItem("user");
         //   store.dispatch(couponsClear());
         // }
-        if (credentials.type === "COMPANY") {
-          navigate("/companies/coupons");
-        } else if (credentials.type === "CUSTOMER") {
-          navigate("/customers/coupons");
-        } else if (credentials.type === "ADMINISTRATOR") {
-          navigate("/admin");
+        switch (credentials.type) {
+          case "COMPANY":
+            navigate("/companies/coupons");
+            break;
+          case "CUSTOMER":
+            navigate("/customers/coupons");
+            break;
+          case "ADMINISTRATOR":
+            navigate("/admin");
+            break;
         }
       })
       .catch((err) => {

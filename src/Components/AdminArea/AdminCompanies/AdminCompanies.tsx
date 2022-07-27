@@ -42,8 +42,9 @@ function AdminCompanies(): JSX.Element {
   }
   // console.log("userMail: " + userMail);
 
+  //<= 1 since company app state can be filled with only one company if company was logged first for add coupon to get company mail
   useEffect(() => {
-    if (store.getState().companiesReducer.companies.length === 0) {
+    if (store.getState().companiesReducer.companies.length <= 1) {
       web
         .getAllCompanies()
         .then((res) => {
