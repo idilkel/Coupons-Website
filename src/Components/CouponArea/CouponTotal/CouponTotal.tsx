@@ -13,38 +13,38 @@ function CouponTotal(): JSX.Element {
     userType = null;
   }
 
-  console.log("userType%%%: " + userType);
+  let updatedNumber = (type: string) => {
+    if (type === "CUSTOMER") {
+      return store.getState().customerCouponsReducer.coupons.length;
+    } else {
+      return store.getState().couponsReducer.coupons.length;
+    }
+  };
 
-  const [num, setNum] = useState(
-    store.getState().couponsReducer.coupons.length
-  );
+  // console.log("The updated number is ^^^ " + updatedNumber(userType));
 
-  const [cusNum, setCusNum] = useState(
-    store.getState().customerCouponsReducer.coupons.length
-  );
+  const [num, setNum] = useState(updatedNumber(userType));
 
-  console.log(
-    "customerCouponsReducer.coupons%%% " +
-      store.getState().customerCouponsReducer.coupons.length
-  );
+  // console.log(
+  //   "customerCouponsReducer.coupons%%% " +
+  //     store.getState().customerCouponsReducer.coupons.length
+  // );
+  // console.log(
+  //   "couponsReducer.coupons%%% " +
+  //     store.getState().couponsReducer.coupons.length
+  // );
+
+  // console.log("userType%%%: " + userType);
 
   useEffect(() => {
     return store.subscribe(() => {
-      setNum(store.getState().couponsReducer.coupons.length);
+      setNum(updatedNumber(userType));
     });
   }, [num]);
 
-  useEffect(() => {
-    return store.subscribe(() => {
-      setNum(store.getState().customerCouponsReducer.coupons.length);
-    });
-  }, [cusNum]);
-
   return (
     <div className="TodoTotal">
-      <Circle num={cusNum} />
       <Circle num={num} />
-      {/* {userType === "CUSTOMER" ? <Circle num={cusNum} /> : <Circle num={num} />} */}
     </div>
   );
 }
