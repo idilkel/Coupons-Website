@@ -21,6 +21,7 @@ import CustomerCouponBoot from "../CustomerCouponBoot/CustomerCouponBoot";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { customerCouponsDownloadedAction } from "../../../Redux/CustomerCouponsAppState";
+import Button from "react-bootstrap/Button";
 
 function CustomerCoupons(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
@@ -30,9 +31,12 @@ function CustomerCoupons(): JSX.Element {
   const [cat, setCat]: any = useState("");
   console.log("Selected!!!: " + cat);
 
+  const [price, setPrice]: any = useState("");
+  console.log("Price!!!: " + price);
+
   //Step 6: Validation Schema
   const schema = yup.object().shape({
-    maxPrice: yup.number(),
+    maxPrice: yup.number().min(0),
   });
 
   //Step 7: React-hook-form
@@ -117,17 +121,36 @@ function CustomerCoupons(): JSX.Element {
     }
   };
 
+  const getMaxPrice = async (price: number) => {
+    if (price >= 0) {
+      web
+        .getAllCustomerCouponsByMaxPrice(price) //todo
+        .then((res) => {
+          notify.success(SccMsg.COUPONS_MAX_PRICE);
+          navigate("/customers/coupons/maxPrice/" + price);
+          store.dispatch(customerCouponsDownloadedAction(res.data));
+        })
+        .catch((err) => {
+          notify.error(err.message);
+        });
+    }
+  };
+
   //Did change?
   useEffect(() => {
     selected();
   }, [cat]);
+
+  // useEffect(() => {
+  //   getMaxPrice();
+  // }, [price]);
 
   return (
     <div className="CustomerCoupons flex-center-col">
       <h1 className="flex-row-none-wrap-list">{email} Coupons</h1>
       {/* Step 9: Step 9 - OnSubmit - handle onSubmit method using your method */}
       <div className="single-line-only">
-        <div className="flex-around">
+        {/* <div className="flex-around">
           <label htmlFor="min">0</label>
           <input
             type="range"
@@ -138,11 +161,8 @@ function CustomerCoupons(): JSX.Element {
             step="0.1"
           ></input>
           <label htmlFor="max">500</label>
-        </div>
-        <form
-          onSubmit={handleSubmit(couponByMaxPrice)}
-          className="flex-center-col"
-        >
+        </div> */}
+        <form onSubmit={handleSubmit(getMaxPrice)} className="flex-center-col">
           <label htmlFor="maxPrice">Maximum Price</label>
           <input
             {...register("maxPrice")}
@@ -151,6 +171,14 @@ function CustomerCoupons(): JSX.Element {
             id="maxPrice"
           />
           {/* <span>{errors.maxPrice?.message}</span> */}
+          <Button
+            variant="secondary"
+            type="submit"
+            disabled={!isValid}
+            className="mt-3"
+          >
+            Submit
+          </Button>
         </form>
         <div>
           <Form.Select value={cat} onChange={(e) => setCat(e.target.value)}>

@@ -23,15 +23,24 @@ function AddCoupon(): JSX.Element {
     store.getState().couponsReducer.coupons
   );
 
+  console.log(
+    "couponsReducerState&&&" + store.getState().couponsReducer.coupons
+  );
+
   //In-order to assure that the companies store is full
   const [companies, setCompanies] = useState<CompanyModel[]>(
     store.getState().companiesReducer.companies
   );
 
+  console.log(
+    "Is the company store full? " + store.getState().companiesReducer.companies
+  );
+
   useEffect(() => {
     if (store.getState().companiesReducer.companies.length === 0) {
       web
-        .getAllCompanies()
+        // .getAllCompanies()
+        .getCompanyAsList()
         .then((res) => {
           setCompanies(res.data);
           // Update App State (Global State)
@@ -50,6 +59,8 @@ function AddCoupon(): JSX.Element {
         (c) => c.email === store.getState().authReducer.user.email
       )[0]
   );
+
+  console.log("Company:*** " + company);
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({

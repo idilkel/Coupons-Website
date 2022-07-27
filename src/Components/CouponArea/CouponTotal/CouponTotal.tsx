@@ -6,30 +6,45 @@ import Circle from "../../SharedArea/Circle/Circle";
 import "./CouponTotal.css";
 
 function CouponTotal(): JSX.Element {
+  let userType: string;
+  if (localStorage.getItem("user") !== null) {
+    userType = JSON.parse(localStorage.getItem("user")).type;
+  } else {
+    userType = null;
+  }
+
+  console.log("userType%%%: " + userType);
+
   const [num, setNum] = useState(
     store.getState().couponsReducer.coupons.length
   );
 
+  const [cusNum, setCusNum] = useState(
+    store.getState().customerCouponsReducer.coupons.length
+  );
+
+  console.log(
+    "customerCouponsReducer.coupons%%% " +
+      store.getState().customerCouponsReducer.coupons.length
+  );
+
   useEffect(() => {
-    // if (num === 0) {
-    //   web
-    //     .countTasks()
-    //     .then((res) => {
-    //       setNum(res.data);
-    //       // notify.success("total : " + res.data);
-    //     })
-    //     .catch((err) => {
-    //       notify.error(err.message);
-    //     });
-    // }
     return store.subscribe(() => {
       setNum(store.getState().couponsReducer.coupons.length);
     });
   }, [num]);
 
+  useEffect(() => {
+    return store.subscribe(() => {
+      setNum(store.getState().customerCouponsReducer.coupons.length);
+    });
+  }, [cusNum]);
+
   return (
     <div className="TodoTotal">
+      <Circle num={cusNum} />
       <Circle num={num} />
+      {/* {userType === "CUSTOMER" ? <Circle num={cusNum} /> : <Circle num={num} />} */}
     </div>
   );
 }

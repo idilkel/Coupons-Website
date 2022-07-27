@@ -122,7 +122,15 @@ class WebApi {
   }
 
   public async getAllCompanyCoupons(): Promise<any> {
+    const url = this.compUrl + "/coupons";
+    console.log("@@@" + url);
     return await tokenAxios.get<CouponModel[]>(this.compUrl + "/coupons");
+  }
+
+  public async getCompanyAsList(): Promise<any> {
+    const url = this.compUrl + "/currentAsList";
+    console.log("@@@" + url);
+    return await tokenAxios.get<CouponModel[]>(this.compUrl + "/currentAsList");
   }
 
   // public async getAllCompanyCoupons(): Promise<any> {
