@@ -22,11 +22,15 @@ import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { CompanyModel } from "../../../Models/Company";
 import { companiesDownloadedAction } from "../../../Redux/CompaniesAppState";
+import { NumberModel } from "../../../Models/NumberModel";
 
 function CouponList(): JSX.Element {
   const navigate = useNavigate();
   const customerCoupons = () => {
     navigate("/customers/coupons");
+  };
+  const companyCoupons = () => {
+    navigate("/companies/coupons");
   };
 
   const goTravel = () => {
@@ -53,7 +57,7 @@ function CouponList(): JSX.Element {
     store.getState().couponsReducer.coupons
   );
 
-  const [price, setPrice]: any = useState("");
+  const [price, setPrice] = useState<number>();
   console.log("Price!!!: " + price);
 
   // console.log("todoList" + store.getState().couponsReducer.coupons);
@@ -74,12 +78,22 @@ function CouponList(): JSX.Element {
   });
 
   //Step 8: On-submit:
-  const getMaxPrice = () => {
-    navigate("/coupons/maxPrice/" + price);
+  const getMaxPrice = (price: NumberModel) => {
+    navigate("/coupons/maxPrice/" + price.maxPrice);
   };
 
+  let userType: string;
+  if (localStorage.getItem("user") !== null) {
+    userType = JSON.parse(localStorage.getItem("user")).type;
+  } else {
+    userType = null;
+  }
+
   useEffect(() => {
-    if (store.getState().couponsReducer.coupons.length === 0) {
+    if (
+      store.getState().couponsReducer.coupons.length === 0 ||
+      userType === "CUSTOMER"
+    ) {
       web
         .getAllCoupons()
         .then((res) => {
@@ -93,28 +107,45 @@ function CouponList(): JSX.Element {
           console.log(store.getState().couponsReducer.coupons);
         })
         .catch((err) => {
-          notify.error(err.message);
+          notify.error(err);
         });
     }
   }, []);
 
   return (
     <div className="CouponList flex-center-col">
-      <h1 className="flex-row-none-wrap-list">Our Coupons</h1>
-      <div>
-        {/* <button className="button-success" onClick={customerCoupons}>
-          My Coupons
-        </button>
-        <button className="button-success" onClick={() => navigate(-1)}>
-          Go back
-        </button> */}
-        <Button variant="secondary" onClick={customerCoupons}>
-          My Coupons
-        </Button>{" "}
-        {/* <Button variant="secondary" onClick={allCoupons}>
-          All Coupons
-        </Button>{" "} */}
-      </div>
+      {store.getState().authReducer.user.type === "COMPANY" ? (
+        <>
+          <h1 className="flex-row-none-wrap-list">Company Coupons</h1>
+          <h3 className="flex-row-none-wrap-list">
+            The add, update and delete please press "Company Coupons" button
+          </h3>
+          <div>
+            <Button variant="secondary" onClick={companyCoupons}>
+              Company Coupons
+            </Button>{" "}
+          </div>
+        </>
+      ) : (
+        <>
+          {" "}
+          <h1 className="flex-row-none-wrap-list">Our Coupons</h1>
+        </>
+      )}
+
+      {store.getState().authReducer.user.type === "CUSTOMER" ? (
+        <>
+          <div>
+            {" "}
+            <Button variant="secondary" onClick={customerCoupons}>
+              Customer Coupons
+            </Button>{" "}
+          </div>
+        </>
+      ) : (
+        <></>
+      )}
+
       <div className="single-line-only">
         <Button variant="secondary" onClick={goTravel} className="m-2">
           TRAVEL
@@ -143,7 +174,9 @@ function CouponList(): JSX.Element {
               type="number"
               placeholder="max"
               id="maxPrice"
-              onChange={(e) => setPrice(e.target.value)}
+              onChange={(args) =>
+                setPrice(+(args.target as HTMLInputElement).value)
+              }
             />
             {/* <span>{errors.maxPrice?.message}</span> */}
             <Button

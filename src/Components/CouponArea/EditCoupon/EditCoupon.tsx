@@ -100,7 +100,7 @@ function EditCoupon(): JSX.Element {
         store.dispatch(couponUpdatedAction(res.data));
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
         navigate("/companies/coupons");
       });
   };
@@ -187,9 +187,6 @@ function EditCoupon(): JSX.Element {
           />
           <span>{errors.image?.message}</span>
 
-          {/* <button className="button-success" disabled={!isDirty}>
-            Update
-          </button> */}
           <Button
             variant="secondary"
             type="submit"
@@ -200,9 +197,6 @@ function EditCoupon(): JSX.Element {
           </Button>
         </form>
       </div>
-      {/* <Button className="mt-2" variant="secondary" onClick={goBack}>
-        Go Back
-      </Button>{" "} */}
     </div>
   );
 }

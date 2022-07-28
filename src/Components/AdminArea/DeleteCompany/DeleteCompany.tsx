@@ -25,7 +25,7 @@ function DeleteCompany(): JSX.Element {
         navigate("/admin/companies");
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
         navigate("/admin/companies");
       });
   };

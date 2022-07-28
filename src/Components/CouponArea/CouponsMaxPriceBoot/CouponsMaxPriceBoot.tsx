@@ -32,7 +32,7 @@ function CouponsMaxPriceBoot(): JSX.Element {
   useEffect(() => {
     if (
       store.getState().couponsReducer.coupons.length === 0 ||
-      store.subscribe
+      (store.subscribe && store.getState().authReducer.user.type === "COMPANY")
     ) {
       web
         .getAllCompanyCouponsByMaxPrice(priceId)
@@ -47,7 +47,32 @@ function CouponsMaxPriceBoot(): JSX.Element {
           console.log(store.getState().couponsReducer.coupons);
         })
         .catch((err) => {
-          notify.error(err.message);
+          notify.error(err);
+        });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (
+      store.getState().couponsReducer.coupons.length === 0 ||
+      (store.subscribe &&
+        (store.getState().authReducer.user.type === "CUSTOMER" ||
+          store.getState().authReducer.user.type === "ADMINISTRATOR"))
+    ) {
+      web
+        .getAllCouponsByMaxPrice(priceId)
+        .then((res) => {
+          notify.success(SccMsg.ALL_COUPONS);
+          // Update Component State (Local state)
+          setCoupons(res.data);
+          // Update App State (Global State)
+          store.dispatch(couponsDownloadedAction(res.data));
+          console.log("list after dispatch: " + coupons); //why empty after refresh
+          console.log("todoList" + store.getState().couponsReducer.coupons);
+          console.log(store.getState().couponsReducer.coupons);
+        })
+        .catch((err) => {
+          notify.error(err);
         });
     }
   }, []);

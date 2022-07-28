@@ -22,17 +22,17 @@ import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { customerCouponsDownloadedAction } from "../../../Redux/CustomerCouponsAppState";
 import Button from "react-bootstrap/Button";
+import { NumberModel } from "../../../Models/NumberModel";
 
 function CustomerCoupons(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
-    store.getState().customerCouponsReducer.coupons
+    store.getState().couponsReducer.coupons
   );
   const navigate = useNavigate();
   const [cat, setCat]: any = useState("");
   console.log("Selected!!!: " + cat);
 
-  const [price, setPrice]: any = useState("");
-  console.log("Price!!!: " + price);
+  const [price, setPrice] = useState<number>();
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
@@ -44,42 +44,45 @@ function CustomerCoupons(): JSX.Element {
     register,
     handleSubmit,
     formState: { errors, isDirty, isValid },
-  } = useForm<any>({
+  } = useForm<NumberModel>({
     mode: "all",
     resolver: yupResolver(schema),
   });
 
-  // console.log("CouponsList" + store.getState().customerCouponsReducer.coupons);
+  // console.log("CouponsList" + store.getState().couponsReducer.coupons);
 
   const [email, setEmail] = useState(store.getState().authReducer.user?.email);
 
-  let userType;
+  let userType: string = null;
   if (localStorage.getItem("user") !== null) {
     userType = JSON.parse(localStorage.getItem("user")).type;
-  } else {
-    userType = null;
   }
+
   // console.log("userType!!!: " + userType);
 
   useEffect(() => {
-    if (store.getState().customerCouponsReducer.coupons.length === 0) {
+    if (
+      userType !== null &&
+      (store.getState().couponsReducer.coupons.length === 0 ||
+        userType === "CUSTOMER")
+    ) {
       web
         .getAllCustomerCoupons()
         .then((res) => {
           // notify.success(SccMsg.ALL_COUPONS); //two notifications on change
           // Update Component State (Local state)
+          console.log("res data<><><>" + res.data);
           setCoupons(res.data);
           // Update App State (Global State)
-          store.dispatch(customerCouponsDownloadedAction(res.data));
-          // console.log("list after dispatch: " + coupons);
-          // console.log(
-          //   "All Customer Coupons" +
-          //     store.getState().customerCouponsReducer.coupons
-          // );
-          // console.log(store.getState().customerCouponsReducer.coupons);
+          store.dispatch(couponsDownloadedAction(res.data));
+          console.log("list after dispatch: " + coupons);
+          console.log(
+            "All Customer Coupons" + store.getState().couponsReducer.coupons
+          );
+          console.log(store.getState().couponsReducer.coupons);
         })
         .catch((err) => {
-          notify.error(err.message);
+          notify.error(err);
         });
     }
   }, []);
@@ -98,17 +101,17 @@ function CustomerCoupons(): JSX.Element {
         .then((res) => {
           notify.success(SccMsg.COUPONS_CATEGORY);
           navigate("/customers/coupons/category/" + cat);
-          store.dispatch(customerCouponsDownloadedAction(res.data));
+          store.dispatch(couponsDownloadedAction(res.data));
         })
         .catch((err) => {
-          notify.error(err.message);
+          notify.error(err);
         });
     }
   };
 
   //Step 8: On-submit:
-  const getMaxPrice = () => {
-    navigate("/customers/coupons/maxPrice/" + price);
+  const getMaxPrice = (price: NumberModel) => {
+    navigate("/customers/coupons/maxPrice/" + price.maxPrice);
   };
 
   //Did change?
@@ -124,63 +127,64 @@ function CustomerCoupons(): JSX.Element {
 
   return (
     <div className="CustomerCoupons flex-center-col">
-      <h1 className="flex-row-none-wrap-list">{email} Coupons</h1>
-      {/* Step 9: Step 9 - OnSubmit - handle onSubmit method using your method */}
-      <div className="single-line-only">
-        {/* <div className="flex-around">
-          <label htmlFor="min">0</label>
-          <input
-            type="range"
-            className="form-range range-length"
-            id="customRange1"
-            min="0"
-            max="500"
-            step="0.1"
-            onChange={(e) => setPrice(e.target.value)}
-          ></input>
-          <label htmlFor="max">500</label>
-        </div> */}
-        <form onSubmit={handleSubmit(getMaxPrice)} className="flex-center-col">
-          <label htmlFor="maxPrice">Maximum Price</label>
-          <input
-            {...register("maxPrice")}
-            type="number"
-            placeholder="max"
-            id="maxPrice"
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          {/* <span>{errors.maxPrice?.message}</span> */}
+      {userType === null ||
+      store.getState().authReducer.user.type !== "CUSTOMER" ? (
+        <>
+          <EmptyView msg={"Sorry! This is a customer page only!"} />
+        </>
+      ) : (
+        <>
+          <h1 className="flex-row-none-wrap-list">{email} Coupons</h1>
+          {/* Step 9: Step 9 - OnSubmit - handle onSubmit method using your method */}
+          <div className="single-line-only">
+            <form
+              onSubmit={handleSubmit(getMaxPrice)}
+              className="flex-center-col"
+            >
+              <label htmlFor="maxPrice">Maximum Price</label>
+              <input
+                {...register("maxPrice")}
+                type="number"
+                placeholder="max"
+                id="maxPrice"
+                onChange={(args) =>
+                  setPrice(+(args.target as HTMLInputElement).value)
+                }
+              />
+              <span>{errors?.maxPrice?.message}</span>
 
-          <Button
-            variant="secondary"
-            type="submit"
-            disabled={!isValid}
-            className="mt-1 btn-sm"
-          >
-            Submit
-          </Button>
-        </form>
-        <div className="margin-top">
-          <Form.Select value={cat} onChange={(e) => setCat(e.target.value)}>
-            <option>Select a category</option>
-            <option value="TRAVEL">TRAVEL</option>
-            <option value="RESTAURANTS">RESTAURANTS</option>
-            <option value="ENTERTAINMENT">ENTERTAINMENT</option>
-            <option value="FASHION">FASHION</option>
-            <option value="ELECTRONICS">ELECTRONICS</option>
-          </Form.Select>
-        </div>
-      </div>
-      <div>
-        <div className="flex-row-none-wrap-list">
-          {coupons.length > 0 && userType === "CUSTOMER" ? (
-            // coupons.map((c) => <CustomerCouponItem key={c.id} coupon={c} />)
-            coupons.map((c) => <CustomerCouponBoot key={c.id} coupon={c} />)
-          ) : (
-            <EmptyView msg={"No coupons today"} />
-          )}
-        </div>
-      </div>
+              <Button
+                variant="secondary"
+                type="submit"
+                disabled={!isValid}
+                className="mt-1 btn-sm"
+              >
+                Submit
+              </Button>
+            </form>
+            <div className="margin-top">
+              <Form.Select value={cat} onChange={(e) => setCat(e.target.value)}>
+                <option>Select a category</option>
+                <option value="TRAVEL">TRAVEL</option>
+                <option value="RESTAURANTS">RESTAURANTS</option>
+                <option value="ENTERTAINMENT">ENTERTAINMENT</option>
+                <option value="FASHION">FASHION</option>
+                <option value="ELECTRONICS">ELECTRONICS</option>
+              </Form.Select>
+            </div>
+          </div>
+          <div>
+            <div className="flex-row-none-wrap-list">
+              {coupons.length > 0 && userType === "CUSTOMER" ? (
+                // coupons.map((c) => <CustomerCouponItem key={c.id} coupon={c} />)
+                coupons.map((c) => <CustomerCouponBoot key={c.id} coupon={c} />)
+              ) : (
+                <EmptyView msg={"No coupons today"} />
+              )}
+            </div>
+          </div>
+        </>
+      )}
     </div>
   );
 }

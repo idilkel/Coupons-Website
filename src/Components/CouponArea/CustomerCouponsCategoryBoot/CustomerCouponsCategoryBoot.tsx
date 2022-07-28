@@ -4,7 +4,10 @@ import { Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
 import { CouponModel } from "../../../Models/Coupon";
-import { couponsDownloadedAction } from "../../../Redux/CouponsAppState";
+import {
+  couponsClear,
+  couponsDownloadedAction,
+} from "../../../Redux/CouponsAppState";
 import store from "../../../Redux/Store";
 import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
@@ -19,14 +22,14 @@ import {
 
 function CustomerCouponsCategoryBoot(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
-    store.getState().customerCouponsReducer.coupons
+    store.getState().couponsReducer.coupons
   );
   const navigate = useNavigate();
   const params = useParams();
   const catName = params.cat || null;
   const [catId, setCatId] = useState<string>(catName);
 
-  console.log("CouponsList" + store.getState().customerCouponsReducer.coupons);
+  console.log("CouponsList" + store.getState().couponsReducer.coupons);
   console.log("catID$$$" + catId);
 
   const [email, setEmail] = useState(store.getState().authReducer.user?.email);
@@ -34,7 +37,7 @@ function CustomerCouponsCategoryBoot(): JSX.Element {
   const [cat, setCat]: any = useState("");
 
   const customerCoupons = () => {
-    store.dispatch(customerCouponsClear());
+    store.dispatch(couponsClear());
     navigate("/customers/coupons");
   };
 
@@ -47,7 +50,7 @@ function CustomerCouponsCategoryBoot(): JSX.Element {
   // console.log("userType!!!: " + userType);
 
   useEffect(() => {
-    // if (store.getState().customerCouponsReducer.coupons.length === 0) {
+    // if (store.getState().couponsReducer.coupons.length === 0) {
     web
       .getAllCustomerCouponsByCategory(catId)
       .then((res) => {
@@ -55,16 +58,15 @@ function CustomerCouponsCategoryBoot(): JSX.Element {
         // Update Component State (Local state)
         setCoupons(res.data);
         // Update App State (Global State)
-        store.dispatch(customerCouponsDownloadedAction(res.data)); //it is better that the store has coupons from all categories
+        store.dispatch(couponsDownloadedAction(res.data)); //it is better that the store has coupons from all categories
         console.log("list after dispatch: " + coupons);
         console.log(
-          "All Customer Coupons" +
-            store.getState().customerCouponsReducer.coupons
+          "All Customer Coupons" + store.getState().couponsReducer.coupons
         );
-        console.log(store.getState().customerCouponsReducer.coupons);
+        console.log(store.getState().couponsReducer.coupons);
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
       });
     // }
   }, []);
@@ -74,7 +76,7 @@ function CustomerCouponsCategoryBoot(): JSX.Element {
       <h1 className="flex-row-none-wrap-list">{email} Coupons</h1>
       <div>
         <Button variant="secondary" onClick={customerCoupons}>
-          My Coupons
+          Customer Coupons
         </Button>{" "}
         {/* <Button variant="secondary" onClick={goBack}>
           Go back

@@ -12,4 +12,9 @@
 
 .EmptyView iframe {
   border-radius: 5%;
+  margin: 10px;
+}
+
+.EmptyView h2 {
+  margin: 15px;
 }

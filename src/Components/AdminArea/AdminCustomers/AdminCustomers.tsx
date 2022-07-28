@@ -61,7 +61,7 @@ function AdminCustomers(): JSX.Element {
           //   console.log(store.getState().customersReducer.customers);
         })
         .catch((err) => {
-          notify.error(err.message);
+          notify.error(err);
         });
     }
   }, []);

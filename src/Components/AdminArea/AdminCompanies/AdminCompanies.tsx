@@ -61,7 +61,7 @@ function AdminCompanies(): JSX.Element {
           //   console.log(store.getState().companiesReducer.companies);
         })
         .catch((err) => {
-          notify.error(err.message);
+          notify.error(err);
         });
     }
   }, []);

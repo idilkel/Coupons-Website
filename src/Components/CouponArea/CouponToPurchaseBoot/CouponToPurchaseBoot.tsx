@@ -8,6 +8,7 @@ import web from "../../../Services/WebApi";
 import Button from "react-bootstrap/Button";
 import store from "../../../Redux/Store";
 import { customerCouponPurchasedAction } from "../../../Redux/CustomerCouponsAppState";
+import { couponAddedAction } from "../../../Redux/CouponsAppState";
 
 interface CouponToPurchaseBootProps {
   coupon: CouponModel;
@@ -21,13 +22,13 @@ function CouponToPurchaseBoot(props: CouponToPurchaseBootProps): JSX.Element {
       .purchaseCoupon(coupon)
       .then((res) => {
         notify.success(SccMsg.PURCHASED);
-        store.dispatch(customerCouponPurchasedAction(coupon));
+        store.dispatch(couponAddedAction(coupon));
         navigate("/customers/coupons");
         //Update App State (Global State)
         // store.dispatch(CouponPurchased(res.data));
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
         navigate("/coupons");
       });
   };
@@ -72,15 +73,22 @@ function CouponToPurchaseBoot(props: CouponToPurchaseBootProps): JSX.Element {
           </Card.Text>
           <Card.Footer>
             <div className="flex-around">
-              {/* <button
-                className="button"
-                onClick={() => {
-                  purchase(props.coupon);
-                }}
-              >
-                Purchase
-              </button> */}
-              <Button
+              {store.getState().authReducer.user.type === "CUSTOMER" ? (
+                <>
+                  <Button
+                    variant="secondary"
+                    className="margin"
+                    onClick={() => {
+                      purchase(props.coupon);
+                    }}
+                  >
+                    Purchase
+                  </Button>
+                </>
+              ) : (
+                <></>
+              )}
+              {/* <Button
                 variant="secondary"
                 className="margin"
                 onClick={() => {
@@ -88,7 +96,7 @@ function CouponToPurchaseBoot(props: CouponToPurchaseBootProps): JSX.Element {
                 }}
               >
                 Purchase
-              </Button>{" "}
+              </Button>{" "} */}
             </div>
           </Card.Footer>
         </Card.Body>

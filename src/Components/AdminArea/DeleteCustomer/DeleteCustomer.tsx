@@ -25,7 +25,7 @@ function DeleteCustomer(): JSX.Element {
         navigate("/admin/customers");
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
         navigate("/admin/customers");
       });
   };

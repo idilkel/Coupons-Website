@@ -24,7 +24,7 @@ function DeleteCoupon(): JSX.Element {
         navigate("/companies/coupons");
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
         navigate("/companies/coupons");
       });
   };

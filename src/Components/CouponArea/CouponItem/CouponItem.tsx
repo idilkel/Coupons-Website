@@ -31,7 +31,7 @@ function CouponItem(props: CouponItemProps): JSX.Element {
   //       console.log("The company ID is!!!!!" + res.value);
   //     })
   //     .catch((err) => {
-  //       notify.error(err.message);
+  //       notify.error(err);
   //     });
   // };
   // const name = convertIdToName();
@@ -70,16 +70,6 @@ function CouponItem(props: CouponItemProps): JSX.Element {
             {moment(props.coupon.endDate).format("DD/MM/YYYY")}
           </span>
         </div>
-        {/* <button>
-          <RiFileAddLine />
-        </button>
-        <button>
-          <RiEdit2Line />
-        </button>
-        <button>
-          <RiDeleteBinLine />
-        </button> */}
-
         <div className="flex-around">
           <CustomLink to={`/coupons/update/${props.coupon.id}`}>
             <RiEdit2Line size={30} />

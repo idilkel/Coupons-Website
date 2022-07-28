@@ -80,7 +80,7 @@ function EditCustomer(): JSX.Element {
         store.dispatch(customerUpdatedAction(res.data));
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
         navigate("/admin/customers");
       });
   };

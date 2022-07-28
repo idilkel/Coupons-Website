@@ -19,7 +19,7 @@ function Logout(): JSX.Element {
   const yes = () => {
     store.dispatch(logoutAction());
     store.dispatch(couponsClear());
-    store.dispatch(customerCouponsClear());
+    // store.dispatch(customerCouponsClear());
     navigate("/login");
   };
 

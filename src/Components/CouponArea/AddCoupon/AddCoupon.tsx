@@ -47,7 +47,7 @@ function AddCoupon(): JSX.Element {
           store.dispatch(companiesDownloadedAction(res.data));
         })
         .catch((err) => {
-          notify.error(err.message);
+          notify.error(err);
         });
     }
   }, []);
@@ -114,7 +114,7 @@ function AddCoupon(): JSX.Element {
         navigate("/companies/coupons");
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
         navigate("/companies/coupons");
       });
   };

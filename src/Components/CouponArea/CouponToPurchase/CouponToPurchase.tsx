@@ -31,7 +31,7 @@ function CouponToPurchase(props: CouponItemProps): JSX.Element {
         // store.dispatch(CouponPurchased(res.data));
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
         navigate("/coupons");
       });
   };
@@ -70,13 +70,6 @@ function CouponToPurchase(props: CouponItemProps): JSX.Element {
         </div>
 
         <div className="flex-around">
-          {/* <CustomLink to={`/coupons/update/${props.coupon.id}`}>
-            <RiEdit2Line size={30} />
-          </CustomLink>
-          <CustomLink to={`/coupons/delete/${props.coupon.id}`}>
-            <RiDeleteBinLine size={30} />
-          </CustomLink> */}
-
           <button
             className="button"
             onClick={() => {

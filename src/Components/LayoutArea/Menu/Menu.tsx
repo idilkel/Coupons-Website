@@ -1,7 +1,6 @@
 import "./Menu.css";
 import { AiOutlineHome } from "react-icons/ai";
 import { Link, useLocation } from "react-router-dom";
-import CustomLink from "../../RoutingArea/CustomLink/CustomLink";
 import MenuLink from "../../RoutingArea/MenuLink/MenuLink";
 
 function Menu(): JSX.Element {

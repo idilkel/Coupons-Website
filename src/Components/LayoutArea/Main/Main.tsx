@@ -7,10 +7,6 @@ function Main(): JSX.Element {
     <div className="Main">
       <Routing />
       <Outlet />
-      {/* <CouponList /> */}
-      {/* <AddCoupon /> */}
-      {/* <EditCoupon /> */}
-      {/* <DeleteCoupon /> */}
     </div>
   );
 }

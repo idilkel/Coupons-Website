@@ -3,3 +3,10 @@
   border: 2px dashed burlywood;
   padding: 10px;
 }
+
+/* to get rid of the blue background when email is filled*/
+input:focus,
+textarea:focus {
+  outline: none;
+  background-color: white;
+}

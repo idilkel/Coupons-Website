@@ -74,6 +74,8 @@ class Notify {
     // Must be last
     if (typeof err?.message === "string") {
       console.log("Err type7");
+      console.log(err.message);
+
       return err.message;
     }
 

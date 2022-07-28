@@ -62,9 +62,6 @@ export function customerCouponsReducer(
       console.log(newState.coupons);
       console.log("payload: " + action.payload);
       break;
-    // case CouponsActionType.CustomerCouponAdded:
-    //   newState.coupons.push(action.payload);
-    //   break;
     case CustomerCouponsActionType.CustomerCouponsPurchased:
       newState.coupons.push(action.payload);
       break;

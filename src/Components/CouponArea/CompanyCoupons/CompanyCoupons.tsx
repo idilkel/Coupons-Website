@@ -20,6 +20,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import Form from "react-bootstrap/Form";
 import { CompanyModel } from "../../../Models/Company";
 import { companiesDownloadedAction } from "../../../Redux/CompaniesAppState";
+import { NumberModel } from "../../../Models/NumberModel";
 
 function CompanyCoupons(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
@@ -37,7 +38,7 @@ function CompanyCoupons(): JSX.Element {
   const [cat, setCat]: any = useState("");
   console.log("Selected!!!: " + cat);
 
-  const [price, setPrice]: any = useState("");
+  const [price, setPrice] = useState<number>();
   console.log("Price!!!: " + price);
 
   //Step 6: Validation Schema
@@ -57,7 +58,7 @@ function CompanyCoupons(): JSX.Element {
 
   const [email, setEmail] = useState(store.getState().authReducer.user?.email);
 
-  let userType;
+  let userType: string;
   if (localStorage.getItem("user") !== null) {
     userType = JSON.parse(localStorage.getItem("user")).type;
   } else {
@@ -75,7 +76,10 @@ function CompanyCoupons(): JSX.Element {
   );
 
   useEffect(() => {
-    if (store.getState().companiesReducer.companies.length === 0) {
+    if (
+      userType !== null &&
+      store.getState().companiesReducer.companies.length === 0
+    ) {
       web
         // .getAllCompanies()
         .getCompanyAsList()
@@ -86,7 +90,7 @@ function CompanyCoupons(): JSX.Element {
           store.dispatch(companiesDownloadedAction(res.data));
         })
         .catch((err) => {
-          notify.error(err.message);
+          notify.error(err);
         });
     }
   }, []);
@@ -96,7 +100,10 @@ function CompanyCoupons(): JSX.Element {
   );
 
   useEffect(() => {
-    if (store.getState().couponsReducer.coupons.length === 0) {
+    if (
+      userType !== null &&
+      store.getState().couponsReducer.coupons.length === 0
+    ) {
       web
         .getAllCompanyCoupons()
         .then((res) => {
@@ -110,7 +117,7 @@ function CompanyCoupons(): JSX.Element {
           // console.log(store.getState().couponsReducer.coupons);
         })
         .catch((err) => {
-          notify.error(err.message);
+          notify.error(err);
         });
     }
   }, []);
@@ -132,14 +139,14 @@ function CompanyCoupons(): JSX.Element {
           store.dispatch(couponsDownloadedAction(res.data));
         })
         .catch((err) => {
-          notify.error(err.message);
+          notify.error(err);
         });
     }
   };
 
   //Step 8: On-submit:
-  const getMaxPrice = () => {
-    navigate("/companies/coupons/maxPrice/" + price);
+  const getMaxPrice = (price: NumberModel) => {
+    navigate("/companies/coupons/maxPrice/" + price.maxPrice);
   };
 
   //Did change?
@@ -147,59 +154,69 @@ function CompanyCoupons(): JSX.Element {
     selected();
   }, [cat]);
 
-  // useEffect(() => {
-  //   getMaxPrice();
-  // }, [price]);
-
   return (
     <div className="CompanyCoupons flex-center-col">
-      <h1 className="flex-row-none-wrap-list">{email} Coupons</h1>
-      <div className="single-line-only">
-        <Button variant="success" onClick={addCoupon} className="m-4 ">
-          Add a Coupon
-        </Button>{" "}
-        <form onSubmit={handleSubmit(getMaxPrice)} className="flex-center-col">
-          <label htmlFor="maxPrice">Maximum Price</label>
-          <input
-            {...register("maxPrice")}
-            type="number"
-            placeholder="max"
-            id="maxPrice"
-            onChange={(e) => setPrice(e.target.value)}
-          />
-          {/* <span>{errors.maxPrice?.message}</span> */}
-          <Button
-            variant="secondary"
-            type="submit"
-            disabled={!isValid}
-            className="mt-1 btn-sm"
-          >
-            Submit
-          </Button>
-        </form>
-        <div className="margin-top">
-          <Form.Select
-            className="m-2"
-            value={cat}
-            onChange={(e) => setCat(e.target.value)}
-          >
-            <option>Select a category</option>
-            <option value="TRAVEL">TRAVEL</option>
-            <option value="RESTAURANTS">RESTAURANTS</option>
-            <option value="ENTERTAINMENT">ENTERTAINMENT</option>
-            <option value="FASHION">FASHION</option>
-            <option value="ELECTRONICS">ELECTRONICS</option>
-          </Form.Select>
-        </div>
-      </div>
-      <div className="flex-row-none-wrap-list">
-        {coupons.length > 0 && userType === "COMPANY" ? (
-          // coupons.map((c) => <CouponItem key={c.id} coupon={c} />)
-          coupons.map((c) => <CompanyBootCoupon key={c.id} coupon={c} />)
-        ) : (
-          <EmptyView msg={"No coupons today"} />
-        )}
-      </div>
+      {userType === null ||
+      store.getState().authReducer.user.type !== "COMPANY" ? (
+        <>
+          <EmptyView msg={"Sorry! This is a company page only!"} />
+        </>
+      ) : (
+        <>
+          <h1 className="flex-row-none-wrap-list">{email} Coupons</h1>
+          <div className="single-line-only">
+            <Button variant="success" onClick={addCoupon} className="m-4 ">
+              Add a Coupon
+            </Button>{" "}
+            <form
+              onSubmit={handleSubmit(getMaxPrice)}
+              className="flex-center-col"
+            >
+              <label htmlFor="maxPrice">Maximum Price</label>
+              <input
+                {...register("maxPrice")}
+                type="number"
+                placeholder="max"
+                id="maxPrice"
+                onChange={(args) =>
+                  setPrice(+(args.target as HTMLInputElement).value)
+                }
+              />
+              {/* <span>{errors.maxPrice?.message}</span> */}
+              <Button
+                variant="secondary"
+                type="submit"
+                disabled={!isValid}
+                className="mt-1 btn-sm"
+              >
+                Submit
+              </Button>
+            </form>
+            <div className="margin-top">
+              <Form.Select
+                className="m-2"
+                value={cat}
+                onChange={(e) => setCat(e.target.value)}
+              >
+                <option>Select a category</option>
+                <option value="TRAVEL">TRAVEL</option>
+                <option value="RESTAURANTS">RESTAURANTS</option>
+                <option value="ENTERTAINMENT">ENTERTAINMENT</option>
+                <option value="FASHION">FASHION</option>
+                <option value="ELECTRONICS">ELECTRONICS</option>
+              </Form.Select>
+            </div>
+          </div>
+          <div className="flex-row-none-wrap-list">
+            {coupons.length > 0 && userType === "COMPANY" ? (
+              // coupons.map((c) => <CouponItem key={c.id} coupon={c} />)
+              coupons.map((c) => <CompanyBootCoupon key={c.id} coupon={c} />)
+            ) : (
+              <EmptyView msg={"No coupons today"} />
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

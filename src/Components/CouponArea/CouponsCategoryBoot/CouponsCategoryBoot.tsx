@@ -51,7 +51,7 @@ function CouponsCategoryBoot(): JSX.Element {
           console.log(store.getState().couponsReducer.coupons);
         })
         .catch((err) => {
-          notify.error(err.message);
+          notify.error(err);
         });
     }
   }, []);

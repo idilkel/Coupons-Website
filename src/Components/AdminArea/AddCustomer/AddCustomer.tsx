@@ -45,7 +45,7 @@ function AddCustomer(): JSX.Element {
         store.dispatch(customerAddedAction(res.data));
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
         navigate("/admin/customers");
       });
   };

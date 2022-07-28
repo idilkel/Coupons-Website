@@ -84,7 +84,7 @@ function EditCompany(): JSX.Element {
         // console.log("YES@@@" + res.data.name);
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
         navigate("/admin/companies");
       });
   };

@@ -44,7 +44,7 @@ function AddCompany(): JSX.Element {
         store.dispatch(companyAddedAction(res.data));
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
         navigate("/admin/companies");
       });
   };

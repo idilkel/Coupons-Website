@@ -12,7 +12,7 @@ function EmptyView(props: EmptyViewProps): JSX.Element {
   // };
   return (
     <div className="EmptyView flex-center-col">
-      <h2>{props.msg}. Are you in the right user type?</h2>
+      <h2>{props.msg}</h2>
       <iframe
         className="shadow noHover"
         src="https://giphy.com/embed/26hkhPJ5hmdD87HYA"

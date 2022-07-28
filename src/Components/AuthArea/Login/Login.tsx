@@ -72,7 +72,12 @@ function Login(props: LoginProps): JSX.Element {
         }
       })
       .catch((err) => {
-        notify.error(err.message);
+        notify.error(err);
+        // notify.error(err.response.data.value);
+        // console.log(JSON.stringify(err));
+        // console.log("data!@ " + JSON.stringify(err.response.data));
+        // console.log("status!@" + err.response.status);
+        // console.log("err!@ " + err.response.headers);
         navigate("/login");
       });
   };
