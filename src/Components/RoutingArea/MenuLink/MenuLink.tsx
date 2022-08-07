@@ -4,6 +4,7 @@ import "./MenuLink.css";
 interface MenuLinkProps {
   to: string;
   children: any;
+  onClick?: any;
 }
 
 function MenuLink(props: MenuLinkProps): JSX.Element {

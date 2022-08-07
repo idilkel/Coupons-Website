@@ -1,7 +1,6 @@
 import { type } from "os";
 import { useEffect, useState } from "react";
 import { couponsDownloadedAction } from "../../../Redux/CouponsAppState";
-import { customerCouponsDownloadedAction } from "../../../Redux/CustomerCouponsAppState";
 import store from "../../../Redux/Store";
 import notify from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
@@ -20,26 +19,67 @@ function CouponTotal(): JSX.Element {
     userType = null;
   }
 
+  // useEffect(() => {}, []);
+
   useEffect(() => {
     if (
       store.getState().couponsReducer.coupons.length === 0 &&
       userType !== null
     ) {
-      web
-        .getAllCoupons()
-        .then((res) => {
-          // notify.success(SccMsg.ALL_COUPONS); //two notifications on change
-          // Update Component State (Local state)
-          console.log("Hello res data<><><>" + res.data);
-          // setCoupons(res.data);
-          setNum(res.data.length);
-          // Update App State (Global State)
-          store.dispatch(couponsDownloadedAction(res.data));
-        })
-        .catch((err) => {
-          notify.error(err);
-          console.log("Hello error on first get coupons length<><><>");
-        });
+      switch (userType) {
+        case "COMPANY":
+          web
+            .getAllCompanyCoupons()
+            .then((res) => {
+              setNum(res.data.length);
+              store.dispatch(couponsDownloadedAction(res.data));
+              console.log("%3%");
+            })
+            .catch((err) => {
+              notify.error(err);
+            });
+          break;
+        case "CUSTOMER":
+          web
+            .getAllCustomerCoupons()
+            .then((res) => {
+              setNum(res.data.length);
+              store.dispatch(couponsDownloadedAction(res.data));
+              console.log("%4%");
+            })
+            .catch((err) => {
+              notify.error(err);
+            });
+          break;
+        case "ADMINISTRATOR":
+          web
+            .getAllCoupons()
+            .then((res) => {
+              setNum(res.data.length);
+              store.dispatch(couponsDownloadedAction(res.data));
+              console.log("%5%");
+            })
+            .catch((err) => {
+              notify.error(err);
+            });
+          break;
+      }
+
+      // web
+      //   .getAllCoupons()
+      //   .then((res) => {
+      //     // notify.success(SccMsg.ALL_COUPONS); //two notifications on change
+      //     // Update Component State (Local state)
+      //     console.log("Hello res data<><><>" + res.data);
+      //     // setCoupons(res.data);
+      //     setNum(res.data.length);
+      //     // Update App State (Global State)
+      //     store.dispatch(couponsDownloadedAction(res.data));
+      //   })
+      //   .catch((err) => {
+      //     notify.error(err);
+      //     console.log("Hello error on first get coupons length<><><>");
+      //   });
     }
     return store.subscribe(() => {
       setNum(store.getState().couponsReducer.coupons.length);

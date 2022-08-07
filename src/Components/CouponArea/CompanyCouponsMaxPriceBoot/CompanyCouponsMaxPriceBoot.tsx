@@ -31,7 +31,7 @@ function CompanyCouponsMaxPriceBoot(): JSX.Element {
   const [price, setPrice]: any = useState("");
 
   const companyCoupons = () => {
-    store.dispatch(couponsClear());
+    // store.dispatch(couponsClear());
     navigate("/companies/coupons");
   };
 
@@ -45,21 +45,25 @@ function CompanyCouponsMaxPriceBoot(): JSX.Element {
   }
   // console.log("userType!!!: " + userType);
 
+  // useEffect(() => {
+  //   // if (store.getState().couponsReducer.coupons.length === 0) {
+  //   web
+  //     .getAllCompanyCouponsByMaxPrice(priceId)
+  //     .then((res) => {
+  //       // notify.success(SccMsg.ALL_COUPONS); //two notifications on update
+  //       // Update Component State (Local state)
+  //       setCoupons(res.data);
+  //       // Update App State (Global State)
+  //       store.dispatch(couponsDownloadedAction(res.data));
+  //     })
+  //     .catch((err) => {
+  //       notify.error(err);
+  //     });
+  //   // }
+  // }, []);
+
   useEffect(() => {
-    // if (store.getState().couponsReducer.coupons.length === 0) {
-    web
-      .getAllCompanyCouponsByMaxPrice(priceId)
-      .then((res) => {
-        // notify.success(SccMsg.ALL_COUPONS); //two notifications on update
-        // Update Component State (Local state)
-        setCoupons(res.data);
-        // Update App State (Global State)
-        store.dispatch(couponsDownloadedAction(res.data));
-      })
-      .catch((err) => {
-        notify.error(err);
-      });
-    // }
+    setCoupons(coupons.filter((c) => c.price <= priceId));
   }, []);
 
   return (

@@ -8,10 +8,8 @@ import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import CustomLink from "../../RoutingArea/CustomLink/CustomLink";
 import EmptyView from "../../SharedArea/EmptyView/EmptyView";
-// import CouponItem from "../CouponItem/CouponItem";
 import "./CustomerCoupons.css";
 import { BsPlusSquare } from "react-icons/bs";
-import CustomerCouponItem from "../CustomerCouponItem/CustomerCouponItem";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
@@ -20,7 +18,6 @@ import { CustomerModel } from "../../../Models/Customer";
 import CustomerCouponBoot from "../CustomerCouponBoot/CustomerCouponBoot";
 import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { customerCouponsDownloadedAction } from "../../../Redux/CustomerCouponsAppState";
 import Button from "react-bootstrap/Button";
 import { NumberModel } from "../../../Models/NumberModel";
 
@@ -63,8 +60,9 @@ function CustomerCoupons(): JSX.Element {
   useEffect(() => {
     if (
       userType !== null &&
-      (store.getState().couponsReducer.coupons.length === 0 ||
-        userType === "CUSTOMER")
+      store.getState().couponsReducer.coupons.length === 0
+      // ||
+      //   userType === "CUSTOMER"
     ) {
       web
         .getAllCustomerCoupons()
@@ -75,6 +73,7 @@ function CustomerCoupons(): JSX.Element {
           setCoupons(res.data);
           // Update App State (Global State)
           store.dispatch(couponsDownloadedAction(res.data));
+          console.log("%6%");
           console.log("list after dispatch: " + coupons);
           console.log(
             "All Customer Coupons" + store.getState().couponsReducer.coupons
@@ -96,17 +95,23 @@ function CustomerCoupons(): JSX.Element {
       cat === "FASHION" ||
       cat === "ELECTRONICS"
     ) {
-      web
-        .getAllCustomerCouponsByCategory(cat) //todo
-        .then((res) => {
-          notify.success(SccMsg.COUPONS_CATEGORY);
-          navigate("/customers/coupons/category/" + cat);
-          store.dispatch(couponsDownloadedAction(res.data));
-        })
-        .catch((err) => {
-          notify.error(err);
-        });
+      console.log("SELECTED***");
+      console.log(store.getState().couponsReducer.coupons.length);
+      navigate("/customers/coupons/category/" + cat);
     }
+
+    // {
+    //   web
+    //     .getAllCustomerCouponsByCategory(cat) //todo
+    //     .then((res) => {
+    //       notify.success(SccMsg.COUPONS_CATEGORY);
+    //       navigate("/customers/coupons/category/" + cat);
+    //       store.dispatch(couponsDownloadedAction(res.data));
+    //     })
+    //     .catch((err) => {
+    //       notify.error(err);
+    //     });
+    // }
   };
 
   //Step 8: On-submit:
@@ -176,7 +181,6 @@ function CustomerCoupons(): JSX.Element {
           <div>
             <div className="flex-row-none-wrap-list">
               {coupons.length > 0 && userType === "CUSTOMER" ? (
-                // coupons.map((c) => <CustomerCouponItem key={c.id} coupon={c} />)
                 coupons.map((c) => <CustomerCouponBoot key={c.id} coupon={c} />)
               ) : (
                 <EmptyView msg={"No coupons today"} />

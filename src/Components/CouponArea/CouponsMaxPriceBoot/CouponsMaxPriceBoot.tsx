@@ -2,7 +2,10 @@ import { useState, useEffect } from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { CouponModel } from "../../../Models/Coupon";
-import { couponsDownloadedAction } from "../../../Redux/CouponsAppState";
+import {
+  couponsClear,
+  couponsDownloadedAction,
+} from "../../../Redux/CouponsAppState";
 import store from "../../../Redux/Store";
 import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
@@ -17,11 +20,19 @@ function CouponsMaxPriceBoot(): JSX.Element {
   const [price, setPrice] = useState<number>(priceId);
 
   const customerCoupons = () => {
+    store.dispatch(couponsClear());
     navigate("/customers/coupons");
   };
   const companyCoupons = () => {
     navigate("/companies/coupons");
   };
+
+  const allCoupons = () => {
+    // store.dispatch(couponsClear());
+
+    navigate("/coupons");
+  };
+
   const [coupons, setCoupons] = useState<CouponModel[]>(
     store.getState().couponsReducer.coupons
   );
@@ -29,70 +40,96 @@ function CouponsMaxPriceBoot(): JSX.Element {
 
   console.log("todoList" + store.getState().couponsReducer.coupons);
 
-  useEffect(() => {
-    if (
-      store.getState().couponsReducer.coupons.length === 0 ||
-      (store.subscribe && store.getState().authReducer.user.type === "COMPANY")
-    ) {
-      web
-        .getAllCompanyCouponsByMaxPrice(priceId)
-        .then((res) => {
-          notify.success(SccMsg.ALL_COUPONS);
-          // Update Component State (Local state)
-          setCoupons(res.data);
-          // Update App State (Global State)
-          store.dispatch(couponsDownloadedAction(res.data));
-          console.log("list after dispatch: " + coupons); //why empty after refresh
-          console.log("todoList" + store.getState().couponsReducer.coupons);
-          console.log(store.getState().couponsReducer.coupons);
-        })
-        .catch((err) => {
-          notify.error(err);
-        });
-    }
-  }, []);
+  let userType;
+  if (localStorage.getItem("user") !== null) {
+    userType = JSON.parse(localStorage.getItem("user")).type;
+  } else {
+    userType = null;
+  }
+
+  // useEffect(() => {
+  //   if (
+  //     store.getState().couponsReducer.coupons.length === 0 ||
+  //     (store.subscribe && store.getState().authReducer.user.type === "COMPANY")
+  //   ) {
+  //     web
+  //       .getAllCompanyCouponsByMaxPrice(priceId)
+  //       .then((res) => {
+  //         notify.success(SccMsg.ALL_COUPONS);
+  //         // Update Component State (Local state)
+  //         setCoupons(res.data);
+  //         // Update App State (Global State)
+  //         store.dispatch(couponsDownloadedAction(res.data));
+  //         console.log("list after dispatch: " + coupons); //why empty after refresh
+  //         console.log("todoList" + store.getState().couponsReducer.coupons);
+  //         console.log(store.getState().couponsReducer.coupons);
+  //       })
+  //       .catch((err) => {
+  //         notify.error(err);
+  //       });
+  //   }
+  // }, []);
 
   useEffect(() => {
-    if (
-      store.getState().couponsReducer.coupons.length === 0 ||
-      (store.subscribe &&
-        (store.getState().authReducer.user.type === "CUSTOMER" ||
-          store.getState().authReducer.user.type === "ADMINISTRATOR"))
-    ) {
-      web
-        .getAllCouponsByMaxPrice(priceId)
-        .then((res) => {
-          notify.success(SccMsg.ALL_COUPONS);
-          // Update Component State (Local state)
-          setCoupons(res.data);
-          // Update App State (Global State)
-          store.dispatch(couponsDownloadedAction(res.data));
-          console.log("list after dispatch: " + coupons); //why empty after refresh
-          console.log("todoList" + store.getState().couponsReducer.coupons);
-          console.log(store.getState().couponsReducer.coupons);
-        })
-        .catch((err) => {
-          notify.error(err);
-        });
-    }
+    setCoupons(coupons.filter((c) => c.price <= priceId));
   }, []);
+
+  // useEffect(() => {
+  //   if (
+  //     store.getState().couponsReducer.coupons.length === 0 ||
+  //     (store.subscribe &&
+  //       (store.getState().authReducer.user.type === "CUSTOMER" ||
+  //         store.getState().authReducer.user.type === "ADMINISTRATOR"))
+  //   ) {
+  //     web
+  //       .getAllCouponsByMaxPrice(priceId)
+  //       .then((res) => {
+  //         notify.success(SccMsg.ALL_COUPONS);
+  //         // Update Component State (Local state)
+  //         setCoupons(res.data);
+  //         // Update App State (Global State)
+  //         store.dispatch(couponsDownloadedAction(res.data));
+  //         console.log("list after dispatch: " + coupons); //why empty after refresh
+  //         console.log("todoList" + store.getState().couponsReducer.coupons);
+  //         console.log(store.getState().couponsReducer.coupons);
+  //       })
+  //       .catch((err) => {
+  //         notify.error(err);
+  //       });
+  //   }
+  // }, []);
 
   return (
     <div className="CouponList flex-center-col">
       <h1 className="flex-row-none-wrap-list">Our Coupons</h1>
       <div>
-        {/* <button className="button-success" onClick={customerCoupons}>
-              My Coupons
-            </button>
-            <button className="button-success" onClick={() => navigate(-1)}>
-              Go back
-            </button> */}
-        <Button variant="secondary" onClick={customerCoupons}>
+        {userType === "CUSTOMER" ? (
+          <>
+            <Button variant="secondary" onClick={customerCoupons}>
+              Customer Coupons
+            </Button>{" "}
+          </>
+        ) : (
+          <> </>
+        )}
+        {userType === "COMPANY" ? (
+          <>
+            <Button variant="secondary" onClick={companyCoupons}>
+              Company Coupons
+            </Button>{" "}
+          </>
+        ) : (
+          <> </>
+        )}
+        <Button variant="secondary" onClick={allCoupons}>
+          All Coupons
+        </Button>{" "}
+        {/* <Button variant="secondary" onClick={customerCoupons}>
           Customer Coupons
-        </Button>{" "}
-        <Button variant="secondary" onClick={companyCoupons}>
+        </Button>{" "} */}
+        {/* <Button variant="secondary" onClick={companyCoupons}>
           Company Coupons
-        </Button>{" "}
+        </Button>{" "} */}
       </div>
 
       <div>

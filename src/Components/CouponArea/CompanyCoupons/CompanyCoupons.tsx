@@ -8,7 +8,6 @@ import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import CustomLink from "../../RoutingArea/CustomLink/CustomLink";
 import EmptyView from "../../SharedArea/EmptyView/EmptyView";
-import CouponItem from "../CouponItem/CouponItem";
 import "./CompanyCoupons.css";
 import { BsPlusSquare } from "react-icons/bs";
 import { useNavigate } from "react-router-dom";
@@ -34,12 +33,12 @@ function CompanyCoupons(): JSX.Element {
 
   //In-order to assure that the companies store is full
 
-  console.log("todoList" + store.getState().couponsReducer.coupons);
+  // console.log("todoList" + store.getState().couponsReducer.coupons);
   const [cat, setCat]: any = useState("");
-  console.log("Selected!!!: " + cat);
+  // console.log("Selected!!!: " + cat);
 
   const [price, setPrice] = useState<number>();
-  console.log("Price!!!: " + price);
+  // console.log("Price!!!: " + price);
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
@@ -95,9 +94,9 @@ function CompanyCoupons(): JSX.Element {
     }
   }, []);
 
-  console.log(
-    "companiesReducerState&&&" + store.getState().companiesReducer.companies
-  );
+  // console.log(
+  //   "companiesReducerState&&&" + store.getState().companiesReducer.companies
+  // );
 
   useEffect(() => {
     if (
@@ -112,7 +111,12 @@ function CompanyCoupons(): JSX.Element {
           setCoupons(res.data);
           // Update App State (Global State)
           store.dispatch(couponsDownloadedAction(res.data));
-          // console.log("list after dispatch: " + coupons); //why empty after refresh
+          console.log("%1%");
+          console.log("list after dispatch: " + coupons); //why empty after refresh
+          console.log(
+            "Length after getting company coupons:" +
+              store.getState().couponsReducer.coupons.length
+          );
           // console.log("todoList" + store.getState().couponsReducer.coupons);
           // console.log(store.getState().couponsReducer.coupons);
         })
@@ -122,7 +126,28 @@ function CompanyCoupons(): JSX.Element {
     }
   }, []);
 
-  //On-submit Category Selection:  Send to remote as post request
+  // //On-submit Category Selection:  Send to remote as post request
+  // const selected = async () => {
+  //   if (
+  //     cat === "RESTAURANTS" ||
+  //     cat === "TRAVEL" ||
+  //     cat === "ENTERTAINMENT" ||
+  //     cat === "FASHION" ||
+  //     cat === "ELECTRONICS"
+  //   ) {
+  //     web
+  //       .getAllCompanyCouponsByCategory(cat) //todo
+  //       .then((res) => {
+  //         notify.success(SccMsg.COUPONS_CATEGORY);
+  //         navigate("/companies/coupons/category/" + cat);
+  //         store.dispatch(couponsDownloadedAction(res.data));
+  //       })
+  //       .catch((err) => {
+  //         notify.error(err);
+  //       });
+  //   }
+  // };
+
   const selected = async () => {
     if (
       cat === "RESTAURANTS" ||
@@ -131,16 +156,7 @@ function CompanyCoupons(): JSX.Element {
       cat === "FASHION" ||
       cat === "ELECTRONICS"
     ) {
-      web
-        .getAllCompanyCouponsByCategory(cat) //todo
-        .then((res) => {
-          notify.success(SccMsg.COUPONS_CATEGORY);
-          navigate("/companies/coupons/category/" + cat);
-          store.dispatch(couponsDownloadedAction(res.data));
-        })
-        .catch((err) => {
-          notify.error(err);
-        });
+      navigate("/companies/coupons/category/" + cat);
     }
   };
 
@@ -209,7 +225,6 @@ function CompanyCoupons(): JSX.Element {
           </div>
           <div className="flex-row-none-wrap-list">
             {coupons.length > 0 && userType === "COMPANY" ? (
-              // coupons.map((c) => <CouponItem key={c.id} coupon={c} />)
               coupons.map((c) => <CompanyBootCoupon key={c.id} coupon={c} />)
             ) : (
               <EmptyView msg={"No coupons today"} />

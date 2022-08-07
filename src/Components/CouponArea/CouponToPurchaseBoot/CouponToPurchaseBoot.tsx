@@ -7,8 +7,10 @@ import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import Button from "react-bootstrap/Button";
 import store from "../../../Redux/Store";
-import { customerCouponPurchasedAction } from "../../../Redux/CustomerCouponsAppState";
-import { couponAddedAction } from "../../../Redux/CouponsAppState";
+import {
+  couponAddedAction,
+  couponsClear,
+} from "../../../Redux/CouponsAppState";
 
 interface CouponToPurchaseBootProps {
   coupon: CouponModel;
@@ -18,14 +20,16 @@ function CouponToPurchaseBoot(props: CouponToPurchaseBootProps): JSX.Element {
   const navigate = useNavigate();
 
   const purchase = async (coupon: CouponModel) => {
+    // coupon.amount -= 1;
     web
       .purchaseCoupon(coupon)
       .then((res) => {
         notify.success(SccMsg.PURCHASED);
-        store.dispatch(couponAddedAction(coupon));
+        store.dispatch(couponsClear());
         navigate("/customers/coupons");
         //Update App State (Global State)
         // store.dispatch(CouponPurchased(res.data));
+        // store.dispatch(couponAddedAction(coupon));
       })
       .catch((err) => {
         notify.error(err);
