@@ -79,15 +79,33 @@ function CouponToPurchaseBoot(props: CouponToPurchaseBootProps): JSX.Element {
             <div className="flex-around">
               {store.getState().authReducer.user.type === "CUSTOMER" ? (
                 <>
-                  <Button
-                    variant="secondary"
-                    className="margin"
-                    onClick={() => {
-                      purchase(props.coupon);
-                    }}
-                  >
-                    Purchase
-                  </Button>
+                  {props.coupon.amount > 0 ? (
+                    <>
+                      <Button
+                        variant="secondary"
+                        className="margin"
+                        onClick={() => {
+                          purchase(props.coupon);
+                        }}
+                      >
+                        Purchase
+                      </Button>
+                    </>
+                  ) : (
+                    <>
+                      {" "}
+                      <Button
+                        variant="secondary"
+                        className="margin"
+                        disabled={true}
+                        onClick={() => {
+                          purchase(props.coupon);
+                        }}
+                      >
+                        Purchase
+                      </Button>
+                    </>
+                  )}
                 </>
               ) : (
                 <></>
