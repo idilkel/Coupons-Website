@@ -29,7 +29,8 @@ function CompanyBootCoupon(props: CouponItemProps): JSX.Element {
         <Card.Body>
           <Card.Img
             variant="top"
-            src="https://loremflickr.com/150/150/coupon"
+            // src="https://loremflickr.com/150/150/coupon"
+            src={props.coupon.image}
             alt="{props.coupon.title}+ image"
           />
           <Card.Text className="single-line-only">
