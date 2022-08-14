@@ -7,7 +7,12 @@ import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import CustomLink from "../../RoutingArea/CustomLink/CustomLink";
 import "./AdminCompanies.css";
-import { RiDeleteBinLine, RiEdit2Line, RiFileAddLine } from "react-icons/ri";
+import {
+  RiArrowDownCircleLine,
+  RiDeleteBinLine,
+  RiEdit2Line,
+  RiFileAddLine,
+} from "react-icons/ri";
 import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import { LoginModel } from "../../../Models/LoginModel";
 import Button from "react-bootstrap/Button";
@@ -90,12 +95,17 @@ function AdminCompanies(): JSX.Element {
                 <th>Password</th>
                 <th>Update</th>
                 <th>Delete</th>
+                {/* <th>Get One</th> */}
               </tr>
             </thead>
             <tbody>
               {companies.map((company, index) => (
                 <tr data-index={index}>
-                  <td>{company.id}</td>
+                  <td>
+                    <CustomLink to={`/admin/companies/${company.id}`}>
+                      {company.id}
+                    </CustomLink>
+                  </td>
                   <td>{company.name}</td>
                   <td>{company.email}</td>
                   <td>{company.password}</td>
@@ -109,6 +119,11 @@ function AdminCompanies(): JSX.Element {
                       <RiDeleteBinLine size={20} />
                     </CustomLink>
                   </td>
+                  {/* <td>
+                    <CustomLink to={`/admin/companies/${company.id}`}>
+                      <RiArrowDownCircleLine size={20} />
+                    </CustomLink>
+                  </td> */}
                 </tr>
               ))}
             </tbody>

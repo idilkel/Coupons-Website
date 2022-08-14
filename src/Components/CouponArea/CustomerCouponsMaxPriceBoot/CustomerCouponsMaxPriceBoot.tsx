@@ -15,6 +15,7 @@ import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import CustomerCouponBoot from "../CustomerCouponBoot/CustomerCouponBoot";
 import "./CustomerCouponsMaxPriceBoot.css";
 import { Button } from "react-bootstrap";
+import { UserTypes } from "../../../Models/Enums";
 
 function CustomerCouponsMaxPriceBoot(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
@@ -95,7 +96,7 @@ function CustomerCouponsMaxPriceBoot(): JSX.Element {
         </Button>{" "}
       </div>
       <div className="flex-row-none-wrap-list">
-        {coupons.length > 0 && userType === "CUSTOMER" ? (
+        {coupons.length > 0 && userType === UserTypes.CUSTOMER ? (
           coupons.map((c) => <CustomerCouponBoot key={c.id} coupon={c} />)
         ) : (
           <EmptyView msg={"No coupons today"} />

@@ -1,0 +1,14 @@
+.OneCustomerBoot {
+  height: 100%;
+  width: 100%;
+  margin: 5px;
+}
+
+.OneCustomerBoot p {
+  font-size: medium;
+  margin: 0px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}

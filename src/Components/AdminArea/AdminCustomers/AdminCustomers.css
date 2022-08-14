@@ -4,3 +4,15 @@
 .AdminCustomers .margin {
   margin-bottom: 5px;
 }
+
+.AdminCustomers .CustomLink {
+  font-size: small;
+  font-weight: 500;
+  color: black;
+  text-decoration-line: underline;
+}
+
+.AdminCustomers .CustomLink:hover {
+  font-size: medium;
+  color: blue;
+}

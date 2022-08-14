@@ -15,6 +15,7 @@ import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import CustomerCouponBoot from "../CustomerCouponBoot/CustomerCouponBoot";
 import "./CustomerCouponsCategoryBoot.css";
 import { Button } from "react-bootstrap";
+import { UserTypes } from "../../../Models/Enums";
 
 function CustomerCouponsCategoryBoot(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
@@ -85,12 +86,9 @@ function CustomerCouponsCategoryBoot(): JSX.Element {
         <Button variant="secondary" onClick={customerCoupons}>
           Customer Coupons
         </Button>{" "}
-        {/* <Button variant="secondary" onClick={goBack}>
-          Go back
-        </Button>{" "} */}
       </div>
       <div className="flex-row-none-wrap-list">
-        {coupons.length > 0 && userType === "CUSTOMER" ? (
+        {coupons.length > 0 && userType === UserTypes.CUSTOMER ? (
           coupons.map((c) => <CustomerCouponBoot key={c.id} coupon={c} />)
         ) : (
           <EmptyView msg={"No coupons today"} />

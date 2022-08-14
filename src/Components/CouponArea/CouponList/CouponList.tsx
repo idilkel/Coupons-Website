@@ -22,6 +22,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { CompanyModel } from "../../../Models/Company";
 import { companiesDownloadedAction } from "../../../Redux/CompaniesAppState";
 import { NumberModel } from "../../../Models/NumberModel";
+import { UserTypes } from "../../../Models/Enums";
 
 function CouponList(): JSX.Element {
   const navigate = useNavigate();
@@ -101,7 +102,7 @@ function CouponList(): JSX.Element {
   useEffect(() => {
     if (
       (isLoggedIn && store.getState().couponsReducer.coupons.length === 0) ||
-      userType === "CUSTOMER"
+      userType === UserTypes.CUSTOMER
     ) {
       web
         .getAllCoupons()
@@ -152,7 +153,7 @@ function CouponList(): JSX.Element {
           )}
 
           {isLoggedIn &&
-          store.getState().authReducer.user.type === "CUSTOMER" ? (
+          store.getState().authReducer.user.type === UserTypes.CUSTOMER ? (
             <>
               <div>
                 {" "}

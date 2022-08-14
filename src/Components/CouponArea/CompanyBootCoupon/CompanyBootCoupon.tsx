@@ -6,11 +6,11 @@ import moment from "moment";
 import CustomLink from "../../RoutingArea/CustomLink/CustomLink";
 import { RiDeleteBinLine, RiEdit2Line, RiFileAddLine } from "react-icons/ri";
 
-interface CouponItemProps {
+interface CompanyBootCouponProps {
   coupon: CouponModel;
 }
 
-function CompanyBootCoupon(props: CouponItemProps): JSX.Element {
+function CompanyBootCoupon(props: CompanyBootCouponProps): JSX.Element {
   const companyId = props.coupon.company.name;
   const navigate = useNavigate();
   return (
@@ -54,10 +54,10 @@ function CompanyBootCoupon(props: CouponItemProps): JSX.Element {
           </Card.Text>
           <Card.Footer>
             <div className="flex-around">
-              <CustomLink to={`/coupons/update/${props.coupon.id}`}>
+              <CustomLink to={`/companies/coupons/update/${props.coupon.id}`}>
                 <RiEdit2Line size={30} />
               </CustomLink>
-              <CustomLink to={`/coupons/delete/${props.coupon.id}`}>
+              <CustomLink to={`/companies/coupons/delete/${props.coupon.id}`}>
                 <RiDeleteBinLine size={30} />
               </CustomLink>
             </div>

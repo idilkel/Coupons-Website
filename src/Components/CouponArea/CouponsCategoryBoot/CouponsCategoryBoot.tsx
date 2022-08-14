@@ -98,17 +98,10 @@ function CouponsCategoryBoot(): JSX.Element {
         <Button variant="secondary" onClick={allCoupons}>
           All Coupons
         </Button>{" "}
-        {/* <Button variant="secondary" onClick={customerCoupons}>
-          Customer Coupons
-        </Button>{" "} */}
-        {/* <Button variant="secondary" onClick={companyCoupons}>
-          Company Coupons
-        </Button>{" "} */}
       </div>
       <div>
         <div className="flex-row-none-wrap-list">
           {coupons.length > 0 ? (
-            // coupons.map((c) => <CouponToPurchase key={c.id} coupon={c} />)
             coupons.map((c) => <CouponToPurchaseBoot key={c.id} coupon={c} />)
           ) : (
             <EmptyView msg={"No coupons today"} />

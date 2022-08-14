@@ -7,7 +7,12 @@ import notify, { SccMsg } from "../../../Services/Notification";
 import web from "../../../Services/WebApi";
 import CustomLink from "../../RoutingArea/CustomLink/CustomLink";
 import "./AdminCustomers.css";
-import { RiDeleteBinLine, RiEdit2Line, RiFileAddLine } from "react-icons/ri";
+import {
+  RiArrowDownCircleLine,
+  RiDeleteBinLine,
+  RiEdit2Line,
+  RiFileAddLine,
+} from "react-icons/ri";
 import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
@@ -91,13 +96,18 @@ function AdminCustomers(): JSX.Element {
                 <th>Password</th>
                 <th>Update</th>
                 <th>Delete</th>
+                {/* <th>Get One</th> */}
               </tr>
             </thead>
 
             <tbody>
               {customers.map((customer, index) => (
                 <tr data-index={index}>
-                  <td>{customer.id}</td>
+                  <td>
+                    <CustomLink to={`/admin/customers/${customer.id}`}>
+                      {customer.id}
+                    </CustomLink>
+                  </td>
                   <td>{customer.firstName}</td>
                   <td>{customer.lastName}</td>
                   <td>{customer.email}</td>
@@ -112,6 +122,11 @@ function AdminCustomers(): JSX.Element {
                       <RiDeleteBinLine size={20} />
                     </CustomLink>
                   </td>
+                  {/* <td>
+                    <CustomLink to={`/admin/customers/${customer.id}`}>
+                      <RiArrowDownCircleLine size={20} />
+                    </CustomLink>
+                  </td> */}
                 </tr>
               ))}
             </tbody>

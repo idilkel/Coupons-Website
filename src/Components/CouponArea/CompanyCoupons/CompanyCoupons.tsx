@@ -20,6 +20,7 @@ import Form from "react-bootstrap/Form";
 import { CompanyModel } from "../../../Models/Company";
 import { companiesDownloadedAction } from "../../../Redux/CompaniesAppState";
 import { NumberModel } from "../../../Models/NumberModel";
+import { Category } from "../../../Models/Enums";
 
 function CompanyCoupons(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
@@ -150,11 +151,11 @@ function CompanyCoupons(): JSX.Element {
 
   const selected = async () => {
     if (
-      cat === "RESTAURANTS" ||
-      cat === "TRAVEL" ||
-      cat === "ENTERTAINMENT" ||
-      cat === "FASHION" ||
-      cat === "ELECTRONICS"
+      cat === Category.RESTAURANTS ||
+      cat === Category.TRAVEL ||
+      cat === Category.ENTERTAINMENT ||
+      cat === Category.FASHION ||
+      cat === Category.ELECTRONICS
     ) {
       navigate("/companies/coupons/category/" + cat);
     }
@@ -215,11 +216,11 @@ function CompanyCoupons(): JSX.Element {
                 onChange={(e) => setCat(e.target.value)}
               >
                 <option>Select a category</option>
-                <option value="TRAVEL">TRAVEL</option>
-                <option value="RESTAURANTS">RESTAURANTS</option>
-                <option value="ENTERTAINMENT">ENTERTAINMENT</option>
-                <option value="FASHION">FASHION</option>
-                <option value="ELECTRONICS">ELECTRONICS</option>
+                <option value={Category.TRAVEL}>TRAVEL</option>
+                <option value={Category.RESTAURANTS}>RESTAURANTS</option>
+                <option value={Category.ENTERTAINMENT}>ENTERTAINMENT</option>
+                <option value={Category.FASHION}>FASHION</option>
+                <option value={Category.ELECTRONICS}>ELECTRONICS</option>
               </Form.Select>
             </div>
           </div>

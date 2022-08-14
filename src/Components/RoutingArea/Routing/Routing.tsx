@@ -27,6 +27,8 @@ import CustomerCouponsCategoryBoot from "../../CouponArea/CustomerCouponsCategor
 import CustomerCouponsMaxPriceBoot from "../../CouponArea/CustomerCouponsMaxPriceBoot/CustomerCouponsMaxPriceBoot";
 import CompanyCouponsCategoryBoot from "../../CouponArea/CompanyCouponsCategoryBoot/CompanyCouponsCategoryBoot";
 import CompanyCouponsMaxPriceBoot from "../../CouponArea/CompanyCouponsMaxPriceBoot/CompanyCouponsMaxPriceBoot";
+import OneCompanyBoot from "../../CouponArea/OneCompanyBoot/OneCompanyBoot";
+import OneCustomerBoot from "../../CouponArea/OneCustomerBoot/OneCustomerBoot";
 
 function Routing(): JSX.Element {
   return (
@@ -40,10 +42,14 @@ function Routing(): JSX.Element {
         <Route path="/companies/coupons" element={<CompanyCoupons />} />
         <Route path="/customers/coupons" element={<CustomerCoupons />} />
         <Route path="/companies/coupons/add" element={<AddCoupon />} />
-        <Route path="/coupons/delete/:id" element={<DeleteCoupon />} />
-        <Route path="/coupons/update/:id" element={<EditCoupon />} />
+        <Route
+          path="/companies/coupons/delete/:id"
+          element={<DeleteCoupon />}
+        />
+        <Route path="/companies/coupons/update/:id" element={<EditCoupon />} />
         <Route path="/admin/companies/add" element={<AddCompany />} />
         <Route path="/admin/companies/delete/:id" element={<DeleteCompany />} />
+        <Route path="/admin/companies/:id" element={<OneCompanyBoot />} />
         <Route path="/admin/companies/update/:id" element={<EditCompany />} />
         <Route path="/admin/customers/add" element={<AddCustomer />} />
         <Route
@@ -51,6 +57,7 @@ function Routing(): JSX.Element {
           element={<DeleteCustomer />}
         />
         <Route path="/admin/customers/update/:id" element={<EditCustomer />} />
+        <Route path="/admin/customers/:id" element={<OneCustomerBoot />} />
         <Route path="/login" element={<Login time={new Date()} />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/admin" element={<AdminHomepage />} />

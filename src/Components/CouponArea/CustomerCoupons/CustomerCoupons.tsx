@@ -20,6 +20,7 @@ import Form from "react-bootstrap/Form";
 import "bootstrap/dist/css/bootstrap.min.css";
 import Button from "react-bootstrap/Button";
 import { NumberModel } from "../../../Models/NumberModel";
+import { Category, UserTypes } from "../../../Models/Enums";
 
 function CustomerCoupons(): JSX.Element {
   const [coupons, setCoupons] = useState<CouponModel[]>(
@@ -61,8 +62,6 @@ function CustomerCoupons(): JSX.Element {
     if (
       userType !== null &&
       store.getState().couponsReducer.coupons.length === 0
-      // ||
-      //   userType === "CUSTOMER"
     ) {
       web
         .getAllCustomerCoupons()
@@ -73,12 +72,6 @@ function CustomerCoupons(): JSX.Element {
           setCoupons(res.data);
           // Update App State (Global State)
           store.dispatch(couponsDownloadedAction(res.data));
-          console.log("%6%");
-          console.log("list after dispatch: " + coupons);
-          console.log(
-            "All Customer Coupons" + store.getState().couponsReducer.coupons
-          );
-          console.log(store.getState().couponsReducer.coupons);
         })
         .catch((err) => {
           notify.error(err);
@@ -89,11 +82,11 @@ function CustomerCoupons(): JSX.Element {
   //On-submit Category Selection:  Send to remote as post request
   const selected = async () => {
     if (
-      cat === "RESTAURANTS" ||
-      cat === "TRAVEL" ||
-      cat === "ENTERTAINMENT" ||
-      cat === "FASHION" ||
-      cat === "ELECTRONICS"
+      cat === Category.RESTAURANTS ||
+      cat === Category.TRAVEL ||
+      cat === Category.ENTERTAINMENT ||
+      cat === Category.FASHION ||
+      cat === Category.ELECTRONICS
     ) {
       console.log("SELECTED***");
       console.log(store.getState().couponsReducer.coupons.length);
@@ -170,17 +163,17 @@ function CustomerCoupons(): JSX.Element {
             <div className="margin-top">
               <Form.Select value={cat} onChange={(e) => setCat(e.target.value)}>
                 <option>Select a category</option>
-                <option value="TRAVEL">TRAVEL</option>
-                <option value="RESTAURANTS">RESTAURANTS</option>
-                <option value="ENTERTAINMENT">ENTERTAINMENT</option>
-                <option value="FASHION">FASHION</option>
-                <option value="ELECTRONICS">ELECTRONICS</option>
+                <option value={Category.TRAVEL}>TRAVEL</option>
+                <option value={Category.RESTAURANTS}>RESTAURANTS</option>
+                <option value={Category.ENTERTAINMENT}>ENTERTAINMENT</option>
+                <option value={Category.FASHION}>FASHION</option>
+                <option value={Category.ELECTRONICS}>ELECTRONICS</option>
               </Form.Select>
             </div>
           </div>
           <div>
             <div className="flex-row-none-wrap-list">
-              {coupons.length > 0 && userType === "CUSTOMER" ? (
+              {coupons.length > 0 && userType === UserTypes.CUSTOMER ? (
                 coupons.map((c) => <CustomerCouponBoot key={c.id} coupon={c} />)
               ) : (
                 <EmptyView msg={"No coupons today"} />
