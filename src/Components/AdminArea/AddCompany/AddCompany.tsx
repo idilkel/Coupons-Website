@@ -12,9 +12,6 @@ import Button from "react-bootstrap/Button";
 
 function AddCompany(): JSX.Element {
   const navigate = useNavigate();
-  // const goBack = () => {
-  //   navigate(-1);
-  // };
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
@@ -80,9 +77,7 @@ function AddCompany(): JSX.Element {
             id="password"
           />
           <span>{errors.password?.message}</span>
-          {/* <button className="button-success" disabled={!isValid}>
-            Add
-          </button> */}
+
           <div>
             <Button
               variant="secondary"
@@ -92,9 +87,6 @@ function AddCompany(): JSX.Element {
             >
               Add
             </Button>
-            {/* <Button variant="secondary" className="margin" onClick={goBack}>
-              Go back
-            </Button>{" "} */}
           </div>
         </form>
       </div>

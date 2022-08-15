@@ -14,10 +14,6 @@ import Button from "react-bootstrap/Button";
 function EditCustomer(): JSX.Element {
   const navigate = useNavigate();
 
-  // const goBack = () => {
-  //   navigate(-1);
-  // };
-
   const params = useParams();
   const customerId = +(params.id || 0);
 
@@ -136,9 +132,6 @@ function EditCustomer(): JSX.Element {
           </Button>{" "}
         </form>
       </div>
-      {/* <Button variant="secondary" onClick={goBack} className="mt-2">
-        Go Back
-      </Button>{" "} */}
     </div>
   );
 }

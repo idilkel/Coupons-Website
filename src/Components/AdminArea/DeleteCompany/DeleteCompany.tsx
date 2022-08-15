@@ -6,6 +6,8 @@ import "./DeleteCompany.css";
 import Button from "react-bootstrap/Button";
 import store from "../../../Redux/Store";
 import { companyDeletedAction } from "../../../Redux/CompaniesAppState";
+import { UserTypes } from "../../../Models/Enums";
+import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 
 function DeleteCompany(): JSX.Element {
   const params = useParams();
@@ -30,20 +32,36 @@ function DeleteCompany(): JSX.Element {
       });
   };
 
+  let userType: string;
+  if (localStorage.getItem("user") !== null) {
+    userType = JSON.parse(localStorage.getItem("user")).type;
+  } else {
+    userType = null;
+  }
+
   return (
     <div className="flex-center-col">
-      <div className="DeleteCompany flex-center-col-wrap">
-        <h1>Delete a Company</h1>
-        <h3>Are you sure you want to delete Company#{id}?</h3>
-        <div>
-          <Button variant="danger" className="margin" onClick={yes}>
-            Yes
-          </Button>{" "}
-          <Button variant="success" className="margin" onClick={no}>
-            No
-          </Button>{" "}
-        </div>
-      </div>
+      {userType === UserTypes.ADMINISTRATOR ? (
+        <>
+          {" "}
+          <div className="DeleteCompany flex-center-col-wrap">
+            <h1>Delete a Company</h1>
+            <h3>Are you sure you want to delete Company#{id}?</h3>
+            <div>
+              <Button variant="danger" className="margin" onClick={yes}>
+                Yes
+              </Button>{" "}
+              <Button variant="success" className="margin" onClick={no}>
+                No
+              </Button>{" "}
+            </div>
+          </div>{" "}
+        </>
+      ) : (
+        <>
+          <EmptyView msg={"This is an Admin page only"} />
+        </>
+      )}
     </div>
   );
 }

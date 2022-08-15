@@ -52,9 +52,9 @@ function AddCoupon(): JSX.Element {
     }
   }, []);
 
-  console.log(
-    "companiesReducerState&&&" + store.getState().companiesReducer.companies
-  );
+  // console.log(
+  //   "companiesReducerState&&&" + store.getState().companiesReducer.companies
+  // );
 
   const [company, setCompany] = useState<CompanyModel>(
     store
@@ -64,12 +64,10 @@ function AddCoupon(): JSX.Element {
       )[0]
   );
 
-  console.log("Company:*** " + company);
+  // console.log("Company:*** " + company);
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
-    // company: yup.string().required("Company is required"),
-    // company: yup.number().required("Company is required"),
     category: yup.string().required("Category is required"),
     title: yup.string().required("Title is required"),
     description: yup.string().required("Description is required"),

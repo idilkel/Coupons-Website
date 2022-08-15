@@ -16,6 +16,7 @@ import {
 import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import { UserTypes } from "../../../Models/Enums";
 
 function AdminCustomers(): JSX.Element {
   const [customers, setCustomers] = useState<CustomerModel[]>(
@@ -37,12 +38,11 @@ function AdminCustomers(): JSX.Element {
     navigate("/admin/customers/add");
   };
 
-  //   console.log("customers2" + store.getState().customersReducer.customers);
-  let userMail;
+  let userType: string;
   if (localStorage.getItem("user") !== null) {
-    userMail = JSON.parse(localStorage.getItem("user")).email;
+    userType = JSON.parse(localStorage.getItem("user")).type;
   } else {
-    userMail = null;
+    userType = null;
   }
 
   useEffect(() => {
@@ -55,15 +55,10 @@ function AdminCustomers(): JSX.Element {
         .then((res) => {
           // notify.success(SccMsg.ALL_COMPANIES);//Line removed since it gives two alerts on update
           // Update Component State (Local state)
-          //   console.log("Hey: " + res.data);
+
           setCustomers(res.data);
           // Update App State (Global State)
           store.dispatch(customersDownloadedAction(res.data));
-          //   console.log("list after dispatch: " + customers); //why empty after refresh
-          //   console.log(
-          //     "Companies list" + store.getState().customersReducer.customers
-          //   );
-          //   console.log(store.getState().customersReducer.customers);
         })
         .catch((err) => {
           notify.error(err);
@@ -84,7 +79,7 @@ function AdminCustomers(): JSX.Element {
           Add Customer
         </Button>{" "}
       </div>
-      {customers.length > 0 && userMail === "admin@admin.com" ? (
+      {customers.length > 0 && userType === UserTypes.ADMINISTRATOR ? (
         <div>
           <Table striped bordered hover>
             <thead>
@@ -96,7 +91,6 @@ function AdminCustomers(): JSX.Element {
                 <th>Password</th>
                 <th>Update</th>
                 <th>Delete</th>
-                {/* <th>Get One</th> */}
               </tr>
             </thead>
 
@@ -122,11 +116,6 @@ function AdminCustomers(): JSX.Element {
                       <RiDeleteBinLine size={20} />
                     </CustomLink>
                   </td>
-                  {/* <td>
-                    <CustomLink to={`/admin/customers/${customer.id}`}>
-                      <RiArrowDownCircleLine size={20} />
-                    </CustomLink>
-                  </td> */}
                 </tr>
               ))}
             </tbody>

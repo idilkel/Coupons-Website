@@ -26,7 +26,7 @@ function CustomerCouponBoot(props: CustomerCouponBootProps): JSX.Element {
             variant="top"
             // src="https://loremflickr.com/150/150/coupon"
             src={props.coupon.image}
-            alt="{props.coupon.title}+ image"
+            alt="Coupon image not loaded"
           />
           <Card.Text className="single-line-only">
             {props.coupon.title}

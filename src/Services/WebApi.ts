@@ -133,16 +133,6 @@ class WebApi {
     return await tokenAxios.get<CouponModel[]>(this.compUrl + "/currentAsList");
   }
 
-  // public async getAllCompanyCoupons(): Promise<any> {
-  //   return await tokenAxios.get<CouponModel[]>(
-  //     this.compUrl + "/coupons/payloadtest"
-  //   );
-  // }
-
-  // public async getNameFromId(): Promise<any> {
-  //   return await tokenAxios.get<string>(this.compUrl + "/idToName");
-  // }
-
   public async getSingleCoupon(id: number): Promise<any> {
     return await tokenAxios.get<CouponModel>(this.compUrl + "/coupons/" + id);
   }

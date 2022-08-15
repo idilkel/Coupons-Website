@@ -17,6 +17,7 @@ import EmptyView from "../../SharedArea/EmptyView/EmptyView";
 import { LoginModel } from "../../../Models/LoginModel";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
+import { UserTypes } from "../../../Models/Enums";
 
 function AdminCompanies(): JSX.Element {
   const [companies, setCompanies] = useState<CompanyModel[]>(
@@ -38,14 +39,12 @@ function AdminCompanies(): JSX.Element {
     navigate("/admin/companies/add");
   };
 
-  //   console.log("companies2" + store.getState().companiesReducer.companies);
-  let userMail;
+  let userType: string;
   if (localStorage.getItem("user") !== null) {
-    userMail = JSON.parse(localStorage.getItem("user")).email;
+    userType = JSON.parse(localStorage.getItem("user")).type;
   } else {
-    userMail = null;
+    userType = null;
   }
-  // console.log("userMail: " + userMail);
 
   //<= 1 since company app state can be filled with only one company if company was logged first for add coupon to get company mail
   useEffect(() => {
@@ -59,11 +58,6 @@ function AdminCompanies(): JSX.Element {
           setCompanies(res.data);
           // Update App State (Global State)
           store.dispatch(companiesDownloadedAction(res.data));
-          //   console.log("list after dispatch: " + companies); //why empty after refresh
-          //   console.log(
-          //     "Companies list" + store.getState().companiesReducer.companies
-          //   );
-          //   console.log(store.getState().companiesReducer.companies);
         })
         .catch((err) => {
           notify.error(err);
@@ -84,7 +78,7 @@ function AdminCompanies(): JSX.Element {
           Add Company
         </Button>{" "}
       </div>
-      {companies.length > 0 && userMail === "admin@admin.com" ? (
+      {companies.length > 0 && userType === UserTypes.ADMINISTRATOR ? (
         <div>
           <Table striped bordered hover>
             <thead>
@@ -95,7 +89,6 @@ function AdminCompanies(): JSX.Element {
                 <th>Password</th>
                 <th>Update</th>
                 <th>Delete</th>
-                {/* <th>Get One</th> */}
               </tr>
             </thead>
             <tbody>
@@ -119,11 +112,6 @@ function AdminCompanies(): JSX.Element {
                       <RiDeleteBinLine size={20} />
                     </CustomLink>
                   </td>
-                  {/* <td>
-                    <CustomLink to={`/admin/companies/${company.id}`}>
-                      <RiArrowDownCircleLine size={20} />
-                    </CustomLink>
-                  </td> */}
                 </tr>
               ))}
             </tbody>
