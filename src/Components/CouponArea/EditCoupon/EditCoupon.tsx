@@ -49,6 +49,7 @@ function EditCoupon(): JSX.Element {
     startDate: yup
       .date()
       .min(new Date(), "Can't assign a past date")
+      .max(yup.ref("endDate"), "Can't assign start date after end date")
       .default(new Date())
       .typeError("Start date must be specified")
       .required("Start date is required")
@@ -56,13 +57,13 @@ function EditCoupon(): JSX.Element {
       .default(() => new Date()),
     endDate: yup
       .date()
-      .min(new Date(), "Can't assign a past date")
+      .min(yup.ref("startDate"), "Can't assign end date before start date")
       .default(new Date())
       .typeError("End date must be specified")
       .required("End date is required")
       .nullable()
       .default(() => new Date()),
-    amount: yup.number().required("Amount is required"),
+    amount: yup.number().required("Amount is required").min(0),
     price: yup.number().required("Price is required"),
     image: yup.string().required("Image is required"),
   });
