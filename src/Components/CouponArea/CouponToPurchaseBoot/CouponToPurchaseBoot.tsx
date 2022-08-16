@@ -37,6 +37,34 @@ function CouponToPurchaseBoot(props: CouponToPurchaseBootProps): JSX.Element {
       });
   };
 
+  //props.coupon.endDate is given by YYY-MM-DD formate and comparison to new Date was problematic
+  //props.coupon.endDate is converted to String and decomposed to Array of numbers by "-" separator
+  const year_month_day = (date: Date) => {
+    let dateString = date.toString();
+    let a = dateString.split("-").map(Number);
+    return a;
+  };
+
+  const isBeforeToday = (date: Date) => {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    let todayYear = today.getFullYear();
+    let todayMonth = today.getMonth() + 1;
+    let todayDay = today.getDate();
+    let dateYear = year_month_day(date)[0];
+    let dateMonth = year_month_day(date)[1];
+    let dateDay = year_month_day(date)[2];
+    if (
+      dateYear < todayYear ||
+      (dateYear === todayYear && dateMonth < todayMonth) ||
+      (dateYear === todayYear && dateMonth === todayMonth && dateDay < todayDay)
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <div className="CouponToPurchaseBoot">
       <Card
@@ -72,7 +100,11 @@ function CouponToPurchaseBoot(props: CouponToPurchaseBootProps): JSX.Element {
           >
             Coupons Left: {props.coupon.amount}
           </Card.Text>
-          <Card.Text>
+          <Card.Text
+            className={
+              isBeforeToday(props.coupon.endDate) ? "text-danger" : "text-dark"
+            }
+          >
             Exp:&nbsp;
             {moment(props.coupon.endDate).format("DD/MM/YYYY")}
           </Card.Text>

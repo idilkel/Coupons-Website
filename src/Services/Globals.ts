@@ -14,10 +14,10 @@ class DevelopmentGlobals extends Globals {
 
 class ProductionGlobals extends Globals {
   public urls = {
-    administrator: "www.aws.com/website/admin",
-    companies: "www.aws.com/website/companies",
-    customers: "www.aws.com/website/customers",
-    login: "www.aws.com/website/login",
+    administrator: "/api/admin",
+    companies: "/api/companies",
+    customers: "/api/customers",
+    login: "/api/login",
   };
 }
 
