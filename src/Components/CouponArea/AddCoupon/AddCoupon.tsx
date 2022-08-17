@@ -89,7 +89,7 @@ function AddCoupon(): JSX.Element {
       .nullable()
       .default(() => new Date()),
     amount: yup.number().required("Amount is required").min(1),
-    price: yup.number().required("Price is required"),
+    price: yup.number().required("Price is required").min(0),
     image: yup.string().required("Image is required"),
   });
 
