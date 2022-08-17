@@ -48,10 +48,10 @@ export function authReducer(
     case AuthActionType.Login: //Payload is logged in user from backend
       newState.user = action.payload;
       localStorage.removeItem("user");
-      console.log("action payload" + JSON.stringify(action.payload));
+      // console.log("action payload" + JSON.stringify(action.payload));
       localStorage.setItem("user", JSON.stringify(newState.user)); // Saving in the session storage (won't be deleted)
-      console.log("New state: " + JSON.stringify(newState.user));
-      console.log("login done!!!!!");
+      // console.log("New state: " + JSON.stringify(newState.user));
+      // console.log("login done!!!!!");
       break;
     case AuthActionType.Logout: // No payload
       newState.user = null; //as any;

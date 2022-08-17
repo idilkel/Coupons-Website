@@ -25,7 +25,7 @@ export interface CompanyAction {
 export function companiesDownloadedAction(
   companies: CompanyModel[]
 ): CompanyAction {
-  console.log("step4 companies " + companies);
+  // console.log("step4 companies " + companies);
   return { type: CompaniesActionType.CompaniesDownloaded, payload: companies };
 }
 
@@ -55,9 +55,9 @@ export function companiesReducer(
   switch (action.type) {
     case CompaniesActionType.CompaniesDownloaded:
       newState.companies = action.payload;
-      console.log("downloaded...");
-      console.log(newState.companies);
-      console.log("payload: " + action.payload);
+      // console.log("downloaded...");
+      // console.log(newState.companies);
+      // console.log("payload: " + action.payload);
       break;
     case CompaniesActionType.CompanyAdded:
       newState.companies.push(action.payload);

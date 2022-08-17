@@ -14,6 +14,7 @@ import { couponAddedAction } from "../../../Redux/CouponsAppState";
 import Button from "react-bootstrap/Button";
 import { CompanyModel } from "../../../Models/Company";
 import { companiesDownloadedAction } from "../../../Redux/CompaniesAppState";
+import { Category } from "../../../Models/Enums";
 
 function AddCoupon(): JSX.Element {
   const navigate = useNavigate();
@@ -68,7 +69,10 @@ function AddCoupon(): JSX.Element {
 
   //Step 6: Validation Schema
   const schema = yup.object().shape({
-    category: yup.string().required("Category is required"),
+    category: yup
+      .string()
+      .oneOf(Object.values(Category))
+      .required("Category is required"),
     title: yup.string().required("Title is required"),
     description: yup.string().required("Description is required"),
     startDate: yup

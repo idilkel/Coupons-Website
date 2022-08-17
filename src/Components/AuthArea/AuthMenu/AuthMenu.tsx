@@ -18,7 +18,7 @@ function AuthMenu(): JSX.Element {
   );
   const [email, setEmail] = useState(store.getState().authReducer.user?.email);
 
-  console.log("Authorization: " + store.getState().authReducer.user);
+  // console.log("Authorization: " + store.getState().authReducer.user);
   useEffect(() => {
     return store.subscribe(() => {
       // setIsLoggedIn(false);

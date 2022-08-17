@@ -11,6 +11,7 @@ import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
 import { couponUpdatedAction } from "../../../Redux/CouponsAppState";
 import web from "../../../Services/WebApi";
+import { Category } from "../../../Models/Enums";
 
 function EditCoupon(): JSX.Element {
   const navigate = useNavigate();
@@ -43,7 +44,10 @@ function EditCoupon(): JSX.Element {
   //Step 6: Validation Schema
   const schema = yup.object().shape({
     // company: yup.string().required("Company is required"),
-    category: yup.string().required("Category is required"),
+    category: yup
+      .string()
+      .oneOf(Object.values(Category))
+      .required("Category is required"),
     title: yup.string().required("Title is required"),
     description: yup.string().required("Description is required"),
     startDate: yup
