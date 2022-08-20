@@ -15,9 +15,9 @@
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "preserve",
-    "strictNullChecks": false,
-    "force": true,
-    "legacy-peer-deps": true
+    "strictNullChecks": false
+    // "force": true,
+    // "legacy-peer-deps": true
   },
   "include": ["src"]
 }
